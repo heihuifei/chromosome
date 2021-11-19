@@ -163,9 +163,9 @@ if __name__ == '__main__':
     }
     dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'test']}
     class_names = image_datasets['train'].classes
-    # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    print("torch.cuda.is_available(): ", torch.cuda.is_available())
-    device = torch.device("cuda:0")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    # print("torch.cuda.is_available(): ", torch.cuda.is_available())
+    # device = torch.device("cuda:0")
 
     model_ft = models.resnet50(pretrained=False)
     model_ft.load_state_dict(
@@ -188,7 +188,6 @@ if __name__ == '__main__':
                           optimizer_ft,
                           exp_lr_scheduler,
                           num_epochs=50)
-    # model_ft=torch.load("E:\Datasets\images_ex\\resnet18_for25_modelall.pth")
     visualize_model(model_ft)
     torch.save(
         model_ft,

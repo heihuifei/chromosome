@@ -6,4 +6,5 @@ segmentation
 chromotest
 chromotest_result
 labelme
+*.txt
 __pycache__
