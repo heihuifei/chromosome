@@ -24,6 +24,7 @@ transform = transforms.Compose([
 with open('./class_names.json', 'r') as f:
     class_names = json.load(f)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cpu")
 
 
 # function: 验证模型的准确率，预测多张图像并验证统计
@@ -36,7 +37,7 @@ def ValidModel(imgs_path):
     for i in range(1, 23):
         chromoi_acc = 0
         chromoi_wrong = 0
-        chromoi_imgs = imgTool.ReadFiles(imgs_path + "chromo" + str(i) +
+        chromoi_imgs, _ = imgTool.ReadPath(imgs_path + "chromo" + str(i) +
                                          "_solo")
         for now_img in chromoi_imgs:
             now_img_pre = prediectImg(now_img)

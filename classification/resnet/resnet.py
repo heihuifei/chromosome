@@ -169,7 +169,7 @@ if __name__ == '__main__':
 
     model_ft = models.resnet50(pretrained=False)
     model_ft.load_state_dict(
-        torch.load("../../checkpoint/resnet50-19c8e357.pth"), False)
+        torch.load("../../checkpoint/resnet101-5d3b4d8f.pth"), False)
     num_ftrs = model_ft.fc.in_features
     # Here the size of each output sample is set to 2.
     # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
@@ -191,8 +191,8 @@ if __name__ == '__main__':
     visualize_model(model_ft)
     torch.save(
         model_ft,
-        "../../outputModels/classficationModels/resnet50_for50_modelall.pth")
+        "../../outputModels/classficationModels/resnet101_for50_modelall.pth")
     torch.save(
         model_ft.state_dict(),
-        "../../outputModels/classficationModels/resnet50_for50_modelweights.pth"
+        "../../outputModels/classficationModels/resnet101_for50_modelweights.pth"
     )

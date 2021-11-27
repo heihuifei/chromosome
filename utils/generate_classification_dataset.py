@@ -79,7 +79,7 @@ classLocation = [
 
 # 定义可疑染色体类继承object基类并重写__lt__方法实现优先队列自定义排序
 class TChromosome(object):
-    '用于表示通过边缘检测获取到的染色体轮廓'
+    '用于表示可疑染色体及其特征'
 
     def __init__(self, area, seq):
         self.area = area
