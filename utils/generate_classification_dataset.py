@@ -150,7 +150,6 @@ def segmentSingleChromosomeByContour(image, thre, chromoClass, savePath):
 # params：输入图片, 二值化阈值, 染色体类别, 输出保存路径
 # return: image1, image2
 def segmentSingleChromosomeByConnect(image, thre, chromoClass, savePath):
-    topQueue = queue.PriorityQueue()
     grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # 源图片, 阈值, 填充色, 阈值类型，根据将小于thre的像素点置0(黑色)或置填充色
     # type=0(小于thre置0, 大于阈值置填充色)，type=1与0相反，type=3(小于thre置0, 大于阈值保持原色)type=4与3相反
@@ -236,9 +235,9 @@ def fillContourMask(image, contour):
     return maskedImage
 
 
-# function: 根据轮廓边缘，填充其内部并和原图与运算后实现掩膜单条染色体
-# params: 原图像，单个轮廓
-# return: 根据轮廓获取的原图像掩膜结果
+# function: 根据连通域边缘，填充其内部并和原图与运算后实现掩膜单条染色体
+# params: 原图像，当前连通域的标记label，带连通域标记的图像
+# return: 根据label标记获取的原图像掩膜结果
 def connectMask(image, label, labels):
     cpImage = np.zeros(image.shape, 'uint8')
     # 获得的是一个二维bool数组，label=i的像素点值为true，后续用作为坐标索引
