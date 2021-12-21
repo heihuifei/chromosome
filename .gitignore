@@ -2,9 +2,9 @@
 checkpoint
 outputModels
 dataset
-segmentation
 chromotest
 chromotest_result
 labelme
+segmentInstances
 *.txt
 __pycache__
