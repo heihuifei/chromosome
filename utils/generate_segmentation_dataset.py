@@ -39,8 +39,8 @@ def generateJson(imagePath, savePath):
     flags = {}
     shapes = generateJsonShapes(image)
     imageData = transImage2RawData(imagePath)
-    imageHeight = 896
-    imageWidth = 1017
+    imageHeight = image.shape[0]
+    imageWidth = image.shape[1]
     annotateJson = {
         "version": version,
         "flags": flags,
@@ -56,7 +56,7 @@ def generateJson(imagePath, savePath):
 
 
 # function: 生成json中shapes字段内容
-# params: 图像路径
+# params: 图像
 # return: json（{"key": "val"}格式数据）
 def generateJsonShapes(image):
     # shapes字段包括label, points, group_id, shape_type, flag五个字段
@@ -233,8 +233,8 @@ def Plt():
     plt.savefig("/home/guest01/projects/chromos/utils/chromotest/testMat.png")
 
 if __name__ == '__main__':
-    srcPath = "/home/guest01/projects/chromos/utils/chromotest/segmentation"
-    dstPath = "/home/guest01/projects/chromos/utils/chromotest_result/segmentation"
+    srcPath = "/home/guest01/projects/chromos/utils/chromotest/cla1"
+    dstPath = "/home/guest01/projects/chromos/utils/chromotest/cla1"
     imagePaths, _ = imgTool.ReadPath(srcPath)
     for imagePath in imagePaths:
         generateJson(imagePath, dstPath)
