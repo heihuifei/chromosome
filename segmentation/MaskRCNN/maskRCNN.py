@@ -177,7 +177,7 @@ def main():
 
     # define training and validation data loaders
     data_loader = torch.utils.data.DataLoader(dataset,
-                                              batch_size=2,
+                                              batch_size=4,
                                               shuffle=True,
                                               num_workers=4,
                                               collate_fn=utils.collate_fn)
@@ -195,7 +195,7 @@ def main():
     # construct an optimizer
     params = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.SGD(params,
-                                lr=0.005,
+                                lr=0.01,
                                 momentum=0.9,
                                 weight_decay=0.0005)
     # and a learning rate scheduler
@@ -203,7 +203,7 @@ def main():
                                                    step_size=3,
                                                    gamma=0.1)
     # let's train it for 10 epochs
-    num_epochs = 30
+    num_epochs = 25
 
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations

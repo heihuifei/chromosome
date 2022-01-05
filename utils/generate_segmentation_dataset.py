@@ -156,7 +156,6 @@ def getPointsByConnect(image, thre):
     # 源图片, 阈值, 填充色, 阈值类型，根据将小于thre的像素点置0(黑色)或置填充色
     # type=0(小于thre置0, 大于阈值置填充色)，type=1与0相反，type=3(小于thre置0, 大于阈值保持原色)type=4与3相反
     _, threshImage = cv2.threshold(grayImage, thre, 255, 0)
-    cv2.imwrite("thre.png", threshImage)
     num_labels, labels, stats, centers = cv2.connectedComponentsWithStats(
         cv2.bitwise_not(threshImage), 8, ltype=cv2.CV_32S)
     for i in range(1, len(stats)):
