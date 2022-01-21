@@ -1,13 +1,12 @@
 '''
 Author: hxp
-Introduction: 对染色体原图进行规则切割，并采用传统边缘检测方法提取不同类别的单条染色体生成数据集
-Time: 2021.11.13
+Introduction: 对染色体标注文件获取染色体区域使用背景区域填充生成新的背景图像
+Time: 2022.01.16
 '''
 import math
 import uuid
 import json
 import io
-import os
 import base64
 import os.path as osp
 
@@ -112,6 +111,7 @@ def lblsave(filename, lbl):
         raise ValueError("[%s] Cannot save the pixel-wise class label as PNG. "
                          "Please consider using the .npy format." % filename)
 
+
 # function: 用于将imageData转为image
 # params: 图像的imageData数据
 # return: img_pil
@@ -130,6 +130,7 @@ def img_data_to_arr(img_data):
     img_arr = np.array(img_pil)
     return img_arr
 
+
 # function: 将imageData的b64编码数据转为array格式的image
 # params: 图像的b64编码数据
 # return: image
@@ -144,7 +145,8 @@ def img_b64_to_arr(img_b64):
 # return: [[r1,g1,b1] [r2,g2,b2]...] (type=array)
 def generateRandRgbs(image, cnt):
     # 将image数组变型为的rgb像素值数组
-    cpImage = image[handPadding[0]:(image.shape[0]-handPadding[0]), handPadding[1]:(image.shape[1]-handPadding[1]), :]
+    cpImage = image[handPadding[0]:(image.shape[0] - handPadding[0]),
+                    handPadding[1]:(image.shape[1] - handPadding[1]), :]
     imageRgb = cpImage.reshape(cpImage.shape[0] * cpImage.shape[1], 3)
     # 使用pandas库统计list中不同(r,g,b)出现频率,可以通过索引查找元素
     imageRgbMap = pd.value_counts(imageRgb.tolist())
@@ -185,7 +187,9 @@ def getInstances(img_shape, shapes):
         minJ.append(np.min(pointsArr, axis=0)[0])
         maxI.append(np.max(pointsArr, axis=0)[1])
         maxJ.append(np.max(pointsArr, axis=0)[0])
-    return instances, int(np.min(np.array(minI))), int(np.min(np.array(minJ))),int(np.max(np.array(maxI))),int(np.max(np.array(maxJ)))
+    return instances, int(np.min(np.array(minI))), int(np.min(
+        np.array(minJ))), int(np.max(np.array(maxI))), int(
+            np.max(np.array(maxJ)))
 
 
 # function: 根据所有染色体分布的边界minI,minJ,maxI,maxJ选取图像无染色体分布的四个角所有像素点
@@ -194,14 +198,24 @@ def getInstances(img_shape, shapes):
 def cutImageNonChromos(image, minI, minJ, maxI, maxJ, cnt):
     # LU，LD，RD，RU分别代表左上角，左下角，右下角，右上角四个角子图
     fourImageSegs = []
-    fourImageSegs.append(image[handPadding[0]:minI, handPadding[1]:(image.shape[1]-handPadding[1])])
-    fourImageSegs.append(image[handPadding[0]:(image.shape[0]-handPadding[0]), handPadding[1]:minJ])
-    fourImageSegs.append(image[maxI:(image.shape[0]-handPadding[0]), handPadding[1]:(image.shape[1] - handPadding[1])])
-    fourImageSegs.append(image[handPadding[0]:image.shape[0]-handPadding[0], maxJ:(image.shape[1] - handPadding[1])])
+    fourImageSegs.append(image[handPadding[0]:minI,
+                               handPadding[1]:(image.shape[1] -
+                                               handPadding[1])])
+    fourImageSegs.append(image[handPadding[0]:(image.shape[0] -
+                                               handPadding[0]),
+                               handPadding[1]:minJ])
+    fourImageSegs.append(image[maxI:(image.shape[0] - handPadding[0]),
+                               handPadding[1]:(image.shape[1] -
+                                               handPadding[1])])
+    fourImageSegs.append(image[handPadding[0]:image.shape[0] - handPadding[0],
+                               maxJ:(image.shape[1] - handPadding[1])])
     fillPoints = fourImageSegs[0].reshape(-1)
-    fillPoints = np.concatenate((fillPoints, fourImageSegs[1].reshape(-1)), axis=0)
-    fillPoints = np.concatenate((fillPoints, fourImageSegs[2].reshape(-1)), axis=0)
-    fillPoints = np.concatenate((fillPoints, fourImageSegs[3].reshape(-1)), axis=0)
+    fillPoints = np.concatenate((fillPoints, fourImageSegs[1].reshape(-1)),
+                                axis=0)
+    fillPoints = np.concatenate((fillPoints, fourImageSegs[2].reshape(-1)),
+                                axis=0)
+    fillPoints = np.concatenate((fillPoints, fourImageSegs[3].reshape(-1)),
+                                axis=0)
     np.random.shuffle(fillPoints)
     # fillPoints = np.concatenate((fillPoints, choosePoints), axis=0)
     # np.random.shuffle(fillPoints)
@@ -214,27 +228,48 @@ def cutImageNonChromos(image, minI, minJ, maxI, maxJ, cnt):
 def fillImageNonChromos(cpImage, minI, minJ, maxI, maxJ):
     image = cpImage
     # 选取填充区域的iU, iD, jL, jR
-    randLoc = [[handPadding[0],minI,handPadding[1], image.shape[1]-handPadding[1]], 
-                       [handPadding[0],image.shape[0]-handPadding[0], handPadding[1],minJ], 
-                       [maxI,image.shape[0]-handPadding[0], handPadding[1], image.shape[1]-handPadding[1]], 
-                       [handPadding[0],image.shape[0]-handPadding[0], maxJ, image.shape[1]-handPadding[1]]
-    ]
-    dire = rd.randint(0,3)
+    randLoc = [[
+        handPadding[0], minI, handPadding[1], image.shape[1] - handPadding[1]
+    ], [handPadding[0], image.shape[0] - handPadding[0], handPadding[1], minJ],
+               [
+                   maxI, image.shape[0] - handPadding[0], handPadding[1],
+                   image.shape[1] - handPadding[1]
+               ],
+               [
+                   handPadding[0], image.shape[0] - handPadding[0], maxJ,
+                   image.shape[1] - handPadding[1]
+               ]]
+    dire = rd.randint(0, 3)
     if dire == 0 or dire == 2:
-        offsetJ = rd.randint(handPadding[1]-minJ, image.shape[1]-handPadding[1]-maxJ)
-        if (maxI-minI) > (randLoc[dire][1]-randLoc[dire][0]): # 区域高度不够填充
-            cpImage[minI:(minI+randLoc[dire][1]-randLoc[dire][0]), minJ:maxJ] = image[randLoc[dire][0]:randLoc[dire][1], minJ+offsetJ:maxJ+offsetJ]
-            return cpImage, minI+randLoc[dire][1]-randLoc[dire][0], minJ, maxI, maxJ
+        offsetJ = rd.randint(handPadding[1] - minJ,
+                             image.shape[1] - handPadding[1] - maxJ)
+        if (maxI - minI) > (randLoc[dire][1] - randLoc[dire][0]):  # 区域高度不够填充
+            cpImage[minI:(minI + randLoc[dire][1] - randLoc[dire][0]),
+                    minJ:maxJ] = image[randLoc[dire][0]:randLoc[dire][1],
+                                       minJ + offsetJ:maxJ + offsetJ]
+            return cpImage, minI + randLoc[dire][1] - randLoc[dire][
+                0], minJ, maxI, maxJ
         else:
-            cpImage[minI:maxI, minJ:maxJ] = image[randLoc[dire][0]:(randLoc[dire][0]+maxI-minI), minJ+offsetJ:maxJ+offsetJ]
+            cpImage[minI:maxI,
+                    minJ:maxJ] = image[randLoc[dire][0]:(randLoc[dire][0] +
+                                                         maxI - minI),
+                                       minJ + offsetJ:maxJ + offsetJ]
             return cpImage, 0, 0, 0, 0
     else:
-        offsetI = rd.randint(handPadding[0]-minI, image.shape[0]-handPadding[0]-maxI)
-        if maxJ-minJ > randLoc[dire][3]-randLoc[dire][2]: # 区域宽度不够填充
-            cpImage[minI:maxI, minJ:(minJ+randLoc[dire][3]-randLoc[dire][2])] = image[minI+offsetI:maxI+offsetI, randLoc[dire][2]:randLoc[dire][3]]
-            return cpImage, minI, minJ+randLoc[dire][3]-randLoc[dire][2], maxI, maxJ
+        offsetI = rd.randint(handPadding[0] - minI,
+                             image.shape[0] - handPadding[0] - maxI)
+        if maxJ - minJ > randLoc[dire][3] - randLoc[dire][2]:  # 区域宽度不够填充
+            cpImage[minI:maxI, minJ:(
+                minJ + randLoc[dire][3] -
+                randLoc[dire][2])] = image[minI + offsetI:maxI + offsetI,
+                                           randLoc[dire][2]:randLoc[dire][3]]
+            return cpImage, minI, minJ + randLoc[dire][3] - randLoc[dire][
+                2], maxI, maxJ
         else:
-            cpImage[minI:maxI, minJ:maxJ] = image[minI+offsetI:maxI+offsetI, randLoc[dire][2]:(randLoc[dire][2]+maxJ-minJ)]
+            cpImage[minI:maxI,
+                    minJ:maxJ] = image[minI + offsetI:maxI + offsetI,
+                                       randLoc[dire][2]:(randLoc[dire][2] +
+                                                         maxJ - minJ)]
             return cpImage, 0, 0, 0, 0
 
 
@@ -247,7 +282,7 @@ def rotateImages(srcPath, dstPath):
     for imagePath in imagePaths:
         image = cv2.imread(imagePath)
         # 水平翻转
-        horizonImage = image[:,::-1]
+        horizonImage = image[:, ::-1]
         # 垂直翻转
         verticalImage = image[::-1]
         cv2.imwrite(dstPath + "/" + str(i) + ".png", image)
@@ -256,6 +291,7 @@ def rotateImages(srcPath, dstPath):
         i += 1
         cv2.imwrite(dstPath + "/" + str(i) + ".png", verticalImage)
         i += 1
+
 
 if __name__ == '__main__':
     srcPath = "/home/guest01/projects/chromos/utils/chromotest/cla1"
@@ -266,18 +302,19 @@ if __name__ == '__main__':
     for jsonPath in jsonPaths:
         data = json.load(open(jsonPath))
         image = img_b64_to_arr(data.get("imageData"))
-        if len(image.shape)==3:
+        if len(image.shape) == 3:
             image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-        instances, minI, minJ, maxI, maxJ = getInstances(image.shape, data["shapes"])
+        instances, minI, minJ, maxI, maxJ = getInstances(
+            image.shape, data["shapes"])
         # 选取染色体区域的上下侧相同宽度填充部分染色体区域
         cpImage = image.copy()
-        while minI<maxI and minJ<maxJ:
-            cpImage, minI, minJ, maxI, maxJ = fillImageNonChromos(cpImage, minI, minJ, maxI, maxJ)
+        while minI < maxI and minJ < maxJ:
+            cpImage, minI, minJ, maxI, maxJ = fillImageNonChromos(
+                cpImage, minI, minJ, maxI, maxJ)
         filenamePre, _, _, _ = imgTool.parsePath(jsonPath)
         savePath = dstPath + "/" + filenamePre + ".png"
         cv2.imwrite(savePath, cpImage)
     # rotateImages(rotateSrcPath, rotateDstPath)
-    
     # lbl, ins = shapes_to_label(image.shape, data["shapes"],label_name_to_value)
     # randRgbs = generateRandRgbs(image, image[mask].shape[0])
     # lblsave("/home/guest01/projects/chromos/utils/lbl.png", lbl)
