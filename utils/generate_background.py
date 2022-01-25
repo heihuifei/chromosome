@@ -24,7 +24,6 @@ from scipy.fft import dst
 import image_tool as imgTool
 import generate_segmentation_dataset as gsd
 
-label_name_to_value = {"_background_": 0, "chromos": 1}
 handPadding = [70, 35]
 
 
@@ -314,6 +313,7 @@ if __name__ == '__main__':
         filenamePre, _, _, _ = imgTool.parsePath(jsonPath)
         savePath = dstPath + "/" + filenamePre + ".png"
         cv2.imwrite(savePath, cpImage)
+    # label_name_to_value = {"_background_": 0, "chromos": 1}
     # rotateImages(rotateSrcPath, rotateDstPath)
     # lbl, ins = shapes_to_label(image.shape, data["shapes"],label_name_to_value)
     # randRgbs = generateRandRgbs(image, image[mask].shape[0])

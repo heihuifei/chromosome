@@ -171,6 +171,7 @@ def main():
     dataset_test = MyDataset(datasetPath, get_transform(train=False))
 
     # split the dataset in train and test set
+    # 返回一个0~len-1的随机排序列表
     indices = torch.randperm(len(dataset)).tolist()
     dataset = torch.utils.data.Subset(dataset, indices[:-50])
     dataset_test = torch.utils.data.Subset(dataset_test, indices[-50:])

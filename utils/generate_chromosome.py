@@ -3,6 +3,7 @@ Author: hxp
 Introduction: 将不同单条染色体组合散布在背景图像上生成新的染色体图像
 Time: 2022.01.21
 '''
+import os
 import json
 import os.path as osp
 from webbrowser import Grail
@@ -20,7 +21,6 @@ import generate_background as gb
 import imutils
 
 singleSrcPath = "/home/guest01/projects/chromos/utils/chromotest/singleChromosome"
-
 
 # function: 根据json文件及单条染色体，获取一一对应的放缩比例
 # params: json文件路径，单条染色体所在目录路径
@@ -122,6 +122,16 @@ def getSingleChromosomePoints(imagePath):
     return rotatedImage, np.array([-1, -1]), np.array([[-1, -1]])
 
 
+# function: 根据图像高宽及染色体掩膜，获取该染色体的轮廓坐标
+# params: 掩膜，图像高，图像宽
+# return: 掩膜轮廓坐标
+def getContourPointsByMask(mask):
+    image = np.zeros(mask.shape, 'uint8')
+    image[mask] = 255
+    contours, hierarchy = cv2.findContours(image, cv2.RETR_EXTERNAL,
+                                           cv2.CHAIN_APPROX_SIMPLE)
+    return np.array(contours[0], dtype=float)
+
 # function: 将染色体区域的像素点坐标采用bool数组表示
 # params: 像素点坐标，图像高，图像宽
 # return: (h, w)的bool数组
@@ -144,7 +154,7 @@ def generateSingleChromosomeList(n):
         # 获取当前类目录中的所有图像路径
         singleSrcDirImages, _ = imgTool.ReadPath(singleSrcDir)
         index1 = rd.randint(0, len(singleSrcDirImages) - 1)
-        index2 = rd.randint(0, len(singleSrcDirImages))
+        index2 = rd.randint(0, len(singleSrcDirImages) - 1)
         singleChromosomeList.append(singleSrcDirImages[index1])
         singleChromosomeList.append(singleSrcDirImages[index2])
     rd.shuffle(singleChromosomeList)
@@ -153,8 +163,9 @@ def generateSingleChromosomeList(n):
 
 # function: 根据json文件中染色体实例的中心点，将随机选取的单条染色体置于该点处生成新的原始染色体图像
 # params: json文件路劲，背景图像路径
-# return: 自动生成的原始染色体图像
+# return: 自动生成的原始染色体图像, 该图像的所有染色体实例轮廓标注信息
 def generateOriginChromosomeImage(jsonPath, backgroundPath):
+    contoursPoints = []
     background = cv2.imread(backgroundPath)
     if len(background.shape) == 3:
         background = cv2.cvtColor(background, cv2.COLOR_RGB2GRAY)
@@ -175,15 +186,90 @@ def generateOriginChromosomeImage(jsonPath, backgroundPath):
                                       background.shape[1])
         if background[backgroundMask].shape[0] == single[singleMask].shape[0]:
             background[backgroundMask] = single[singleMask]
-    return background
+            # 获取该条染色体的轮廓标注信息
+            contour = getContourPointsByMask(backgroundMask)
+            contourPoints = contour.reshape((contour.shape[0], 2))
+            # contourPoints为array数组格式数据，需要转为list后才能用于构建labelme的json文件
+            contoursPoints.append(contourPoints.tolist())
+    return background, contoursPoints
+
+
+# function: 生成json中shapes字段内容
+# params: 图像
+# return: json（{"key": "val"}格式数据）
+def generateOriginChromosomeJsonShapes(pointsList):
+    # shapes字段包括label, points, group_id, shape_type, flag五个字段
+    shapes = []
+    label = "chromos"
+    shape_type = "polygon"
+    group_id = None
+    flags = {}
+    i = 1
+    for points in pointsList:
+        if len(points)>2:
+            annotatePoints = {
+                "label": label+str(i),
+                "points": points,
+                "group_id": group_id,
+                "shape_type": shape_type,
+                "flags": flags
+            }
+            shapes.append(annotatePoints)
+            i += 1
+    # json.dump(shapes, open("test.json", 'w'))
+    return shapes
+
+
+# function: 生成json对应的标注实例label图像
+# params: 图像保存路径，图像尺寸，json的shapes字段信息
+# return: null
+def generateOriginChromosomeJsonLabel(savePath, imageShape, shapes):
+    label_name_to_value = {"_background_": 0}
+    for i in range(len(shapes)):
+        label_name = 'chromos' + str(i+1)
+        label_name_to_value[label_name] = i+1
+    lbl, _ = gb.shapes_to_label(
+        imageShape, shapes, label_name_to_value
+    )
+    gb.lblsave(savePath, lbl)
+
+# function: 对生成的原始染色体图像生成labelme实例标注格式的json数据
+# params: 图像路径, 存储输出路径，所有染色体实例的轮廓标注点
+# return: json（{"key": "val"}格式数据）
+def generateOriginChromosomeJson(imagePath, savePath, pointsList):
+    image = cv2.imread(imagePath)
+    version = "4.5.7"
+    flags = {}
+    shapes = generateOriginChromosomeJsonShapes(pointsList)
+    imageData = gsd.transImage2RawData(imagePath)
+    imageHeight = image.shape[0]
+    imageWidth = image.shape[1]
+    annotateJson = {
+        "version": version,
+        "flags": flags,
+        "shapes": shapes,
+        "imagePath": imagePath,
+        "imageData": imageData,
+        "imageHeight": imageHeight,
+        "imageWidth": imageWidth
+    }
+    # 生成标注json文件
+    filenamePre, _, _, _ = imgTool.parsePath(imagePath)
+    jsonSavePath = savePath + "/" + filenamePre + ".json"
+    json.dump(annotateJson, open(jsonSavePath, 'w'))
+    # 生成mask的标注图像
+    lblSavePath = savePath + "/" + filenamePre + "_lbl.png"
+    generateOriginChromosomeJsonLabel(lblSavePath, image.shape, shapes)
 
 
 if __name__ == '__main__':
     jsonPath = "/home/guest01/projects/chromos/utils/chromotest/18-Y2140.049.O.json"
     backgroundPath = "/home/guest01/projects/chromos/utils/chromotest_result/augmentationSample/1.png"
+    savePath = "/home/guest01/projects/chromos/utils/chromotest_result/segmentation/"
     # 根据染色体像素个数判断其放缩比例
     # resize = getChromosomeResize(jsonPath, srcPath)
-    res = generateOriginChromosomeImage(jsonPath, backgroundPath)
-    cv2.imwrite(
-        "/home/guest01/projects/chromos/utils/chromotest_result/res.png", res)
-    # print(center, points)
+    for i in range(500):
+        imagePath = savePath + "/" + str(i) + ".png"
+        image, contoursPoints = generateOriginChromosomeImage(jsonPath, backgroundPath)
+        cv2.imwrite(imagePath, image)
+        generateOriginChromosomeJson(imagePath, savePath, contoursPoints)
