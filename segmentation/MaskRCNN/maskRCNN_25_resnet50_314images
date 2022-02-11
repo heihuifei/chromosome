@@ -1,0 +1,1129 @@
+nohup: ignoring input
+Epoch: [0]  [ 0/66]  eta: 0:03:43  lr: 0.000164  loss: 8.0303 (8.0303)  loss_classifier: 0.9787 (0.9787)  loss_box_reg: 0.7537 (0.7537)  loss_mask: 2.8538 (2.8538)  loss_objectness: 3.2239 (3.2239)  loss_rpn_box_reg: 0.2202 (0.2202)  time: 3.3857  data: 2.7768  max mem: 4141
+Epoch: [0]  [10/66]  eta: 0:00:47  lr: 0.001701  loss: 2.3763 (3.6818)  loss_classifier: 0.5399 (0.6540)  loss_box_reg: 0.7841 (0.7829)  loss_mask: 0.7057 (1.3036)  loss_objectness: 0.1863 (0.7302)  loss_rpn_box_reg: 0.2202 (0.2111)  time: 0.8410  data: 0.3081  max mem: 4606
+Epoch: [0]  [20/66]  eta: 0:00:36  lr: 0.003238  loss: 1.8870 (2.7295)  loss_classifier: 0.3960 (0.5001)  loss_box_reg: 0.7461 (0.7590)  loss_mask: 0.3706 (0.8313)  loss_objectness: 0.1064 (0.4271)  loss_rpn_box_reg: 0.2164 (0.2119)  time: 0.6650  data: 0.1275  max mem: 4614
+Epoch: [0]  [30/66]  eta: 0:00:26  lr: 0.004774  loss: 1.5426 (2.3052)  loss_classifier: 0.2874 (0.4211)  loss_box_reg: 0.6927 (0.7183)  loss_mask: 0.2980 (0.6560)  loss_objectness: 0.0674 (0.3040)  loss_rpn_box_reg: 0.2164 (0.2058)  time: 0.6748  data: 0.1278  max mem: 4614
+Epoch: [0]  [40/66]  eta: 0:00:18  lr: 0.006311  loss: 1.2442 (2.0205)  loss_classifier: 0.2177 (0.3669)  loss_box_reg: 0.5025 (0.6571)  loss_mask: 0.2634 (0.5569)  loss_objectness: 0.0334 (0.2378)  loss_rpn_box_reg: 0.1804 (0.2019)  time: 0.5992  data: 0.0532  max mem: 4614
+Epoch: [0]  [50/66]  eta: 0:00:10  lr: 0.007848  loss: 1.0741 (1.8184)  loss_classifier: 0.1877 (0.3295)  loss_box_reg: 0.4435 (0.6092)  loss_mask: 0.2287 (0.4911)  loss_objectness: 0.0310 (0.1979)  loss_rpn_box_reg: 0.1600 (0.1907)  time: 0.6048  data: 0.0521  max mem: 4614
+Epoch: [0]  [60/66]  eta: 0:00:04  lr: 0.009385  loss: 0.9416 (1.6716)  loss_classifier: 0.1527 (0.3003)  loss_box_reg: 0.3956 (0.5687)  loss_mask: 0.2140 (0.4470)  loss_objectness: 0.0313 (0.1709)  loss_rpn_box_reg: 0.1448 (0.1846)  time: 0.6163  data: 0.0544  max mem: 4614
+Epoch: [0]  [65/66]  eta: 0:00:00  lr: 0.010000  loss: 0.9256 (1.6182)  loss_classifier: 0.1527 (0.2907)  loss_box_reg: 0.3587 (0.5530)  loss_mask: 0.2155 (0.4300)  loss_objectness: 0.0309 (0.1605)  loss_rpn_box_reg: 0.1513 (0.1841)  time: 0.6159  data: 0.0542  max mem: 4614
+Epoch: [0] Total time: 0:00:44 (0.6691 s / it)
+creating index...
+index created!
+/home/guest01/anaconda3/envs/pytorch1.9/lib/python3.8/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ../aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Test:  [ 0/50]  eta: 0:01:03  model_time: 0.2683 (0.2683)  evaluator_time: 0.3089 (0.3089)  time: 1.2673  data: 0.6864  max mem: 4614
+Test:  [49/50]  eta: 0:00:00  model_time: 0.2137 (0.2342)  evaluator_time: 0.3171 (0.3333)  time: 0.5716  data: 0.0052  max mem: 4614
+Test: Total time: 0:00:30 (0.6096 s / it)
+Averaged stats: model_time: 0.2137 (0.2342)  evaluator_time: 0.3171 (0.3333)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.05s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.611
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.920
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.581
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.654
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.175
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.665
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.639
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.705
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.569
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.901
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.694
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.527
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.615
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.017
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.162
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.625
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.625
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.624
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [1]  [ 0/66]  eta: 0:02:39  lr: 0.010000  loss: 1.0095 (1.0095)  loss_classifier: 0.1711 (0.1711)  loss_box_reg: 0.3905 (0.3905)  loss_mask: 0.2404 (0.2404)  loss_objectness: 0.0286 (0.0286)  loss_rpn_box_reg: 0.1789 (0.1789)  time: 2.4147  data: 1.8522  max mem: 4614
+Epoch: [1]  [10/66]  eta: 0:00:43  lr: 0.010000  loss: 1.0095 (0.9818)  loss_classifier: 0.1734 (0.1752)  loss_box_reg: 0.3866 (0.3694)  loss_mask: 0.2352 (0.2368)  loss_objectness: 0.0377 (0.0416)  loss_rpn_box_reg: 0.1677 (0.1588)  time: 0.7775  data: 0.2314  max mem: 4614
+Epoch: [1]  [20/66]  eta: 0:00:31  lr: 0.010000  loss: 0.9228 (0.9547)  loss_classifier: 0.1707 (0.1661)  loss_box_reg: 0.3664 (0.3563)  loss_mask: 0.2242 (0.2284)  loss_objectness: 0.0349 (0.0375)  loss_rpn_box_reg: 0.1677 (0.1665)  time: 0.6087  data: 0.0617  max mem: 4642
+Epoch: [1]  [30/66]  eta: 0:00:23  lr: 0.010000  loss: 0.8583 (0.9181)  loss_classifier: 0.1417 (0.1583)  loss_box_reg: 0.3112 (0.3426)  loss_mask: 0.2123 (0.2231)  loss_objectness: 0.0291 (0.0339)  loss_rpn_box_reg: 0.1563 (0.1603)  time: 0.5939  data: 0.0562  max mem: 4642
+Epoch: [1]  [40/66]  eta: 0:00:16  lr: 0.010000  loss: 0.8027 (0.8897)  loss_classifier: 0.1188 (0.1485)  loss_box_reg: 0.2981 (0.3342)  loss_mask: 0.2023 (0.2187)  loss_objectness: 0.0240 (0.0312)  loss_rpn_box_reg: 0.1555 (0.1572)  time: 0.5966  data: 0.0594  max mem: 4642
+Epoch: [1]  [50/66]  eta: 0:00:10  lr: 0.010000  loss: 0.8159 (0.8781)  loss_classifier: 0.1195 (0.1455)  loss_box_reg: 0.3037 (0.3308)  loss_mask: 0.2023 (0.2168)  loss_objectness: 0.0234 (0.0298)  loss_rpn_box_reg: 0.1561 (0.1552)  time: 0.6127  data: 0.0555  max mem: 4642
+Epoch: [1]  [60/66]  eta: 0:00:03  lr: 0.010000  loss: 0.8068 (0.8685)  loss_classifier: 0.1275 (0.1427)  loss_box_reg: 0.3070 (0.3279)  loss_mask: 0.2047 (0.2157)  loss_objectness: 0.0215 (0.0284)  loss_rpn_box_reg: 0.1449 (0.1538)  time: 0.6124  data: 0.0489  max mem: 4642
+Epoch: [1]  [65/66]  eta: 0:00:00  lr: 0.010000  loss: 0.8089 (0.8675)  loss_classifier: 0.1308 (0.1420)  loss_box_reg: 0.3070 (0.3274)  loss_mask: 0.2047 (0.2152)  loss_objectness: 0.0215 (0.0283)  loss_rpn_box_reg: 0.1457 (0.1546)  time: 0.6095  data: 0.0497  max mem: 4642
+Epoch: [1] Total time: 0:00:41 (0.6354 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:59  model_time: 0.2210 (0.2210)  evaluator_time: 0.2965 (0.2965)  time: 1.1873  data: 0.6650  max mem: 4642
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1833 (0.1990)  evaluator_time: 0.2428 (0.2670)  time: 0.4680  data: 0.0049  max mem: 4642
+Test: Total time: 0:00:25 (0.5006 s / it)
+Averaged stats: model_time: 0.1833 (0.1990)  evaluator_time: 0.2428 (0.2670)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.657
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.934
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.780
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.620
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.713
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.184
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.705
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.672
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.756
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.611
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.915
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.736
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.574
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.656
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.170
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.661
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.660
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.664
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [2]  [ 0/66]  eta: 0:03:00  lr: 0.010000  loss: 0.8317 (0.8317)  loss_classifier: 0.1397 (0.1397)  loss_box_reg: 0.3004 (0.3004)  loss_mask: 0.2058 (0.2058)  loss_objectness: 0.0288 (0.0288)  loss_rpn_box_reg: 0.1570 (0.1570)  time: 2.7331  data: 2.1687  max mem: 4642
+Epoch: [2]  [10/66]  eta: 0:00:44  lr: 0.010000  loss: 0.7961 (0.7729)  loss_classifier: 0.1291 (0.1227)  loss_box_reg: 0.2795 (0.2799)  loss_mask: 0.2009 (0.1996)  loss_objectness: 0.0245 (0.0248)  loss_rpn_box_reg: 0.1550 (0.1460)  time: 0.7873  data: 0.2360  max mem: 4642
+Epoch: [2]  [20/66]  eta: 0:00:31  lr: 0.010000  loss: 0.7961 (0.7822)  loss_classifier: 0.1153 (0.1197)  loss_box_reg: 0.2807 (0.2857)  loss_mask: 0.2006 (0.2040)  loss_objectness: 0.0236 (0.0264)  loss_rpn_box_reg: 0.1550 (0.1464)  time: 0.5889  data: 0.0455  max mem: 4642
+Epoch: [2]  [30/66]  eta: 0:00:23  lr: 0.010000  loss: 0.7947 (0.7818)  loss_classifier: 0.1099 (0.1179)  loss_box_reg: 0.2980 (0.2900)  loss_mask: 0.2022 (0.2050)  loss_objectness: 0.0202 (0.0245)  loss_rpn_box_reg: 0.1445 (0.1444)  time: 0.5834  data: 0.0453  max mem: 4642
+Epoch: [2]  [40/66]  eta: 0:00:16  lr: 0.010000  loss: 0.7645 (0.7839)  loss_classifier: 0.1130 (0.1213)  loss_box_reg: 0.2980 (0.2901)  loss_mask: 0.2012 (0.2042)  loss_objectness: 0.0191 (0.0241)  loss_rpn_box_reg: 0.1332 (0.1443)  time: 0.5832  data: 0.0433  max mem: 4642
+Epoch: [2]  [50/66]  eta: 0:00:10  lr: 0.010000  loss: 0.7660 (0.7838)  loss_classifier: 0.1226 (0.1222)  loss_box_reg: 0.2790 (0.2894)  loss_mask: 0.1921 (0.2028)  loss_objectness: 0.0206 (0.0234)  loss_rpn_box_reg: 0.1410 (0.1460)  time: 0.5902  data: 0.0582  max mem: 4642
+Epoch: [2]  [60/66]  eta: 0:00:03  lr: 0.010000  loss: 0.8047 (0.7904)  loss_classifier: 0.1226 (0.1228)  loss_box_reg: 0.2936 (0.2914)  loss_mask: 0.1989 (0.2036)  loss_objectness: 0.0234 (0.0244)  loss_rpn_box_reg: 0.1487 (0.1482)  time: 0.5848  data: 0.0551  max mem: 4642
+Epoch: [2]  [65/66]  eta: 0:00:00  lr: 0.010000  loss: 0.8138 (0.7897)  loss_classifier: 0.1226 (0.1224)  loss_box_reg: 0.2955 (0.2922)  loss_mask: 0.1989 (0.2032)  loss_objectness: 0.0235 (0.0243)  loss_rpn_box_reg: 0.1477 (0.1476)  time: 0.5786  data: 0.0448  max mem: 4642
+Epoch: [2] Total time: 0:00:40 (0.6185 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:02  model_time: 0.2352 (0.2352)  evaluator_time: 0.2567 (0.2567)  time: 1.2450  data: 0.7479  max mem: 4642
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1796 (0.1946)  evaluator_time: 0.2406 (0.2629)  time: 0.4566  data: 0.0044  max mem: 4642
+Test: Total time: 0:00:24 (0.4942 s / it)
+Averaged stats: model_time: 0.1796 (0.1946)  evaluator_time: 0.2406 (0.2629)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.626
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.935
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.756
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.577
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.698
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.178
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.678
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.633
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.749
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.573
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.926
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.685
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.520
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.639
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.017
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.162
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.633
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.618
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.655
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [3]  [ 0/66]  eta: 0:03:02  lr: 0.001000  loss: 1.0323 (1.0323)  loss_classifier: 0.1340 (0.1340)  loss_box_reg: 0.3640 (0.3640)  loss_mask: 0.2425 (0.2425)  loss_objectness: 0.0306 (0.0306)  loss_rpn_box_reg: 0.2613 (0.2613)  time: 2.7599  data: 2.1705  max mem: 4642
+Epoch: [3]  [10/66]  eta: 0:00:44  lr: 0.001000  loss: 0.7124 (0.7370)  loss_classifier: 0.1054 (0.1092)  loss_box_reg: 0.2617 (0.2758)  loss_mask: 0.1930 (0.1991)  loss_objectness: 0.0258 (0.0237)  loss_rpn_box_reg: 0.1283 (0.1292)  time: 0.8010  data: 0.2628  max mem: 4642
+Epoch: [3]  [20/66]  eta: 0:00:31  lr: 0.001000  loss: 0.7184 (0.7591)  loss_classifier: 0.1054 (0.1154)  loss_box_reg: 0.2720 (0.2786)  loss_mask: 0.1960 (0.2018)  loss_objectness: 0.0217 (0.0226)  loss_rpn_box_reg: 0.1275 (0.1407)  time: 0.5912  data: 0.0557  max mem: 4642
+Epoch: [3]  [30/66]  eta: 0:00:23  lr: 0.001000  loss: 0.7298 (0.7395)  loss_classifier: 0.1057 (0.1118)  loss_box_reg: 0.2718 (0.2693)  loss_mask: 0.2022 (0.1995)  loss_objectness: 0.0215 (0.0219)  loss_rpn_box_reg: 0.1264 (0.1370)  time: 0.5763  data: 0.0405  max mem: 4642
+Epoch: [3]  [40/66]  eta: 0:00:16  lr: 0.001000  loss: 0.7208 (0.7347)  loss_classifier: 0.1052 (0.1108)  loss_box_reg: 0.2690 (0.2675)  loss_mask: 0.1972 (0.2000)  loss_objectness: 0.0215 (0.0227)  loss_rpn_box_reg: 0.1163 (0.1338)  time: 0.5782  data: 0.0426  max mem: 4642
+Epoch: [3]  [50/66]  eta: 0:00:10  lr: 0.001000  loss: 0.6914 (0.7218)  loss_classifier: 0.1002 (0.1091)  loss_box_reg: 0.2501 (0.2634)  loss_mask: 0.1969 (0.1977)  loss_objectness: 0.0215 (0.0221)  loss_rpn_box_reg: 0.1103 (0.1295)  time: 0.5822  data: 0.0417  max mem: 4642
+Epoch: [3]  [60/66]  eta: 0:00:03  lr: 0.001000  loss: 0.6914 (0.7198)  loss_classifier: 0.1020 (0.1096)  loss_box_reg: 0.2501 (0.2631)  loss_mask: 0.1930 (0.1973)  loss_objectness: 0.0204 (0.0225)  loss_rpn_box_reg: 0.1051 (0.1274)  time: 0.5794  data: 0.0400  max mem: 4642
+Epoch: [3]  [65/66]  eta: 0:00:00  lr: 0.001000  loss: 0.6976 (0.7224)  loss_classifier: 0.1036 (0.1098)  loss_box_reg: 0.2576 (0.2638)  loss_mask: 0.1943 (0.1977)  loss_objectness: 0.0204 (0.0222)  loss_rpn_box_reg: 0.1169 (0.1289)  time: 0.5796  data: 0.0406  max mem: 4642
+Epoch: [3] Total time: 0:00:40 (0.6169 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:02  model_time: 0.2766 (0.2766)  evaluator_time: 0.2725 (0.2725)  time: 1.2423  data: 0.6877  max mem: 4642
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1802 (0.1968)  evaluator_time: 0.2341 (0.2573)  time: 0.4548  data: 0.0050  max mem: 4642
+Test: Total time: 0:00:24 (0.4929 s / it)
+Averaged stats: model_time: 0.1802 (0.1968)  evaluator_time: 0.2341 (0.2573)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.667
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.939
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.811
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.629
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.722
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.184
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.712
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.680
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.762
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.625
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.930
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.760
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.586
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.669
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.670
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.665
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.679
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [4]  [ 0/66]  eta: 0:02:58  lr: 0.001000  loss: 0.7305 (0.7305)  loss_classifier: 0.1201 (0.1201)  loss_box_reg: 0.2688 (0.2688)  loss_mask: 0.2034 (0.2034)  loss_objectness: 0.0166 (0.0166)  loss_rpn_box_reg: 0.1216 (0.1216)  time: 2.6980  data: 2.1359  max mem: 4642
+Epoch: [4]  [10/66]  eta: 0:00:42  lr: 0.001000  loss: 0.6715 (0.6854)  loss_classifier: 0.1072 (0.1064)  loss_box_reg: 0.2444 (0.2519)  loss_mask: 0.1861 (0.1947)  loss_objectness: 0.0178 (0.0200)  loss_rpn_box_reg: 0.1117 (0.1124)  time: 0.7547  data: 0.2285  max mem: 4642
+Epoch: [4]  [20/66]  eta: 0:00:31  lr: 0.001000  loss: 0.6761 (0.7062)  loss_classifier: 0.1026 (0.1054)  loss_box_reg: 0.2556 (0.2596)  loss_mask: 0.1931 (0.1989)  loss_objectness: 0.0175 (0.0194)  loss_rpn_box_reg: 0.1096 (0.1230)  time: 0.5934  data: 0.0576  max mem: 4642
+Epoch: [4]  [30/66]  eta: 0:00:23  lr: 0.001000  loss: 0.7162 (0.7135)  loss_classifier: 0.1034 (0.1062)  loss_box_reg: 0.2632 (0.2611)  loss_mask: 0.1972 (0.1990)  loss_objectness: 0.0179 (0.0198)  loss_rpn_box_reg: 0.1213 (0.1274)  time: 0.6035  data: 0.0587  max mem: 4642
+Epoch: [4]  [40/66]  eta: 0:00:16  lr: 0.001000  loss: 0.7234 (0.7230)  loss_classifier: 0.1141 (0.1087)  loss_box_reg: 0.2673 (0.2643)  loss_mask: 0.1999 (0.2001)  loss_objectness: 0.0227 (0.0207)  loss_rpn_box_reg: 0.1285 (0.1292)  time: 0.5830  data: 0.0415  max mem: 4642
+Epoch: [4]  [50/66]  eta: 0:00:10  lr: 0.001000  loss: 0.7245 (0.7169)  loss_classifier: 0.1141 (0.1074)  loss_box_reg: 0.2633 (0.2621)  loss_mask: 0.1996 (0.1990)  loss_objectness: 0.0235 (0.0205)  loss_rpn_box_reg: 0.1246 (0.1279)  time: 0.5872  data: 0.0421  max mem: 4642
+Epoch: [4]  [60/66]  eta: 0:00:03  lr: 0.001000  loss: 0.6622 (0.7091)  loss_classifier: 0.1008 (0.1072)  loss_box_reg: 0.2475 (0.2601)  loss_mask: 0.1844 (0.1975)  loss_objectness: 0.0185 (0.0201)  loss_rpn_box_reg: 0.1120 (0.1243)  time: 0.5799  data: 0.0457  max mem: 4642
+Epoch: [4]  [65/66]  eta: 0:00:00  lr: 0.001000  loss: 0.6642 (0.7073)  loss_classifier: 0.0993 (0.1059)  loss_box_reg: 0.2468 (0.2586)  loss_mask: 0.1844 (0.1971)  loss_objectness: 0.0183 (0.0201)  loss_rpn_box_reg: 0.1185 (0.1255)  time: 0.5611  data: 0.0458  max mem: 4642
+Epoch: [4] Total time: 0:00:40 (0.6142 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:57  model_time: 0.1968 (0.1968)  evaluator_time: 0.2593 (0.2593)  time: 1.1431  data: 0.6837  max mem: 4642
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1793 (0.1919)  evaluator_time: 0.2293 (0.2543)  time: 0.4589  data: 0.0049  max mem: 4642
+Test: Total time: 0:00:24 (0.4842 s / it)
+Averaged stats: model_time: 0.1793 (0.1919)  evaluator_time: 0.2293 (0.2543)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.681
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.640
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.741
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.020
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.189
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.726
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.690
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.783
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.929
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.770
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.589
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.671
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.672
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.679
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [5]  [ 0/66]  eta: 0:02:59  lr: 0.001000  loss: 0.7050 (0.7050)  loss_classifier: 0.0891 (0.0891)  loss_box_reg: 0.2569 (0.2569)  loss_mask: 0.1954 (0.1954)  loss_objectness: 0.0168 (0.0168)  loss_rpn_box_reg: 0.1467 (0.1467)  time: 2.7124  data: 2.1489  max mem: 4642
+Epoch: [5]  [10/66]  eta: 0:00:43  lr: 0.001000  loss: 0.6608 (0.6679)  loss_classifier: 0.0891 (0.0964)  loss_box_reg: 0.2277 (0.2374)  loss_mask: 0.1954 (0.1893)  loss_objectness: 0.0168 (0.0183)  loss_rpn_box_reg: 0.1241 (0.1264)  time: 0.7794  data: 0.2287  max mem: 4642
+Epoch: [5]  [20/66]  eta: 0:00:31  lr: 0.001000  loss: 0.6608 (0.6825)  loss_classifier: 0.0931 (0.1009)  loss_box_reg: 0.2366 (0.2470)  loss_mask: 0.1934 (0.1922)  loss_objectness: 0.0196 (0.0202)  loss_rpn_box_reg: 0.1103 (0.1221)  time: 0.5837  data: 0.0389  max mem: 4642
+Epoch: [5]  [30/66]  eta: 0:00:23  lr: 0.001000  loss: 0.7021 (0.6941)  loss_classifier: 0.0967 (0.1036)  loss_box_reg: 0.2527 (0.2496)  loss_mask: 0.1906 (0.1933)  loss_objectness: 0.0208 (0.0215)  loss_rpn_box_reg: 0.1162 (0.1261)  time: 0.5809  data: 0.0414  max mem: 4642
+Epoch: [5]  [40/66]  eta: 0:00:16  lr: 0.001000  loss: 0.6763 (0.6903)  loss_classifier: 0.1002 (0.1048)  loss_box_reg: 0.2474 (0.2490)  loss_mask: 0.1906 (0.1928)  loss_objectness: 0.0184 (0.0205)  loss_rpn_box_reg: 0.1198 (0.1230)  time: 0.5884  data: 0.0488  max mem: 4642
+Epoch: [5]  [50/66]  eta: 0:00:10  lr: 0.001000  loss: 0.6842 (0.6967)  loss_classifier: 0.1040 (0.1055)  loss_box_reg: 0.2524 (0.2522)  loss_mask: 0.1934 (0.1948)  loss_objectness: 0.0185 (0.0210)  loss_rpn_box_reg: 0.1198 (0.1233)  time: 0.5944  data: 0.0494  max mem: 4642
+Epoch: [5]  [60/66]  eta: 0:00:03  lr: 0.001000  loss: 0.6795 (0.6989)  loss_classifier: 0.1047 (0.1059)  loss_box_reg: 0.2560 (0.2529)  loss_mask: 0.1930 (0.1958)  loss_objectness: 0.0199 (0.0207)  loss_rpn_box_reg: 0.1094 (0.1236)  time: 0.5968  data: 0.0448  max mem: 4642
+Epoch: [5]  [65/66]  eta: 0:00:00  lr: 0.001000  loss: 0.6657 (0.6963)  loss_classifier: 0.0972 (0.1057)  loss_box_reg: 0.2451 (0.2517)  loss_mask: 0.1930 (0.1949)  loss_objectness: 0.0183 (0.0204)  loss_rpn_box_reg: 0.1161 (0.1235)  time: 0.5950  data: 0.0448  max mem: 4642
+Epoch: [5] Total time: 0:00:41 (0.6231 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:07  model_time: 0.2485 (0.2485)  evaluator_time: 0.3592 (0.3592)  time: 1.3419  data: 0.7285  max mem: 4642
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1753 (0.1866)  evaluator_time: 0.2324 (0.2468)  time: 0.4383  data: 0.0046  max mem: 4642
+Test: Total time: 0:00:23 (0.4710 s / it)
+Averaged stats: model_time: 0.1753 (0.1866)  evaluator_time: 0.2324 (0.2468)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.681
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.949
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.814
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.640
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.737
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.187
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.723
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.688
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.777
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.930
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.776
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.671
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.672
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.667
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.680
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [6]  [ 0/66]  eta: 0:03:23  lr: 0.000100  loss: 0.6263 (0.6263)  loss_classifier: 0.0998 (0.0998)  loss_box_reg: 0.2224 (0.2224)  loss_mask: 0.1884 (0.1884)  loss_objectness: 0.0188 (0.0188)  loss_rpn_box_reg: 0.0968 (0.0968)  time: 3.0796  data: 2.5430  max mem: 4642
+Epoch: [6]  [10/66]  eta: 0:00:44  lr: 0.000100  loss: 0.6357 (0.6345)  loss_classifier: 0.0996 (0.0998)  loss_box_reg: 0.2228 (0.2304)  loss_mask: 0.1793 (0.1814)  loss_objectness: 0.0182 (0.0181)  loss_rpn_box_reg: 0.1004 (0.1048)  time: 0.8031  data: 0.2680  max mem: 4642
+Epoch: [6]  [20/66]  eta: 0:00:32  lr: 0.000100  loss: 0.6569 (0.6736)  loss_classifier: 0.1001 (0.1037)  loss_box_reg: 0.2467 (0.2445)  loss_mask: 0.1874 (0.1916)  loss_objectness: 0.0175 (0.0185)  loss_rpn_box_reg: 0.1076 (0.1154)  time: 0.5967  data: 0.0497  max mem: 4642
+Epoch: [6]  [30/66]  eta: 0:00:24  lr: 0.000100  loss: 0.6836 (0.6709)  loss_classifier: 0.1042 (0.1016)  loss_box_reg: 0.2490 (0.2447)  loss_mask: 0.1956 (0.1913)  loss_objectness: 0.0183 (0.0196)  loss_rpn_box_reg: 0.1099 (0.1138)  time: 0.6210  data: 0.0615  max mem: 4642
+Epoch: [6]  [40/66]  eta: 0:00:17  lr: 0.000100  loss: 0.7017 (0.6833)  loss_classifier: 0.0985 (0.1029)  loss_box_reg: 0.2539 (0.2487)  loss_mask: 0.1980 (0.1930)  loss_objectness: 0.0187 (0.0194)  loss_rpn_box_reg: 0.1236 (0.1193)  time: 0.6203  data: 0.0579  max mem: 4642
+Epoch: [6]  [50/66]  eta: 0:00:10  lr: 0.000100  loss: 0.7017 (0.6813)  loss_classifier: 0.0979 (0.1023)  loss_box_reg: 0.2524 (0.2470)  loss_mask: 0.1980 (0.1930)  loss_objectness: 0.0169 (0.0193)  loss_rpn_box_reg: 0.1244 (0.1197)  time: 0.6076  data: 0.0480  max mem: 4642
+Epoch: [6]  [60/66]  eta: 0:00:03  lr: 0.000100  loss: 0.6923 (0.6887)  loss_classifier: 0.0979 (0.1035)  loss_box_reg: 0.2524 (0.2492)  loss_mask: 0.1991 (0.1941)  loss_objectness: 0.0177 (0.0198)  loss_rpn_box_reg: 0.1221 (0.1222)  time: 0.5818  data: 0.0442  max mem: 4642
+Epoch: [6]  [65/66]  eta: 0:00:00  lr: 0.000100  loss: 0.6923 (0.6893)  loss_classifier: 0.0969 (0.1032)  loss_box_reg: 0.2582 (0.2496)  loss_mask: 0.1991 (0.1947)  loss_objectness: 0.0186 (0.0201)  loss_rpn_box_reg: 0.1169 (0.1219)  time: 0.5717  data: 0.0416  max mem: 4642
+Epoch: [6] Total time: 0:00:41 (0.6359 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:00  model_time: 0.1936 (0.1936)  evaluator_time: 0.2585 (0.2585)  time: 1.2160  data: 0.7584  max mem: 4642
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1813 (0.1851)  evaluator_time: 0.2416 (0.2501)  time: 0.4509  data: 0.0047  max mem: 4642
+Test: Total time: 0:00:23 (0.4730 s / it)
+Averaged stats: model_time: 0.1813 (0.1851)  evaluator_time: 0.2416 (0.2501)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.679
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.814
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.641
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.723
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.689
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.777
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.629
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.769
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.592
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.672
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.675
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.670
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [7]  [ 0/66]  eta: 0:03:08  lr: 0.000100  loss: 0.7193 (0.7193)  loss_classifier: 0.0857 (0.0857)  loss_box_reg: 0.2719 (0.2719)  loss_mask: 0.2112 (0.2112)  loss_objectness: 0.0137 (0.0137)  loss_rpn_box_reg: 0.1368 (0.1368)  time: 2.8616  data: 2.2621  max mem: 4642
+Epoch: [7]  [10/66]  eta: 0:00:46  lr: 0.000100  loss: 0.6750 (0.6603)  loss_classifier: 0.0898 (0.0928)  loss_box_reg: 0.2636 (0.2440)  loss_mask: 0.1929 (0.1898)  loss_objectness: 0.0155 (0.0182)  loss_rpn_box_reg: 0.1050 (0.1154)  time: 0.8379  data: 0.2645  max mem: 4642
+Epoch: [7]  [20/66]  eta: 0:00:33  lr: 0.000100  loss: 0.6943 (0.6893)  loss_classifier: 0.0975 (0.1000)  loss_box_reg: 0.2590 (0.2512)  loss_mask: 0.1929 (0.1950)  loss_objectness: 0.0174 (0.0183)  loss_rpn_box_reg: 0.1208 (0.1248)  time: 0.6157  data: 0.0540  max mem: 4642
+Epoch: [7]  [30/66]  eta: 0:00:24  lr: 0.000100  loss: 0.7180 (0.6886)  loss_classifier: 0.1065 (0.1032)  loss_box_reg: 0.2590 (0.2517)  loss_mask: 0.1992 (0.1955)  loss_objectness: 0.0177 (0.0190)  loss_rpn_box_reg: 0.1223 (0.1191)  time: 0.6010  data: 0.0584  max mem: 4642
+Epoch: [7]  [40/66]  eta: 0:00:17  lr: 0.000100  loss: 0.6672 (0.6885)  loss_classifier: 0.1011 (0.1039)  loss_box_reg: 0.2468 (0.2511)  loss_mask: 0.1978 (0.1955)  loss_objectness: 0.0174 (0.0183)  loss_rpn_box_reg: 0.1135 (0.1196)  time: 0.6027  data: 0.0607  max mem: 4642
+Epoch: [7]  [50/66]  eta: 0:00:10  lr: 0.000100  loss: 0.6613 (0.6874)  loss_classifier: 0.0960 (0.1037)  loss_box_reg: 0.2437 (0.2504)  loss_mask: 0.1909 (0.1950)  loss_objectness: 0.0175 (0.0182)  loss_rpn_box_reg: 0.1213 (0.1201)  time: 0.5933  data: 0.0457  max mem: 4642
+Epoch: [7]  [60/66]  eta: 0:00:03  lr: 0.000100  loss: 0.6646 (0.6842)  loss_classifier: 0.0887 (0.1013)  loss_box_reg: 0.2483 (0.2493)  loss_mask: 0.1907 (0.1948)  loss_objectness: 0.0184 (0.0185)  loss_rpn_box_reg: 0.1124 (0.1204)  time: 0.6009  data: 0.0587  max mem: 4642
+Epoch: [7]  [65/66]  eta: 0:00:00  lr: 0.000100  loss: 0.7099 (0.6853)  loss_classifier: 0.0894 (0.1019)  loss_box_reg: 0.2478 (0.2491)  loss_mask: 0.1895 (0.1944)  loss_objectness: 0.0197 (0.0190)  loss_rpn_box_reg: 0.1182 (0.1209)  time: 0.5957  data: 0.0574  max mem: 4642
+Epoch: [7] Total time: 0:00:42 (0.6397 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:57  model_time: 0.1936 (0.1936)  evaluator_time: 0.2728 (0.2728)  time: 1.1507  data: 0.6795  max mem: 4642
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1760 (0.1824)  evaluator_time: 0.2328 (0.2413)  time: 0.4334  data: 0.0049  max mem: 4642
+Test: Total time: 0:00:23 (0.4614 s / it)
+Averaged stats: model_time: 0.1760 (0.1824)  evaluator_time: 0.2328 (0.2413)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.680
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.939
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.814
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.643
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.735
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.187
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.725
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.692
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.777
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.628
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.592
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.670
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.674
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.671
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.679
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [8]  [ 0/66]  eta: 0:02:47  lr: 0.000100  loss: 0.6954 (0.6954)  loss_classifier: 0.1458 (0.1458)  loss_box_reg: 0.2572 (0.2572)  loss_mask: 0.1929 (0.1929)  loss_objectness: 0.0100 (0.0100)  loss_rpn_box_reg: 0.0895 (0.0895)  time: 2.5414  data: 1.9771  max mem: 4642
+Epoch: [8]  [10/66]  eta: 0:00:43  lr: 0.000100  loss: 0.6748 (0.6577)  loss_classifier: 0.0990 (0.0995)  loss_box_reg: 0.2428 (0.2396)  loss_mask: 0.1929 (0.1893)  loss_objectness: 0.0185 (0.0200)  loss_rpn_box_reg: 0.1038 (0.1092)  time: 0.7845  data: 0.2530  max mem: 4642
+Epoch: [8]  [20/66]  eta: 0:00:31  lr: 0.000100  loss: 0.7193 (0.6969)  loss_classifier: 0.0990 (0.1000)  loss_box_reg: 0.2489 (0.2532)  loss_mask: 0.2017 (0.1992)  loss_objectness: 0.0215 (0.0213)  loss_rpn_box_reg: 0.1215 (0.1231)  time: 0.5888  data: 0.0660  max mem: 4642
+Epoch: [8]  [30/66]  eta: 0:00:23  lr: 0.000100  loss: 0.7408 (0.6974)  loss_classifier: 0.1025 (0.0990)  loss_box_reg: 0.2690 (0.2522)  loss_mask: 0.2017 (0.1982)  loss_objectness: 0.0207 (0.0207)  loss_rpn_box_reg: 0.1276 (0.1273)  time: 0.5741  data: 0.0505  max mem: 4655
+Epoch: [8]  [40/66]  eta: 0:00:16  lr: 0.000100  loss: 0.6782 (0.6923)  loss_classifier: 0.0973 (0.0982)  loss_box_reg: 0.2436 (0.2503)  loss_mask: 0.1894 (0.1971)  loss_objectness: 0.0205 (0.0206)  loss_rpn_box_reg: 0.1201 (0.1261)  time: 0.5723  data: 0.0466  max mem: 4655
+Epoch: [8]  [50/66]  eta: 0:00:09  lr: 0.000100  loss: 0.6654 (0.6911)  loss_classifier: 0.0986 (0.0998)  loss_box_reg: 0.2423 (0.2488)  loss_mask: 0.1894 (0.1958)  loss_objectness: 0.0205 (0.0202)  loss_rpn_box_reg: 0.1152 (0.1266)  time: 0.5645  data: 0.0451  max mem: 4655
+Epoch: [8]  [60/66]  eta: 0:00:03  lr: 0.000100  loss: 0.6633 (0.6883)  loss_classifier: 0.1103 (0.1009)  loss_box_reg: 0.2440 (0.2488)  loss_mask: 0.1871 (0.1950)  loss_objectness: 0.0182 (0.0201)  loss_rpn_box_reg: 0.1079 (0.1235)  time: 0.5556  data: 0.0433  max mem: 4655
+Epoch: [8]  [65/66]  eta: 0:00:00  lr: 0.000100  loss: 0.6591 (0.6859)  loss_classifier: 0.1082 (0.1006)  loss_box_reg: 0.2448 (0.2483)  loss_mask: 0.1866 (0.1944)  loss_objectness: 0.0186 (0.0202)  loss_rpn_box_reg: 0.1079 (0.1223)  time: 0.5356  data: 0.0418  max mem: 4655
+Epoch: [8] Total time: 0:00:39 (0.5975 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:59  model_time: 0.2420 (0.2420)  evaluator_time: 0.2624 (0.2624)  time: 1.1811  data: 0.6728  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1761 (0.1892)  evaluator_time: 0.2346 (0.2528)  time: 0.4357  data: 0.0047  max mem: 4655
+Test: Total time: 0:00:23 (0.4784 s / it)
+Averaged stats: model_time: 0.1761 (0.1892)  evaluator_time: 0.2346 (0.2528)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.676
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.939
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.812
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.634
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.719
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.683
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.776
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.626
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.590
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.672
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.667
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.681
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [9]  [ 0/66]  eta: 0:02:52  lr: 0.000010  loss: 0.6747 (0.6747)  loss_classifier: 0.0967 (0.0967)  loss_box_reg: 0.2604 (0.2604)  loss_mask: 0.1933 (0.1933)  loss_objectness: 0.0197 (0.0197)  loss_rpn_box_reg: 0.1045 (0.1045)  time: 2.6077  data: 2.0211  max mem: 4655
+Epoch: [9]  [10/66]  eta: 0:00:43  lr: 0.000010  loss: 0.6798 (0.6782)  loss_classifier: 0.0969 (0.1017)  loss_box_reg: 0.2529 (0.2481)  loss_mask: 0.1865 (0.1895)  loss_objectness: 0.0173 (0.0170)  loss_rpn_box_reg: 0.1255 (0.1219)  time: 0.7743  data: 0.2264  max mem: 4655
+Epoch: [9]  [20/66]  eta: 0:00:31  lr: 0.000010  loss: 0.6803 (0.6785)  loss_classifier: 0.1026 (0.1042)  loss_box_reg: 0.2442 (0.2435)  loss_mask: 0.1852 (0.1882)  loss_objectness: 0.0185 (0.0197)  loss_rpn_box_reg: 0.1255 (0.1228)  time: 0.5797  data: 0.0439  max mem: 4655
+Epoch: [9]  [30/66]  eta: 0:00:23  lr: 0.000010  loss: 0.6803 (0.6761)  loss_classifier: 0.1026 (0.1025)  loss_box_reg: 0.2442 (0.2425)  loss_mask: 0.1895 (0.1900)  loss_objectness: 0.0194 (0.0187)  loss_rpn_box_reg: 0.1159 (0.1224)  time: 0.5762  data: 0.0414  max mem: 4655
+Epoch: [9]  [40/66]  eta: 0:00:16  lr: 0.000010  loss: 0.6687 (0.6762)  loss_classifier: 0.0886 (0.1009)  loss_box_reg: 0.2345 (0.2441)  loss_mask: 0.1965 (0.1919)  loss_objectness: 0.0151 (0.0186)  loss_rpn_box_reg: 0.1194 (0.1208)  time: 0.5788  data: 0.0393  max mem: 4655
+Epoch: [9]  [50/66]  eta: 0:00:09  lr: 0.000010  loss: 0.6755 (0.6813)  loss_classifier: 0.0900 (0.1007)  loss_box_reg: 0.2525 (0.2467)  loss_mask: 0.1928 (0.1933)  loss_objectness: 0.0196 (0.0190)  loss_rpn_box_reg: 0.1206 (0.1215)  time: 0.5739  data: 0.0376  max mem: 4655
+Epoch: [9]  [60/66]  eta: 0:00:03  lr: 0.000010  loss: 0.6787 (0.6854)  loss_classifier: 0.0978 (0.1021)  loss_box_reg: 0.2554 (0.2486)  loss_mask: 0.1928 (0.1946)  loss_objectness: 0.0190 (0.0186)  loss_rpn_box_reg: 0.1182 (0.1216)  time: 0.5738  data: 0.0387  max mem: 4655
+Epoch: [9]  [65/66]  eta: 0:00:00  lr: 0.000010  loss: 0.6824 (0.6873)  loss_classifier: 0.0985 (0.1029)  loss_box_reg: 0.2525 (0.2490)  loss_mask: 0.1917 (0.1948)  loss_objectness: 0.0190 (0.0188)  loss_rpn_box_reg: 0.1182 (0.1218)  time: 0.5696  data: 0.0375  max mem: 4655
+Epoch: [9] Total time: 0:00:40 (0.6079 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:56  model_time: 0.1943 (0.1943)  evaluator_time: 0.2642 (0.2642)  time: 1.1283  data: 0.6643  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1760 (0.1811)  evaluator_time: 0.2297 (0.2406)  time: 0.4332  data: 0.0046  max mem: 4655
+Test: Total time: 0:00:22 (0.4569 s / it)
+Averaged stats: model_time: 0.1760 (0.1811)  evaluator_time: 0.2297 (0.2406)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.939
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.735
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.777
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.628
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.770
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.590
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.674
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [10]  [ 0/66]  eta: 0:02:28  lr: 0.000010  loss: 0.7426 (0.7426)  loss_classifier: 0.1180 (0.1180)  loss_box_reg: 0.2565 (0.2565)  loss_mask: 0.1944 (0.1944)  loss_objectness: 0.0271 (0.0271)  loss_rpn_box_reg: 0.1466 (0.1466)  time: 2.2477  data: 1.6934  max mem: 4655
+Epoch: [10]  [10/66]  eta: 0:00:41  lr: 0.000010  loss: 0.6956 (0.7029)  loss_classifier: 0.0947 (0.0961)  loss_box_reg: 0.2473 (0.2474)  loss_mask: 0.1967 (0.1999)  loss_objectness: 0.0271 (0.0250)  loss_rpn_box_reg: 0.1403 (0.1344)  time: 0.7389  data: 0.1947  max mem: 4655
+Epoch: [10]  [20/66]  eta: 0:00:30  lr: 0.000010  loss: 0.6767 (0.6829)  loss_classifier: 0.0968 (0.1023)  loss_box_reg: 0.2385 (0.2405)  loss_mask: 0.1894 (0.1935)  loss_objectness: 0.0222 (0.0244)  loss_rpn_box_reg: 0.1155 (0.1222)  time: 0.5778  data: 0.0406  max mem: 4655
+Epoch: [10]  [30/66]  eta: 0:00:22  lr: 0.000010  loss: 0.6638 (0.6775)  loss_classifier: 0.0988 (0.0989)  loss_box_reg: 0.2342 (0.2424)  loss_mask: 0.1878 (0.1927)  loss_objectness: 0.0199 (0.0224)  loss_rpn_box_reg: 0.1155 (0.1211)  time: 0.5709  data: 0.0377  max mem: 4655
+Epoch: [10]  [40/66]  eta: 0:00:16  lr: 0.000010  loss: 0.6506 (0.6765)  loss_classifier: 0.0961 (0.1006)  loss_box_reg: 0.2428 (0.2435)  loss_mask: 0.1886 (0.1923)  loss_objectness: 0.0188 (0.0219)  loss_rpn_box_reg: 0.1175 (0.1181)  time: 0.5750  data: 0.0384  max mem: 4655
+Epoch: [10]  [50/66]  eta: 0:00:09  lr: 0.000010  loss: 0.7060 (0.6898)  loss_classifier: 0.1021 (0.1023)  loss_box_reg: 0.2575 (0.2497)  loss_mask: 0.2010 (0.1954)  loss_objectness: 0.0193 (0.0214)  loss_rpn_box_reg: 0.1176 (0.1209)  time: 0.5731  data: 0.0399  max mem: 4655
+Epoch: [10]  [60/66]  eta: 0:00:03  lr: 0.000010  loss: 0.6881 (0.6884)  loss_classifier: 0.1011 (0.1018)  loss_box_reg: 0.2604 (0.2486)  loss_mask: 0.1976 (0.1953)  loss_objectness: 0.0184 (0.0205)  loss_rpn_box_reg: 0.1215 (0.1223)  time: 0.5922  data: 0.0603  max mem: 4655
+Epoch: [10]  [65/66]  eta: 0:00:00  lr: 0.000010  loss: 0.6818 (0.6872)  loss_classifier: 0.1011 (0.1017)  loss_box_reg: 0.2464 (0.2484)  loss_mask: 0.1960 (0.1946)  loss_objectness: 0.0184 (0.0206)  loss_rpn_box_reg: 0.1215 (0.1219)  time: 0.5941  data: 0.0595  max mem: 4655
+Epoch: [10] Total time: 0:00:40 (0.6083 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:01  model_time: 0.2517 (0.2517)  evaluator_time: 0.2626 (0.2626)  time: 1.2347  data: 0.7144  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1755 (0.1846)  evaluator_time: 0.2306 (0.2419)  time: 0.4302  data: 0.0047  max mem: 4655
+Test: Total time: 0:00:23 (0.4665 s / it)
+Averaged stats: model_time: 0.1755 (0.1846)  evaluator_time: 0.2306 (0.2419)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.676
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.812
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.634
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.733
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.719
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.684
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.932
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.590
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [11]  [ 0/66]  eta: 0:03:11  lr: 0.000010  loss: 0.6727 (0.6727)  loss_classifier: 0.0830 (0.0830)  loss_box_reg: 0.2553 (0.2553)  loss_mask: 0.1921 (0.1921)  loss_objectness: 0.0209 (0.0209)  loss_rpn_box_reg: 0.1214 (0.1214)  time: 2.8989  data: 2.3107  max mem: 4655
+Epoch: [11]  [10/66]  eta: 0:00:44  lr: 0.000010  loss: 0.6727 (0.6484)  loss_classifier: 0.0938 (0.0935)  loss_box_reg: 0.2419 (0.2387)  loss_mask: 0.1891 (0.1910)  loss_objectness: 0.0164 (0.0158)  loss_rpn_box_reg: 0.1207 (0.1094)  time: 0.7926  data: 0.2471  max mem: 4655
+Epoch: [11]  [20/66]  eta: 0:00:32  lr: 0.000010  loss: 0.6871 (0.6882)  loss_classifier: 0.0941 (0.0975)  loss_box_reg: 0.2491 (0.2511)  loss_mask: 0.1947 (0.1965)  loss_objectness: 0.0173 (0.0189)  loss_rpn_box_reg: 0.1214 (0.1242)  time: 0.5856  data: 0.0414  max mem: 4655
+Epoch: [11]  [30/66]  eta: 0:00:23  lr: 0.000010  loss: 0.7021 (0.6813)  loss_classifier: 0.0998 (0.0994)  loss_box_reg: 0.2595 (0.2475)  loss_mask: 0.1947 (0.1964)  loss_objectness: 0.0197 (0.0190)  loss_rpn_box_reg: 0.1212 (0.1188)  time: 0.5821  data: 0.0411  max mem: 4655
+Epoch: [11]  [40/66]  eta: 0:00:16  lr: 0.000010  loss: 0.6940 (0.6847)  loss_classifier: 0.1060 (0.1002)  loss_box_reg: 0.2442 (0.2478)  loss_mask: 0.1884 (0.1956)  loss_objectness: 0.0183 (0.0190)  loss_rpn_box_reg: 0.1094 (0.1221)  time: 0.5766  data: 0.0401  max mem: 4655
+Epoch: [11]  [50/66]  eta: 0:00:10  lr: 0.000010  loss: 0.6795 (0.6832)  loss_classifier: 0.0943 (0.0997)  loss_box_reg: 0.2383 (0.2471)  loss_mask: 0.1884 (0.1951)  loss_objectness: 0.0174 (0.0189)  loss_rpn_box_reg: 0.1285 (0.1223)  time: 0.5760  data: 0.0394  max mem: 4655
+Epoch: [11]  [60/66]  eta: 0:00:03  lr: 0.000010  loss: 0.6777 (0.6835)  loss_classifier: 0.0943 (0.1004)  loss_box_reg: 0.2383 (0.2471)  loss_mask: 0.1928 (0.1949)  loss_objectness: 0.0193 (0.0195)  loss_rpn_box_reg: 0.1182 (0.1216)  time: 0.5811  data: 0.0468  max mem: 4655
+Epoch: [11]  [65/66]  eta: 0:00:00  lr: 0.000010  loss: 0.6679 (0.6793)  loss_classifier: 0.0956 (0.1000)  loss_box_reg: 0.2377 (0.2461)  loss_mask: 0.1838 (0.1937)  loss_objectness: 0.0174 (0.0191)  loss_rpn_box_reg: 0.1142 (0.1204)  time: 0.5757  data: 0.0451  max mem: 4655
+Epoch: [11] Total time: 0:00:40 (0.6153 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:00  model_time: 0.1961 (0.1961)  evaluator_time: 0.2725 (0.2725)  time: 1.2174  data: 0.7446  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1756 (0.1851)  evaluator_time: 0.2290 (0.2510)  time: 0.4344  data: 0.0048  max mem: 4655
+Test: Total time: 0:00:23 (0.4790 s / it)
+Averaged stats: model_time: 0.1756 (0.1851)  evaluator_time: 0.2290 (0.2510)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.674
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [12]  [ 0/66]  eta: 0:03:35  lr: 0.000001  loss: 0.6345 (0.6345)  loss_classifier: 0.1060 (0.1060)  loss_box_reg: 0.2042 (0.2042)  loss_mask: 0.1565 (0.1565)  loss_objectness: 0.0346 (0.0346)  loss_rpn_box_reg: 0.1333 (0.1333)  time: 3.2650  data: 2.6930  max mem: 4655
+Epoch: [12]  [10/66]  eta: 0:00:46  lr: 0.000001  loss: 0.6855 (0.6893)  loss_classifier: 0.1060 (0.1024)  loss_box_reg: 0.2595 (0.2503)  loss_mask: 0.1918 (0.1910)  loss_objectness: 0.0188 (0.0225)  loss_rpn_box_reg: 0.1238 (0.1231)  time: 0.8325  data: 0.2971  max mem: 4655
+Epoch: [12]  [20/66]  eta: 0:00:32  lr: 0.000001  loss: 0.6855 (0.6768)  loss_classifier: 0.0962 (0.0986)  loss_box_reg: 0.2432 (0.2436)  loss_mask: 0.1891 (0.1890)  loss_objectness: 0.0180 (0.0220)  loss_rpn_box_reg: 0.1171 (0.1237)  time: 0.5886  data: 0.0531  max mem: 4655
+Epoch: [12]  [30/66]  eta: 0:00:24  lr: 0.000001  loss: 0.6476 (0.6769)  loss_classifier: 0.0944 (0.1001)  loss_box_reg: 0.2368 (0.2448)  loss_mask: 0.1877 (0.1915)  loss_objectness: 0.0172 (0.0198)  loss_rpn_box_reg: 0.1127 (0.1207)  time: 0.5775  data: 0.0456  max mem: 4655
+Epoch: [12]  [40/66]  eta: 0:00:16  lr: 0.000001  loss: 0.6776 (0.6796)  loss_classifier: 0.1066 (0.1018)  loss_box_reg: 0.2484 (0.2473)  loss_mask: 0.1894 (0.1918)  loss_objectness: 0.0168 (0.0196)  loss_rpn_box_reg: 0.1140 (0.1192)  time: 0.5744  data: 0.0407  max mem: 4655
+Epoch: [12]  [50/66]  eta: 0:00:10  lr: 0.000001  loss: 0.6981 (0.6880)  loss_classifier: 0.1022 (0.1038)  loss_box_reg: 0.2526 (0.2495)  loss_mask: 0.1944 (0.1941)  loss_objectness: 0.0190 (0.0194)  loss_rpn_box_reg: 0.1154 (0.1212)  time: 0.5799  data: 0.0391  max mem: 4655
+Epoch: [12]  [60/66]  eta: 0:00:03  lr: 0.000001  loss: 0.6981 (0.6887)  loss_classifier: 0.0996 (0.1029)  loss_box_reg: 0.2465 (0.2489)  loss_mask: 0.1973 (0.1940)  loss_objectness: 0.0193 (0.0194)  loss_rpn_box_reg: 0.1195 (0.1235)  time: 0.5792  data: 0.0390  max mem: 4655
+Epoch: [12]  [65/66]  eta: 0:00:00  lr: 0.000001  loss: 0.6638 (0.6880)  loss_classifier: 0.0984 (0.1023)  loss_box_reg: 0.2521 (0.2488)  loss_mask: 0.1956 (0.1944)  loss_objectness: 0.0193 (0.0194)  loss_rpn_box_reg: 0.1195 (0.1231)  time: 0.5734  data: 0.0387  max mem: 4655
+Epoch: [12] Total time: 0:00:40 (0.6202 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:00  model_time: 0.2416 (0.2416)  evaluator_time: 0.2846 (0.2846)  time: 1.2104  data: 0.6795  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1776 (0.1894)  evaluator_time: 0.2332 (0.2501)  time: 0.4407  data: 0.0046  max mem: 4655
+Test: Total time: 0:00:23 (0.4768 s / it)
+Averaged stats: model_time: 0.1776 (0.1894)  evaluator_time: 0.2332 (0.2501)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [13]  [ 0/66]  eta: 0:02:54  lr: 0.000001  loss: 0.6962 (0.6962)  loss_classifier: 0.0990 (0.0990)  loss_box_reg: 0.2492 (0.2492)  loss_mask: 0.1996 (0.1996)  loss_objectness: 0.0219 (0.0219)  loss_rpn_box_reg: 0.1265 (0.1265)  time: 2.6515  data: 2.0901  max mem: 4655
+Epoch: [13]  [10/66]  eta: 0:00:45  lr: 0.000001  loss: 0.6962 (0.6782)  loss_classifier: 0.0942 (0.0943)  loss_box_reg: 0.2492 (0.2423)  loss_mask: 0.1954 (0.1936)  loss_objectness: 0.0190 (0.0191)  loss_rpn_box_reg: 0.1303 (0.1289)  time: 0.8118  data: 0.2672  max mem: 4655
+Epoch: [13]  [20/66]  eta: 0:00:32  lr: 0.000001  loss: 0.6749 (0.6722)  loss_classifier: 0.0906 (0.0973)  loss_box_reg: 0.2357 (0.2421)  loss_mask: 0.1885 (0.1928)  loss_objectness: 0.0183 (0.0190)  loss_rpn_box_reg: 0.1235 (0.1211)  time: 0.6188  data: 0.0742  max mem: 4655
+Epoch: [13]  [30/66]  eta: 0:00:24  lr: 0.000001  loss: 0.6464 (0.6801)  loss_classifier: 0.0960 (0.0995)  loss_box_reg: 0.2370 (0.2439)  loss_mask: 0.1885 (0.1939)  loss_objectness: 0.0181 (0.0192)  loss_rpn_box_reg: 0.1139 (0.1237)  time: 0.5980  data: 0.0511  max mem: 4655
+Epoch: [13]  [40/66]  eta: 0:00:16  lr: 0.000001  loss: 0.6753 (0.6803)  loss_classifier: 0.0991 (0.1014)  loss_box_reg: 0.2394 (0.2443)  loss_mask: 0.1888 (0.1928)  loss_objectness: 0.0214 (0.0199)  loss_rpn_box_reg: 0.1174 (0.1219)  time: 0.5856  data: 0.0400  max mem: 4655
+Epoch: [13]  [50/66]  eta: 0:00:10  lr: 0.000001  loss: 0.6779 (0.6797)  loss_classifier: 0.1006 (0.1004)  loss_box_reg: 0.2394 (0.2453)  loss_mask: 0.1894 (0.1930)  loss_objectness: 0.0194 (0.0197)  loss_rpn_box_reg: 0.1174 (0.1213)  time: 0.5868  data: 0.0534  max mem: 4655
+Epoch: [13]  [60/66]  eta: 0:00:03  lr: 0.000001  loss: 0.6779 (0.6861)  loss_classifier: 0.1056 (0.1020)  loss_box_reg: 0.2418 (0.2476)  loss_mask: 0.1920 (0.1945)  loss_objectness: 0.0189 (0.0198)  loss_rpn_box_reg: 0.1204 (0.1221)  time: 0.5918  data: 0.0659  max mem: 4655
+Epoch: [13]  [65/66]  eta: 0:00:00  lr: 0.000001  loss: 0.7211 (0.6838)  loss_classifier: 0.1013 (0.1013)  loss_box_reg: 0.2418 (0.2470)  loss_mask: 0.1964 (0.1942)  loss_objectness: 0.0189 (0.0194)  loss_rpn_box_reg: 0.1258 (0.1218)  time: 0.5901  data: 0.0644  max mem: 4655
+Epoch: [13] Total time: 0:00:41 (0.6287 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:58  model_time: 0.2378 (0.2378)  evaluator_time: 0.2641 (0.2641)  time: 1.1726  data: 0.6646  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1747 (0.1826)  evaluator_time: 0.2345 (0.2471)  time: 0.4376  data: 0.0049  max mem: 4655
+Test: Total time: 0:00:23 (0.4668 s / it)
+Averaged stats: model_time: 0.1747 (0.1826)  evaluator_time: 0.2345 (0.2471)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.674
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [14]  [ 0/66]  eta: 0:03:04  lr: 0.000001  loss: 0.6607 (0.6607)  loss_classifier: 0.1095 (0.1095)  loss_box_reg: 0.2326 (0.2326)  loss_mask: 0.1887 (0.1887)  loss_objectness: 0.0281 (0.0281)  loss_rpn_box_reg: 0.1019 (0.1019)  time: 2.7959  data: 2.2219  max mem: 4655
+Epoch: [14]  [10/66]  eta: 0:00:44  lr: 0.000001  loss: 0.6831 (0.6817)  loss_classifier: 0.1020 (0.1028)  loss_box_reg: 0.2433 (0.2426)  loss_mask: 0.1932 (0.1946)  loss_objectness: 0.0223 (0.0204)  loss_rpn_box_reg: 0.1263 (0.1214)  time: 0.7913  data: 0.2485  max mem: 4655
+Epoch: [14]  [20/66]  eta: 0:00:31  lr: 0.000001  loss: 0.6426 (0.6616)  loss_classifier: 0.0937 (0.0988)  loss_box_reg: 0.2308 (0.2364)  loss_mask: 0.1883 (0.1898)  loss_objectness: 0.0187 (0.0192)  loss_rpn_box_reg: 0.1172 (0.1174)  time: 0.5854  data: 0.0443  max mem: 4655
+Epoch: [14]  [30/66]  eta: 0:00:23  lr: 0.000001  loss: 0.6192 (0.6731)  loss_classifier: 0.0937 (0.1028)  loss_box_reg: 0.2308 (0.2440)  loss_mask: 0.1865 (0.1917)  loss_objectness: 0.0188 (0.0195)  loss_rpn_box_reg: 0.1151 (0.1151)  time: 0.5840  data: 0.0392  max mem: 4655
+Epoch: [14]  [40/66]  eta: 0:00:16  lr: 0.000001  loss: 0.6356 (0.6654)  loss_classifier: 0.0906 (0.0995)  loss_box_reg: 0.2408 (0.2423)  loss_mask: 0.1854 (0.1904)  loss_objectness: 0.0188 (0.0189)  loss_rpn_box_reg: 0.1045 (0.1144)  time: 0.5892  data: 0.0413  max mem: 4655
+Epoch: [14]  [50/66]  eta: 0:00:10  lr: 0.000001  loss: 0.6786 (0.6790)  loss_classifier: 0.0970 (0.1010)  loss_box_reg: 0.2424 (0.2472)  loss_mask: 0.1869 (0.1933)  loss_objectness: 0.0166 (0.0189)  loss_rpn_box_reg: 0.1141 (0.1187)  time: 0.5911  data: 0.0496  max mem: 4655
+Epoch: [14]  [60/66]  eta: 0:00:03  lr: 0.000001  loss: 0.6704 (0.6749)  loss_classifier: 0.1038 (0.1003)  loss_box_reg: 0.2424 (0.2460)  loss_mask: 0.1963 (0.1925)  loss_objectness: 0.0173 (0.0189)  loss_rpn_box_reg: 0.1196 (0.1172)  time: 0.5898  data: 0.0560  max mem: 4655
+Epoch: [14]  [65/66]  eta: 0:00:00  lr: 0.000001  loss: 0.6704 (0.6802)  loss_classifier: 0.1002 (0.1008)  loss_box_reg: 0.2424 (0.2468)  loss_mask: 0.1963 (0.1933)  loss_objectness: 0.0190 (0.0189)  loss_rpn_box_reg: 0.1196 (0.1203)  time: 0.5886  data: 0.0552  max mem: 4655
+Epoch: [14] Total time: 0:00:41 (0.6225 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:57  model_time: 0.2338 (0.2338)  evaluator_time: 0.2713 (0.2713)  time: 1.1544  data: 0.6446  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1814 (0.1880)  evaluator_time: 0.2289 (0.2435)  time: 0.4352  data: 0.0048  max mem: 4655
+Test: Total time: 0:00:23 (0.4672 s / it)
+Averaged stats: model_time: 0.1814 (0.1880)  evaluator_time: 0.2289 (0.2435)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [15]  [ 0/66]  eta: 0:02:51  lr: 0.000000  loss: 0.7119 (0.7119)  loss_classifier: 0.0962 (0.0962)  loss_box_reg: 0.2658 (0.2658)  loss_mask: 0.1975 (0.1975)  loss_objectness: 0.0168 (0.0168)  loss_rpn_box_reg: 0.1355 (0.1355)  time: 2.5973  data: 2.0367  max mem: 4655
+Epoch: [15]  [10/66]  eta: 0:00:41  lr: 0.000000  loss: 0.6979 (0.6850)  loss_classifier: 0.0899 (0.0942)  loss_box_reg: 0.2518 (0.2454)  loss_mask: 0.1975 (0.1962)  loss_objectness: 0.0232 (0.0222)  loss_rpn_box_reg: 0.1355 (0.1269)  time: 0.7459  data: 0.2200  max mem: 4655
+Epoch: [15]  [20/66]  eta: 0:00:30  lr: 0.000000  loss: 0.6235 (0.6537)  loss_classifier: 0.0872 (0.0916)  loss_box_reg: 0.2286 (0.2355)  loss_mask: 0.1901 (0.1922)  loss_objectness: 0.0170 (0.0189)  loss_rpn_box_reg: 0.1072 (0.1154)  time: 0.5620  data: 0.0417  max mem: 4655
+Epoch: [15]  [30/66]  eta: 0:00:22  lr: 0.000000  loss: 0.6201 (0.6643)  loss_classifier: 0.0866 (0.0925)  loss_box_reg: 0.2338 (0.2403)  loss_mask: 0.1872 (0.1930)  loss_objectness: 0.0156 (0.0188)  loss_rpn_box_reg: 0.1093 (0.1197)  time: 0.5652  data: 0.0432  max mem: 4655
+Epoch: [15]  [40/66]  eta: 0:00:16  lr: 0.000000  loss: 0.6818 (0.6732)  loss_classifier: 0.1030 (0.0974)  loss_box_reg: 0.2423 (0.2432)  loss_mask: 0.1909 (0.1931)  loss_objectness: 0.0215 (0.0193)  loss_rpn_box_reg: 0.1158 (0.1202)  time: 0.5744  data: 0.0437  max mem: 4655
+Epoch: [15]  [50/66]  eta: 0:00:09  lr: 0.000000  loss: 0.6741 (0.6755)  loss_classifier: 0.1070 (0.0979)  loss_box_reg: 0.2423 (0.2448)  loss_mask: 0.1872 (0.1930)  loss_objectness: 0.0176 (0.0191)  loss_rpn_box_reg: 0.1204 (0.1206)  time: 0.5746  data: 0.0449  max mem: 4655
+Epoch: [15]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6731 (0.6804)  loss_classifier: 0.0949 (0.0984)  loss_box_reg: 0.2415 (0.2462)  loss_mask: 0.1914 (0.1936)  loss_objectness: 0.0175 (0.0196)  loss_rpn_box_reg: 0.1216 (0.1227)  time: 0.5685  data: 0.0458  max mem: 4655
+Epoch: [15]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.6947 (0.6825)  loss_classifier: 0.0957 (0.1004)  loss_box_reg: 0.2448 (0.2477)  loss_mask: 0.1921 (0.1942)  loss_objectness: 0.0175 (0.0194)  loss_rpn_box_reg: 0.1216 (0.1209)  time: 0.5472  data: 0.0442  max mem: 4655
+Epoch: [15] Total time: 0:00:39 (0.5937 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:57  model_time: 0.1922 (0.1922)  evaluator_time: 0.2649 (0.2649)  time: 1.1600  data: 0.6997  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1732 (0.1821)  evaluator_time: 0.2302 (0.2496)  time: 0.4303  data: 0.0046  max mem: 4655
+Test: Total time: 0:00:23 (0.4666 s / it)
+Averaged stats: model_time: 0.1732 (0.1821)  evaluator_time: 0.2302 (0.2496)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [16]  [ 0/66]  eta: 0:02:56  lr: 0.000000  loss: 0.6444 (0.6444)  loss_classifier: 0.0960 (0.0960)  loss_box_reg: 0.2638 (0.2638)  loss_mask: 0.1917 (0.1917)  loss_objectness: 0.0115 (0.0115)  loss_rpn_box_reg: 0.0814 (0.0814)  time: 2.6672  data: 2.1120  max mem: 4655
+Epoch: [16]  [10/66]  eta: 0:00:43  lr: 0.000000  loss: 0.6985 (0.6989)  loss_classifier: 0.0983 (0.0993)  loss_box_reg: 0.2631 (0.2572)  loss_mask: 0.2019 (0.2010)  loss_objectness: 0.0202 (0.0202)  loss_rpn_box_reg: 0.1260 (0.1212)  time: 0.7812  data: 0.2392  max mem: 4655
+Epoch: [16]  [20/66]  eta: 0:00:31  lr: 0.000000  loss: 0.6985 (0.7048)  loss_classifier: 0.1040 (0.1042)  loss_box_reg: 0.2570 (0.2561)  loss_mask: 0.1936 (0.1989)  loss_objectness: 0.0202 (0.0202)  loss_rpn_box_reg: 0.1260 (0.1255)  time: 0.5850  data: 0.0493  max mem: 4655
+Epoch: [16]  [30/66]  eta: 0:00:23  lr: 0.000000  loss: 0.6938 (0.6917)  loss_classifier: 0.1003 (0.1016)  loss_box_reg: 0.2434 (0.2520)  loss_mask: 0.1933 (0.1962)  loss_objectness: 0.0168 (0.0192)  loss_rpn_box_reg: 0.1179 (0.1226)  time: 0.5904  data: 0.0631  max mem: 4655
+Epoch: [16]  [40/66]  eta: 0:00:16  lr: 0.000000  loss: 0.6938 (0.6948)  loss_classifier: 0.0931 (0.1012)  loss_box_reg: 0.2520 (0.2527)  loss_mask: 0.1960 (0.1966)  loss_objectness: 0.0168 (0.0197)  loss_rpn_box_reg: 0.1201 (0.1246)  time: 0.5938  data: 0.0605  max mem: 4655
+Epoch: [16]  [50/66]  eta: 0:00:10  lr: 0.000000  loss: 0.6963 (0.6950)  loss_classifier: 0.0970 (0.1016)  loss_box_reg: 0.2565 (0.2531)  loss_mask: 0.1986 (0.1968)  loss_objectness: 0.0178 (0.0199)  loss_rpn_box_reg: 0.1211 (0.1237)  time: 0.5867  data: 0.0423  max mem: 4655
+Epoch: [16]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6931 (0.6924)  loss_classifier: 0.1011 (0.1020)  loss_box_reg: 0.2461 (0.2526)  loss_mask: 0.1974 (0.1963)  loss_objectness: 0.0177 (0.0197)  loss_rpn_box_reg: 0.1181 (0.1218)  time: 0.5857  data: 0.0427  max mem: 4655
+Epoch: [16]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.6331 (0.6869)  loss_classifier: 0.1011 (0.1014)  loss_box_reg: 0.2376 (0.2499)  loss_mask: 0.1858 (0.1949)  loss_objectness: 0.0177 (0.0195)  loss_rpn_box_reg: 0.1081 (0.1212)  time: 0.5805  data: 0.0418  max mem: 4655
+Epoch: [16] Total time: 0:00:40 (0.6190 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:55  model_time: 0.1933 (0.1933)  evaluator_time: 0.2684 (0.2684)  time: 1.1176  data: 0.6504  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1738 (0.1795)  evaluator_time: 0.2281 (0.2411)  time: 0.4267  data: 0.0045  max mem: 4655
+Test: Total time: 0:00:22 (0.4537 s / it)
+Averaged stats: model_time: 0.1738 (0.1795)  evaluator_time: 0.2281 (0.2411)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [17]  [ 0/66]  eta: 0:03:26  lr: 0.000000  loss: 0.5989 (0.5989)  loss_classifier: 0.0631 (0.0631)  loss_box_reg: 0.2189 (0.2189)  loss_mask: 0.1713 (0.1713)  loss_objectness: 0.0117 (0.0117)  loss_rpn_box_reg: 0.1339 (0.1339)  time: 3.1327  data: 2.5662  max mem: 4655
+Epoch: [17]  [10/66]  eta: 0:00:48  lr: 0.000000  loss: 0.7055 (0.6968)  loss_classifier: 0.1002 (0.1073)  loss_box_reg: 0.2626 (0.2572)  loss_mask: 0.1874 (0.1930)  loss_objectness: 0.0166 (0.0174)  loss_rpn_box_reg: 0.1212 (0.1219)  time: 0.8576  data: 0.3040  max mem: 4655
+Epoch: [17]  [20/66]  eta: 0:00:33  lr: 0.000000  loss: 0.7041 (0.6763)  loss_classifier: 0.1001 (0.1031)  loss_box_reg: 0.2488 (0.2495)  loss_mask: 0.1993 (0.1940)  loss_objectness: 0.0171 (0.0175)  loss_rpn_box_reg: 0.1076 (0.1122)  time: 0.6127  data: 0.0626  max mem: 4655
+Epoch: [17]  [30/66]  eta: 0:00:24  lr: 0.000000  loss: 0.6731 (0.6865)  loss_classifier: 0.0920 (0.1014)  loss_box_reg: 0.2440 (0.2510)  loss_mask: 0.1993 (0.1948)  loss_objectness: 0.0178 (0.0184)  loss_rpn_box_reg: 0.1147 (0.1209)  time: 0.5877  data: 0.0452  max mem: 4655
+Epoch: [17]  [40/66]  eta: 0:00:17  lr: 0.000000  loss: 0.6944 (0.6872)  loss_classifier: 0.0969 (0.1026)  loss_box_reg: 0.2446 (0.2503)  loss_mask: 0.1926 (0.1953)  loss_objectness: 0.0183 (0.0191)  loss_rpn_box_reg: 0.1265 (0.1199)  time: 0.5823  data: 0.0415  max mem: 4655
+Epoch: [17]  [50/66]  eta: 0:00:10  lr: 0.000000  loss: 0.6834 (0.6889)  loss_classifier: 0.1018 (0.1023)  loss_box_reg: 0.2512 (0.2521)  loss_mask: 0.1926 (0.1962)  loss_objectness: 0.0159 (0.0186)  loss_rpn_box_reg: 0.1133 (0.1197)  time: 0.5841  data: 0.0401  max mem: 4655
+Epoch: [17]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6814 (0.6862)  loss_classifier: 0.0965 (0.1010)  loss_box_reg: 0.2491 (0.2498)  loss_mask: 0.1889 (0.1948)  loss_objectness: 0.0204 (0.0200)  loss_rpn_box_reg: 0.1132 (0.1206)  time: 0.5784  data: 0.0404  max mem: 4655
+Epoch: [17]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.6863 (0.6866)  loss_classifier: 0.0982 (0.1008)  loss_box_reg: 0.2491 (0.2499)  loss_mask: 0.1968 (0.1951)  loss_objectness: 0.0208 (0.0200)  loss_rpn_box_reg: 0.1149 (0.1207)  time: 0.5754  data: 0.0408  max mem: 4655
+Epoch: [17] Total time: 0:00:41 (0.6298 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:59  model_time: 0.2419 (0.2419)  evaluator_time: 0.2650 (0.2650)  time: 1.1887  data: 0.6785  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1743 (0.1840)  evaluator_time: 0.2314 (0.2440)  time: 0.4278  data: 0.0043  max mem: 4655
+Test: Total time: 0:00:23 (0.4633 s / it)
+Averaged stats: model_time: 0.1743 (0.1840)  evaluator_time: 0.2314 (0.2440)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [18]  [ 0/66]  eta: 0:03:01  lr: 0.000000  loss: 0.7393 (0.7393)  loss_classifier: 0.0946 (0.0946)  loss_box_reg: 0.2827 (0.2827)  loss_mask: 0.2220 (0.2220)  loss_objectness: 0.0191 (0.0191)  loss_rpn_box_reg: 0.1209 (0.1209)  time: 2.7469  data: 2.1719  max mem: 4655
+Epoch: [18]  [10/66]  eta: 0:00:43  lr: 0.000000  loss: 0.7014 (0.7030)  loss_classifier: 0.0971 (0.0992)  loss_box_reg: 0.2571 (0.2564)  loss_mask: 0.2015 (0.2015)  loss_objectness: 0.0192 (0.0203)  loss_rpn_box_reg: 0.1229 (0.1255)  time: 0.7826  data: 0.2364  max mem: 4655
+Epoch: [18]  [20/66]  eta: 0:00:31  lr: 0.000000  loss: 0.6645 (0.6672)  loss_classifier: 0.0901 (0.0963)  loss_box_reg: 0.2365 (0.2422)  loss_mask: 0.1882 (0.1930)  loss_objectness: 0.0166 (0.0188)  loss_rpn_box_reg: 0.1107 (0.1169)  time: 0.5856  data: 0.0427  max mem: 4655
+Epoch: [18]  [30/66]  eta: 0:00:23  lr: 0.000000  loss: 0.6625 (0.6756)  loss_classifier: 0.0932 (0.0980)  loss_box_reg: 0.2260 (0.2464)  loss_mask: 0.1898 (0.1932)  loss_objectness: 0.0166 (0.0188)  loss_rpn_box_reg: 0.1085 (0.1193)  time: 0.5768  data: 0.0402  max mem: 4655
+Epoch: [18]  [40/66]  eta: 0:00:16  lr: 0.000000  loss: 0.6961 (0.6808)  loss_classifier: 0.0992 (0.1000)  loss_box_reg: 0.2458 (0.2472)  loss_mask: 0.1906 (0.1923)  loss_objectness: 0.0183 (0.0190)  loss_rpn_box_reg: 0.1262 (0.1223)  time: 0.5833  data: 0.0467  max mem: 4655
+Epoch: [18]  [50/66]  eta: 0:00:10  lr: 0.000000  loss: 0.7026 (0.6850)  loss_classifier: 0.0992 (0.1010)  loss_box_reg: 0.2546 (0.2499)  loss_mask: 0.1941 (0.1943)  loss_objectness: 0.0181 (0.0186)  loss_rpn_box_reg: 0.1277 (0.1210)  time: 0.5909  data: 0.0476  max mem: 4655
+Epoch: [18]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6701 (0.6802)  loss_classifier: 0.0915 (0.1006)  loss_box_reg: 0.2500 (0.2480)  loss_mask: 0.1981 (0.1935)  loss_objectness: 0.0153 (0.0183)  loss_rpn_box_reg: 0.1146 (0.1198)  time: 0.5835  data: 0.0403  max mem: 4655
+Epoch: [18]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.6693 (0.6807)  loss_classifier: 0.0886 (0.1005)  loss_box_reg: 0.2441 (0.2478)  loss_mask: 0.1898 (0.1935)  loss_objectness: 0.0169 (0.0189)  loss_rpn_box_reg: 0.1146 (0.1200)  time: 0.5800  data: 0.0402  max mem: 4655
+Epoch: [18] Total time: 0:00:40 (0.6174 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:00:58  model_time: 0.2362 (0.2362)  evaluator_time: 0.2608 (0.2608)  time: 1.1641  data: 0.6627  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1795 (0.1864)  evaluator_time: 0.2394 (0.2463)  time: 0.4467  data: 0.0048  max mem: 4655
+Test: Total time: 0:00:23 (0.4680 s / it)
+Averaged stats: model_time: 0.1795 (0.1864)  evaluator_time: 0.2394 (0.2463)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [19]  [ 0/66]  eta: 0:02:46  lr: 0.000000  loss: 0.6605 (0.6605)  loss_classifier: 0.0887 (0.0887)  loss_box_reg: 0.2689 (0.2689)  loss_mask: 0.2061 (0.2061)  loss_objectness: 0.0144 (0.0144)  loss_rpn_box_reg: 0.0824 (0.0824)  time: 2.5255  data: 1.9895  max mem: 4655
+Epoch: [19]  [10/66]  eta: 0:00:44  lr: 0.000000  loss: 0.6832 (0.6846)  loss_classifier: 0.0983 (0.1018)  loss_box_reg: 0.2493 (0.2498)  loss_mask: 0.1916 (0.1954)  loss_objectness: 0.0160 (0.0170)  loss_rpn_box_reg: 0.1187 (0.1207)  time: 0.7898  data: 0.2440  max mem: 4655
+Epoch: [19]  [20/66]  eta: 0:00:32  lr: 0.000000  loss: 0.6578 (0.6694)  loss_classifier: 0.0954 (0.1004)  loss_box_reg: 0.2370 (0.2460)  loss_mask: 0.1863 (0.1912)  loss_objectness: 0.0160 (0.0170)  loss_rpn_box_reg: 0.1187 (0.1149)  time: 0.6148  data: 0.0598  max mem: 4655
+Epoch: [19]  [30/66]  eta: 0:00:24  lr: 0.000000  loss: 0.6739 (0.6788)  loss_classifier: 0.0934 (0.1008)  loss_box_reg: 0.2457 (0.2473)  loss_mask: 0.1854 (0.1937)  loss_objectness: 0.0163 (0.0177)  loss_rpn_box_reg: 0.1209 (0.1193)  time: 0.6145  data: 0.0526  max mem: 4655
+Epoch: [19]  [40/66]  eta: 0:00:17  lr: 0.000000  loss: 0.6855 (0.6774)  loss_classifier: 0.0978 (0.1006)  loss_box_reg: 0.2515 (0.2471)  loss_mask: 0.1953 (0.1930)  loss_objectness: 0.0187 (0.0186)  loss_rpn_box_reg: 0.1139 (0.1181)  time: 0.6054  data: 0.0525  max mem: 4655
+Epoch: [19]  [50/66]  eta: 0:00:10  lr: 0.000000  loss: 0.6843 (0.6810)  loss_classifier: 0.0990 (0.1006)  loss_box_reg: 0.2538 (0.2487)  loss_mask: 0.1953 (0.1942)  loss_objectness: 0.0169 (0.0181)  loss_rpn_box_reg: 0.1110 (0.1194)  time: 0.5922  data: 0.0491  max mem: 4655
+Epoch: [19]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6763 (0.6859)  loss_classifier: 0.0940 (0.1007)  loss_box_reg: 0.2499 (0.2493)  loss_mask: 0.1975 (0.1947)  loss_objectness: 0.0166 (0.0184)  loss_rpn_box_reg: 0.1222 (0.1228)  time: 0.5870  data: 0.0478  max mem: 4655
+Epoch: [19]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.6635 (0.6834)  loss_classifier: 0.0915 (0.1008)  loss_box_reg: 0.2480 (0.2484)  loss_mask: 0.1900 (0.1943)  loss_objectness: 0.0154 (0.0180)  loss_rpn_box_reg: 0.1222 (0.1219)  time: 0.5736  data: 0.0444  max mem: 4655
+Epoch: [19] Total time: 0:00:41 (0.6304 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:02  model_time: 0.1978 (0.1978)  evaluator_time: 0.2679 (0.2679)  time: 1.2459  data: 0.7760  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1745 (0.1882)  evaluator_time: 0.2343 (0.2464)  time: 0.4387  data: 0.0047  max mem: 4655
+Test: Total time: 0:00:23 (0.4748 s / it)
+Averaged stats: model_time: 0.1745 (0.1882)  evaluator_time: 0.2343 (0.2464)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [20]  [ 0/66]  eta: 0:03:12  lr: 0.000000  loss: 0.6338 (0.6338)  loss_classifier: 0.1093 (0.1093)  loss_box_reg: 0.2308 (0.2308)  loss_mask: 0.1825 (0.1825)  loss_objectness: 0.0146 (0.0146)  loss_rpn_box_reg: 0.0966 (0.0966)  time: 2.9201  data: 2.3461  max mem: 4655
+Epoch: [20]  [10/66]  eta: 0:00:45  lr: 0.000000  loss: 0.6350 (0.6577)  loss_classifier: 0.1023 (0.1003)  loss_box_reg: 0.2360 (0.2393)  loss_mask: 0.1825 (0.1868)  loss_objectness: 0.0192 (0.0205)  loss_rpn_box_reg: 0.1034 (0.1110)  time: 0.8069  data: 0.2781  max mem: 4655
+Epoch: [20]  [20/66]  eta: 0:00:31  lr: 0.000000  loss: 0.6350 (0.6612)  loss_classifier: 0.0931 (0.0979)  loss_box_reg: 0.2311 (0.2383)  loss_mask: 0.1801 (0.1871)  loss_objectness: 0.0192 (0.0203)  loss_rpn_box_reg: 0.1069 (0.1176)  time: 0.5822  data: 0.0733  max mem: 4655
+Epoch: [20]  [30/66]  eta: 0:00:23  lr: 0.000000  loss: 0.6818 (0.6714)  loss_classifier: 0.0917 (0.0978)  loss_box_reg: 0.2397 (0.2428)  loss_mask: 0.1955 (0.1907)  loss_objectness: 0.0207 (0.0212)  loss_rpn_box_reg: 0.1234 (0.1189)  time: 0.5812  data: 0.0762  max mem: 4655
+Epoch: [20]  [40/66]  eta: 0:00:16  lr: 0.000000  loss: 0.6818 (0.6753)  loss_classifier: 0.1017 (0.1005)  loss_box_reg: 0.2446 (0.2440)  loss_mask: 0.1988 (0.1916)  loss_objectness: 0.0210 (0.0207)  loss_rpn_box_reg: 0.1234 (0.1185)  time: 0.5794  data: 0.0604  max mem: 4655
+Epoch: [20]  [50/66]  eta: 0:00:09  lr: 0.000000  loss: 0.6886 (0.6822)  loss_classifier: 0.1039 (0.1012)  loss_box_reg: 0.2601 (0.2468)  loss_mask: 0.1930 (0.1924)  loss_objectness: 0.0190 (0.0207)  loss_rpn_box_reg: 0.1200 (0.1211)  time: 0.5643  data: 0.0423  max mem: 4655
+Epoch: [20]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6890 (0.6852)  loss_classifier: 0.0955 (0.1006)  loss_box_reg: 0.2633 (0.2476)  loss_mask: 0.1930 (0.1939)  loss_objectness: 0.0195 (0.0206)  loss_rpn_box_reg: 0.1338 (0.1225)  time: 0.5615  data: 0.0408  max mem: 4655
+Epoch: [20]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.6861 (0.6825)  loss_classifier: 0.0955 (0.1003)  loss_box_reg: 0.2601 (0.2466)  loss_mask: 0.1922 (0.1937)  loss_objectness: 0.0182 (0.0204)  loss_rpn_box_reg: 0.1088 (0.1215)  time: 0.5582  data: 0.0402  max mem: 4655
+Epoch: [20] Total time: 0:00:40 (0.6097 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:06  model_time: 0.1946 (0.1946)  evaluator_time: 0.2675 (0.2675)  time: 1.3236  data: 0.8566  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1751 (0.1833)  evaluator_time: 0.2331 (0.2475)  time: 0.4378  data: 0.0047  max mem: 4655
+Test: Total time: 0:00:23 (0.4725 s / it)
+Averaged stats: model_time: 0.1751 (0.1833)  evaluator_time: 0.2331 (0.2475)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [21]  [ 0/66]  eta: 0:03:16  lr: 0.000000  loss: 0.5349 (0.5349)  loss_classifier: 0.0760 (0.0760)  loss_box_reg: 0.1984 (0.1984)  loss_mask: 0.1595 (0.1595)  loss_objectness: 0.0202 (0.0202)  loss_rpn_box_reg: 0.0808 (0.0808)  time: 2.9783  data: 2.4088  max mem: 4655
+Epoch: [21]  [10/66]  eta: 0:00:45  lr: 0.000000  loss: 0.6093 (0.6520)  loss_classifier: 0.0989 (0.0959)  loss_box_reg: 0.2333 (0.2377)  loss_mask: 0.1907 (0.1873)  loss_objectness: 0.0167 (0.0158)  loss_rpn_box_reg: 0.0999 (0.1153)  time: 0.8208  data: 0.2931  max mem: 4655
+Epoch: [21]  [20/66]  eta: 0:00:32  lr: 0.000000  loss: 0.6368 (0.6702)  loss_classifier: 0.0952 (0.0968)  loss_box_reg: 0.2337 (0.2420)  loss_mask: 0.1937 (0.1903)  loss_objectness: 0.0166 (0.0166)  loss_rpn_box_reg: 0.1228 (0.1245)  time: 0.5914  data: 0.0624  max mem: 4655
+Epoch: [21]  [30/66]  eta: 0:00:23  lr: 0.000000  loss: 0.6872 (0.6812)  loss_classifier: 0.1002 (0.1007)  loss_box_reg: 0.2465 (0.2443)  loss_mask: 0.1973 (0.1918)  loss_objectness: 0.0168 (0.0174)  loss_rpn_box_reg: 0.1305 (0.1271)  time: 0.5800  data: 0.0453  max mem: 4655
+Epoch: [21]  [40/66]  eta: 0:00:16  lr: 0.000000  loss: 0.6872 (0.6847)  loss_classifier: 0.1010 (0.1022)  loss_box_reg: 0.2489 (0.2458)  loss_mask: 0.2027 (0.1947)  loss_objectness: 0.0216 (0.0190)  loss_rpn_box_reg: 0.1188 (0.1229)  time: 0.5797  data: 0.0457  max mem: 4655
+Epoch: [21]  [50/66]  eta: 0:00:10  lr: 0.000000  loss: 0.6748 (0.6802)  loss_classifier: 0.0974 (0.1010)  loss_box_reg: 0.2451 (0.2462)  loss_mask: 0.1954 (0.1939)  loss_objectness: 0.0189 (0.0185)  loss_rpn_box_reg: 0.1078 (0.1205)  time: 0.5898  data: 0.0622  max mem: 4655
+Epoch: [21]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6342 (0.6785)  loss_classifier: 0.0974 (0.1003)  loss_box_reg: 0.2407 (0.2459)  loss_mask: 0.1887 (0.1934)  loss_objectness: 0.0172 (0.0183)  loss_rpn_box_reg: 0.1147 (0.1206)  time: 0.5820  data: 0.0603  max mem: 4655
+Epoch: [21]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.7195 (0.6850)  loss_classifier: 0.1043 (0.1026)  loss_box_reg: 0.2452 (0.2477)  loss_mask: 0.1896 (0.1940)  loss_objectness: 0.0182 (0.0189)  loss_rpn_box_reg: 0.1217 (0.1218)  time: 0.5694  data: 0.0499  max mem: 4655
+Epoch: [21] Total time: 0:00:40 (0.6198 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:05  model_time: 0.1945 (0.1945)  evaluator_time: 0.2628 (0.2628)  time: 1.3165  data: 0.8559  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1767 (0.1878)  evaluator_time: 0.2379 (0.2528)  time: 0.4577  data: 0.0050  max mem: 4655
+Test: Total time: 0:00:24 (0.4832 s / it)
+Averaged stats: model_time: 0.1767 (0.1878)  evaluator_time: 0.2379 (0.2528)
+Accumulating evaluation results...
+DONE (t=0.04s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [22]  [ 0/66]  eta: 0:03:02  lr: 0.000000  loss: 0.7864 (0.7864)  loss_classifier: 0.1618 (0.1618)  loss_box_reg: 0.2847 (0.2847)  loss_mask: 0.2051 (0.2051)  loss_objectness: 0.0215 (0.0215)  loss_rpn_box_reg: 0.1134 (0.1134)  time: 2.7721  data: 2.2172  max mem: 4655
+Epoch: [22]  [10/66]  eta: 0:00:42  lr: 0.000000  loss: 0.7533 (0.7371)  loss_classifier: 0.1105 (0.1150)  loss_box_reg: 0.2752 (0.2687)  loss_mask: 0.2051 (0.2050)  loss_objectness: 0.0184 (0.0178)  loss_rpn_box_reg: 0.1258 (0.1306)  time: 0.7630  data: 0.2363  max mem: 4655
+Epoch: [22]  [20/66]  eta: 0:00:30  lr: 0.000000  loss: 0.6867 (0.7142)  loss_classifier: 0.1016 (0.1090)  loss_box_reg: 0.2475 (0.2574)  loss_mask: 0.2032 (0.2008)  loss_objectness: 0.0176 (0.0190)  loss_rpn_box_reg: 0.1159 (0.1281)  time: 0.5598  data: 0.0392  max mem: 4655
+Epoch: [22]  [30/66]  eta: 0:00:22  lr: 0.000000  loss: 0.6637 (0.6939)  loss_classifier: 0.0877 (0.1047)  loss_box_reg: 0.2342 (0.2505)  loss_mask: 0.1904 (0.1961)  loss_objectness: 0.0180 (0.0187)  loss_rpn_box_reg: 0.1145 (0.1239)  time: 0.5558  data: 0.0388  max mem: 4655
+Epoch: [22]  [40/66]  eta: 0:00:15  lr: 0.000000  loss: 0.6753 (0.6883)  loss_classifier: 0.0854 (0.1028)  loss_box_reg: 0.2342 (0.2489)  loss_mask: 0.1911 (0.1953)  loss_objectness: 0.0184 (0.0189)  loss_rpn_box_reg: 0.1121 (0.1223)  time: 0.5511  data: 0.0371  max mem: 4655
+Epoch: [22]  [50/66]  eta: 0:00:09  lr: 0.000000  loss: 0.6846 (0.6877)  loss_classifier: 0.0960 (0.1028)  loss_box_reg: 0.2402 (0.2487)  loss_mask: 0.1931 (0.1945)  loss_objectness: 0.0169 (0.0190)  loss_rpn_box_reg: 0.1110 (0.1227)  time: 0.5539  data: 0.0387  max mem: 4655
+Epoch: [22]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6577 (0.6787)  loss_classifier: 0.0943 (0.1016)  loss_box_reg: 0.2440 (0.2458)  loss_mask: 0.1927 (0.1926)  loss_objectness: 0.0152 (0.0186)  loss_rpn_box_reg: 0.1201 (0.1200)  time: 0.5464  data: 0.0412  max mem: 4655
+Epoch: [22]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.6398 (0.6817)  loss_classifier: 0.0924 (0.1013)  loss_box_reg: 0.2250 (0.2461)  loss_mask: 0.1879 (0.1938)  loss_objectness: 0.0169 (0.0190)  loss_rpn_box_reg: 0.1201 (0.1216)  time: 0.5277  data: 0.0421  max mem: 4655
+Epoch: [22] Total time: 0:00:38 (0.5823 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:05  model_time: 0.1889 (0.1889)  evaluator_time: 0.2613 (0.2613)  time: 1.3107  data: 0.8577  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1770 (0.1866)  evaluator_time: 0.2383 (0.2540)  time: 0.4479  data: 0.0048  max mem: 4655
+Test: Total time: 0:00:24 (0.4827 s / it)
+Averaged stats: model_time: 0.1770 (0.1866)  evaluator_time: 0.2383 (0.2540)
+Accumulating evaluation results...
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [23]  [ 0/66]  eta: 0:02:47  lr: 0.000000  loss: 0.7731 (0.7731)  loss_classifier: 0.0930 (0.0930)  loss_box_reg: 0.2868 (0.2868)  loss_mask: 0.2418 (0.2418)  loss_objectness: 0.0194 (0.0194)  loss_rpn_box_reg: 0.1321 (0.1321)  time: 2.5375  data: 2.0095  max mem: 4655
+Epoch: [23]  [10/66]  eta: 0:00:41  lr: 0.000000  loss: 0.7206 (0.6997)  loss_classifier: 0.0995 (0.1027)  loss_box_reg: 0.2663 (0.2548)  loss_mask: 0.2003 (0.1974)  loss_objectness: 0.0183 (0.0202)  loss_rpn_box_reg: 0.1321 (0.1245)  time: 0.7495  data: 0.2206  max mem: 4655
+Epoch: [23]  [20/66]  eta: 0:00:30  lr: 0.000000  loss: 0.6876 (0.6791)  loss_classifier: 0.0997 (0.1029)  loss_box_reg: 0.2509 (0.2482)  loss_mask: 0.1926 (0.1947)  loss_objectness: 0.0165 (0.0193)  loss_rpn_box_reg: 0.1000 (0.1139)  time: 0.5704  data: 0.0440  max mem: 4655
+Epoch: [23]  [30/66]  eta: 0:00:22  lr: 0.000000  loss: 0.6521 (0.6698)  loss_classifier: 0.0967 (0.0992)  loss_box_reg: 0.2425 (0.2445)  loss_mask: 0.1926 (0.1932)  loss_objectness: 0.0168 (0.0194)  loss_rpn_box_reg: 0.1072 (0.1135)  time: 0.5653  data: 0.0435  max mem: 4655
+Epoch: [23]  [40/66]  eta: 0:00:15  lr: 0.000000  loss: 0.6517 (0.6746)  loss_classifier: 0.0878 (0.0996)  loss_box_reg: 0.2503 (0.2466)  loss_mask: 0.1930 (0.1939)  loss_objectness: 0.0176 (0.0195)  loss_rpn_box_reg: 0.1093 (0.1150)  time: 0.5642  data: 0.0418  max mem: 4655
+Epoch: [23]  [50/66]  eta: 0:00:09  lr: 0.000000  loss: 0.6562 (0.6756)  loss_classifier: 0.0967 (0.0996)  loss_box_reg: 0.2503 (0.2451)  loss_mask: 0.1926 (0.1932)  loss_objectness: 0.0203 (0.0202)  loss_rpn_box_reg: 0.1192 (0.1175)  time: 0.5704  data: 0.0477  max mem: 4655
+Epoch: [23]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6940 (0.6778)  loss_classifier: 0.1027 (0.1002)  loss_box_reg: 0.2432 (0.2458)  loss_mask: 0.1929 (0.1932)  loss_objectness: 0.0191 (0.0195)  loss_rpn_box_reg: 0.1236 (0.1191)  time: 0.5683  data: 0.0481  max mem: 4655
+Epoch: [23]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.7015 (0.6802)  loss_classifier: 0.1007 (0.1006)  loss_box_reg: 0.2432 (0.2466)  loss_mask: 0.1929 (0.1936)  loss_objectness: 0.0183 (0.0195)  loss_rpn_box_reg: 0.1201 (0.1199)  time: 0.5661  data: 0.0484  max mem: 4655
+Epoch: [23] Total time: 0:00:39 (0.5979 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:09  model_time: 0.2449 (0.2449)  evaluator_time: 0.3678 (0.3678)  time: 1.3874  data: 0.7701  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1780 (0.1859)  evaluator_time: 0.2355 (0.2505)  time: 0.4393  data: 0.0050  max mem: 4655
+Test: Total time: 0:00:23 (0.4779 s / it)
+Averaged stats: model_time: 0.1780 (0.1859)  evaluator_time: 0.2355 (0.2505)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+Epoch: [24]  [ 0/66]  eta: 0:03:13  lr: 0.000000  loss: 0.4805 (0.4805)  loss_classifier: 0.0761 (0.0761)  loss_box_reg: 0.1700 (0.1700)  loss_mask: 0.1431 (0.1431)  loss_objectness: 0.0054 (0.0054)  loss_rpn_box_reg: 0.0859 (0.0859)  time: 2.9265  data: 2.3674  max mem: 4655
+Epoch: [24]  [10/66]  eta: 0:00:44  lr: 0.000000  loss: 0.6589 (0.6393)  loss_classifier: 0.0853 (0.0873)  loss_box_reg: 0.2506 (0.2332)  loss_mask: 0.1878 (0.1850)  loss_objectness: 0.0167 (0.0174)  loss_rpn_box_reg: 0.1231 (0.1164)  time: 0.7960  data: 0.2601  max mem: 4655
+Epoch: [24]  [20/66]  eta: 0:00:31  lr: 0.000000  loss: 0.6872 (0.6686)  loss_classifier: 0.0896 (0.0945)  loss_box_reg: 0.2506 (0.2428)  loss_mask: 0.1881 (0.1912)  loss_objectness: 0.0172 (0.0179)  loss_rpn_box_reg: 0.1228 (0.1222)  time: 0.5785  data: 0.0481  max mem: 4655
+Epoch: [24]  [30/66]  eta: 0:00:23  lr: 0.000000  loss: 0.6920 (0.6697)  loss_classifier: 0.0984 (0.0966)  loss_box_reg: 0.2495 (0.2419)  loss_mask: 0.1988 (0.1921)  loss_objectness: 0.0177 (0.0184)  loss_rpn_box_reg: 0.1137 (0.1207)  time: 0.5702  data: 0.0438  max mem: 4655
+Epoch: [24]  [40/66]  eta: 0:00:16  lr: 0.000000  loss: 0.6920 (0.6792)  loss_classifier: 0.0986 (0.0993)  loss_box_reg: 0.2501 (0.2467)  loss_mask: 0.1997 (0.1933)  loss_objectness: 0.0175 (0.0187)  loss_rpn_box_reg: 0.1093 (0.1211)  time: 0.5614  data: 0.0386  max mem: 4655
+Epoch: [24]  [50/66]  eta: 0:00:09  lr: 0.000000  loss: 0.6648 (0.6756)  loss_classifier: 0.0998 (0.0992)  loss_box_reg: 0.2496 (0.2471)  loss_mask: 0.1974 (0.1931)  loss_objectness: 0.0146 (0.0180)  loss_rpn_box_reg: 0.1093 (0.1182)  time: 0.5557  data: 0.0397  max mem: 4655
+Epoch: [24]  [60/66]  eta: 0:00:03  lr: 0.000000  loss: 0.6718 (0.6830)  loss_classifier: 0.1036 (0.1014)  loss_box_reg: 0.2458 (0.2488)  loss_mask: 0.1978 (0.1941)  loss_objectness: 0.0149 (0.0188)  loss_rpn_box_reg: 0.1170 (0.1198)  time: 0.5729  data: 0.0608  max mem: 4655
+Epoch: [24]  [65/66]  eta: 0:00:00  lr: 0.000000  loss: 0.7148 (0.6849)  loss_classifier: 0.1036 (0.1010)  loss_box_reg: 0.2544 (0.2490)  loss_mask: 0.1978 (0.1945)  loss_objectness: 0.0198 (0.0189)  loss_rpn_box_reg: 0.1255 (0.1216)  time: 0.5680  data: 0.0601  max mem: 4655
+Epoch: [24] Total time: 0:00:40 (0.6069 s / it)
+creating index...
+index created!
+Test:  [ 0/50]  eta: 0:01:03  model_time: 0.1954 (0.1954)  evaluator_time: 0.2668 (0.2668)  time: 1.2630  data: 0.7967  max mem: 4655
+Test:  [49/50]  eta: 0:00:00  model_time: 0.1751 (0.1864)  evaluator_time: 0.2355 (0.2485)  time: 0.4381  data: 0.0046  max mem: 4655
+Test: Total time: 0:00:23 (0.4738 s / it)
+Averaged stats: model_time: 0.1751 (0.1864)  evaluator_time: 0.2355 (0.2485)
+Accumulating evaluation results...
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.677
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.813
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.635
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.734
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.019
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.720
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.685
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+IoU metric: segm
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.931
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.762
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.673
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.018
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.668
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+That's it!

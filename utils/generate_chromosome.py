@@ -5,10 +5,12 @@ Time: 2022.01.21
 '''
 import os
 import json
-import os.path as osp
 from webbrowser import Grail
+import torch
+from PIL import Image
 
 import cv2
+from matplotlib.pyplot import axis
 import numpy as np
 from numpy.lib.ufunclike import fix
 from numpy.random.mtrand import choice, random, sample
@@ -110,7 +112,7 @@ def getSingleChromosomePoints(imagePath):
     # 根据仿射变换矩阵执行仿射变换
     rotatedImage = cv2.warpAffine(image, M, (w, h), borderValue=255)
     # 对旋转后的图像进行放缩
-    rotatedImage = imutils.resize(rotatedImage, width=150)
+    rotatedImage = imutils.resize(rotatedImage, width=140)
     _, tmpImage = cv2.threshold(rotatedImage, 230, 255, 0)
     num_labels, labels, stats, centers = cv2.connectedComponentsWithStats(
         cv2.bitwise_not(tmpImage), 8, ltype=cv2.CV_32S)
@@ -140,7 +142,13 @@ def pointsToMask(points, h, w):
     for point in points:
         if point[0] < h and point[1] < w:
             image[point[0], point[1]] = True
-    return image
+    pos = np.where(image)
+    hmin = np.min(pos[0])
+    hmax = np.max(pos[0])
+    wmin = np.min(pos[1])
+    wmax = np.max(pos[1])
+    # print("hwminmax", hmin, hmax, wmin, wmax)
+    return image, hmin<hmax and wmin<wmax
 
 
 # function: 在所有类的单条染色体中每类随机挑选两条
@@ -157,8 +165,24 @@ def generateSingleChromosomeList(n):
         index2 = rd.randint(0, len(singleSrcDirImages) - 1)
         singleChromosomeList.append(singleSrcDirImages[index1])
         singleChromosomeList.append(singleSrcDirImages[index2])
+    while(len(singleChromosomeList) < n):
+        chromosomeLabelIndex = rd.randint(0, len(singleSrcDirs) - 1)
+        singleSrcDirImages, _ = imgTool.ReadPath(singleSrcDirs[chromosomeLabelIndex])
+        singleChromosomeIndex = rd.randint(0, len(singleSrcDirImages) - 1)
+        singleChromosomeList.append(singleSrcDirImages[singleChromosomeIndex])
     rd.shuffle(singleChromosomeList)
     return singleChromosomeList[:n]
+
+
+# function: 在所有的json和背景图像中随机选取进行组合
+# params: json目录路径，背景图像目录路径
+# return: 选取json文件路径，选取背景图像路径
+def generateRandomJsonAndBackgroundPath(jsonPath, backgroundPath):
+    jsonFiles, _ = imgTool.ReadPath(jsonPath)
+    backgroundFiles, _ = imgTool.ReadPath(backgroundPath)
+    jsonIndex = rd.randint(0, len(jsonFiles) - 1)
+    backgroundIndex = rd.randint(0, len(backgroundFiles) - 1)
+    return jsonFiles[jsonIndex], backgroundFiles[backgroundIndex]
 
 
 # function: 根据json文件中染色体实例的中心点，将随机选取的单条染色体置于该点处生成新的原始染色体图像
@@ -173,17 +197,22 @@ def generateOriginChromosomeImage(jsonPath, backgroundPath):
     _, jsonCenterList, _ = getJsonAreaAndPoints(jsonPath)
     # 获取随机的n条单挑染色体图像的路径
     singleChromosomeList = generateSingleChromosomeList(len(jsonCenterList))
+    print(jsonPath, len(jsonCenterList), len(singleChromosomeList))
     for i in range(len(jsonCenterList)):
         single, singleCenter, singlePoints = getSingleChromosomePoints(
             singleChromosomeList[i])
-        singleMask = pointsToMask(singlePoints, single.shape[0],
+        singleMask, singleValid = pointsToMask(singlePoints, single.shape[0],
                                   single.shape[1])
+        if singleValid == False:
+            continue
         # 注意centers的i,j坐标是以(w,h)格式展示
         offsetI = jsonCenterList[i][0] - singleCenter[0]
         offsetJ = jsonCenterList[i][1] - singleCenter[1]
         backgroundPoints = singlePoints + [offsetI, offsetJ]
-        backgroundMask = pointsToMask(backgroundPoints, background.shape[0],
+        backgroundMask, backgroundValid = pointsToMask(backgroundPoints, background.shape[0],
                                       background.shape[1])
+        if backgroundValid == False:
+            continue
         if background[backgroundMask].shape[0] == single[singleMask].shape[0]:
             background[backgroundMask] = single[singleMask]
             # 获取该条染色体的轮廓标注信息
@@ -206,9 +235,11 @@ def generateOriginChromosomeJsonShapes(pointsList):
     flags = {}
     i = 1
     for points in pointsList:
-        if len(points)>2:
+        minx, miny = np.min(np.array(points), axis=0)
+        maxx, maxy = np.max(np.array(points), axis=0)
+        if len(points)>2 and minx<maxx and miny<maxy:
             annotatePoints = {
-                "label": label+str(i),
+                "label": label,
                 "points": points,
                 "group_id": group_id,
                 "shape_type": shape_type,
@@ -226,8 +257,10 @@ def generateOriginChromosomeJsonShapes(pointsList):
 def generateOriginChromosomeJsonLabel(savePath, imageShape, shapes):
     label_name_to_value = {"_background_": 0}
     for i in range(len(shapes)):
-        label_name = 'chromos' + str(i+1)
-        label_name_to_value[label_name] = i+1
+        if len(shapes[i]["points"])>2:
+            # label_name = 'chromos' + str(i+1)
+            label_name = shapes[i]["label"]
+            label_name_to_value[label_name] = i+1
     lbl, _ = gb.shapes_to_label(
         imageShape, shapes, label_name_to_value
     )
@@ -258,18 +291,80 @@ def generateOriginChromosomeJson(imagePath, savePath, pointsList):
     jsonSavePath = savePath + "/" + filenamePre + ".json"
     json.dump(annotateJson, open(jsonSavePath, 'w'))
     # 生成mask的标注图像
-    lblSavePath = savePath + "/" + filenamePre + "_lbl.png"
-    generateOriginChromosomeJsonLabel(lblSavePath, image.shape, shapes)
+    # lblSavePath = savePath + "/" + filenamePre + "_mask.png"
+    # generateOriginChromosomeJsonLabel(lblSavePath, image.shape, shapes)
+
+
+# function: 对生成的mask图像检测合法性(xmin<xmax, ymin<ymax)
+# params: mask路径
+# return: boxed, cnt
+def siftMask(maskPath):
+    mask = Image.open(maskPath)
+    mask = np.array(mask)
+    # instances are encoded as different colors
+    obj_ids = np.unique(mask)
+    # first id is the background, so remove it
+    obj_ids = obj_ids[1:]
+    # split the color-encoded mask into a set
+    # of binary masks
+    masks = mask == obj_ids[:, None, None]
+    num_objs = len(obj_ids)
+    boxes = []
+    cnt = 0
+    for i in range(num_objs):
+            pos = np.where(masks[i])
+            xmin = np.min(pos[1])
+            xmax = np.max(pos[1])
+            ymin = np.min(pos[0])
+            ymax = np.max(pos[0])
+            boxes.append([xmin, ymin, xmax, ymax])
+            if xmin>=xmax or ymin>=ymax:
+                cnt += 1
+    boxes = torch.as_tensor(boxes, dtype=torch.float32)
+    return boxes, cnt
 
 
 if __name__ == '__main__':
-    jsonPath = "/home/guest01/projects/chromos/utils/chromotest/18-Y2140.049.O.json"
-    backgroundPath = "/home/guest01/projects/chromos/utils/chromotest_result/augmentationSample/1.png"
-    savePath = "/home/guest01/projects/chromos/utils/chromotest_result/segmentation/"
+    jsonDir = "/home/guest01/projects/chromos/utils/chromotest/augmentation"
+    backgroundDir = "/home/guest01/projects/chromos/utils/chromotest_result/augmentationSample"
+    savePath = "/home/guest01/projects/chromos/dataset/segmentation_dataset/test_fake_data_annotated/"
     # 根据染色体像素个数判断其放缩比例
     # resize = getChromosomeResize(jsonPath, srcPath)
-    for i in range(500):
-        imagePath = savePath + "/" + str(i) + ".png"
+    jsonSamples = [
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y1627.027.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2140.049.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2293.201.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2295.031.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2363.099.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2672.071.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2742.042.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2752.149.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y3101.126.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y1622.001.O.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.110.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.111.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.115.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.155.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.042.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.046.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.047.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.049.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.050.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.080.A.json",
+        "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.105.A.json",
+    ]
+    for i in range(50):
+        imagePath = savePath + "/fake" + str(i) + ".png"
+        jsonPath, backgroundPath = generateRandomJsonAndBackgroundPath(jsonDir, backgroundDir)
+        # jsonPath = jsonSamples[rd.randint(0, len(jsonSamples)-1)]
+        jsonPath = "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2140.049.O.json"
         image, contoursPoints = generateOriginChromosomeImage(jsonPath, backgroundPath)
         cv2.imwrite(imagePath, image)
         generateOriginChromosomeJson(imagePath, savePath, contoursPoints)
+    
+    # t = "/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_image_format/MasksFake500/"
+    # ms, _ = imgTool.ReadPath(t)
+    # for m in ms:
+    #     tmpBox, tmpCnt = siftMask(m)
+    #     if tmpCnt != 0:
+    #         print(m, tmpBox, tmpCnt)

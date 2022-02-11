@@ -6,5 +6,5 @@ chromotest
 chromotest_result
 labelme
 segmentInstances
-*.txt
+*.pth
 __pycache__
