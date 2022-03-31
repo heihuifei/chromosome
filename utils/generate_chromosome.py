@@ -7,6 +7,7 @@ import os
 import json
 from webbrowser import Grail
 import torch
+import math
 from PIL import Image
 
 import cv2
@@ -23,9 +24,13 @@ import generate_background as gb
 import imutils
 
 singleSrcPath = "/home/guest01/projects/chromos/utils/chromotest/singleChromosome"
+# jsonDir = "/home/guest01/projects/chromos/utils/chromotest/augmentation"
+jsonDir = "/home/guest01/projects/chromos/dataset/segmentation_dataset/test_224seg_json"
+backgroundDir = "/home/guest01/projects/chromos/utils/chromotest_result/augmentationSample"
+savePath = "/home/guest01/projects/chromos/dataset/segmentation_dataset/train_overlap_fake_500smallImages_annotated"
 
-# function: 根据json文件及单条染色体，获取一一对应的放缩比例
-# params: json文件路径，单条染色体所在目录路径
+# function: 根据json文件及单条染色体, 获取一一对应的放缩比例
+# params: json文件路径, 单条染色体所在目录路径
 # return: 放缩比例
 def getChromosomeResize(jsonPath, srcPath):
     res = 0
@@ -54,13 +59,29 @@ def getChromosomeResize(jsonPath, srcPath):
     return res
 
 
+# function: 根据每条染色体的极点，计算染色体与y轴的角度
+# params: (x1, y1), (x2, y2)两点坐标
+# return: 该染色体与y轴的角度
+def getChromosomeAngle(point1, point2):
+    p1I, p1J = point1
+    p2I, p2J = point2
+    dy = p2I - p1I
+    dx = p2J - p1J
+    # point1为minI点, point2为maxI点，计算线段与y轴的角度
+    angle = math.atan2(dx, dy)
+    angle = int(angle * 180 / math.pi)
+    # print("angle: ", angle)
+    return angle
+
+
 # function: 根据json文件获取所有染色体实例的面积(像素点)
 # params: json文件路径
-# return: 所有染色体实例的面积(list)
+# return: 所有染色体的 实例面积list，中心点list, 像素点list, 与y轴角度list
 def getJsonAreaAndPoints(jsonPath):
     jsonArea = []
     centerList = []
     pointsList = []
+    angleList = []
     data = json.load(open(jsonPath))
     jsonImage = gb.img_b64_to_arr(data.get("imageData"))
     if len(jsonImage.shape) == 3:
@@ -76,10 +97,12 @@ def getJsonAreaAndPoints(jsonPath):
             jsonArea.append(stats[1][4])
             center = centers[1].astype(int)
             points = np.argwhere(labels == 1)
+            # print("points in getJsonAreaAndPoints: ", points, type(points))
             centerList.append(np.array([center[1], center[0]]))
             pointsList.append(points)
+            angleList.append(getChromosomeAngle(points[0], points[len(points)-1]))
     jsonArea.sort(reverse=True)
-    return jsonArea, centerList, pointsList
+    return jsonImage, jsonArea, centerList, pointsList, angleList, data["shapes"]
 
 
 # function: 根据目录路径获取所有单条染色体面积
@@ -100,19 +123,21 @@ def getSingleChromosomeArea(imagePath):
 # function: 根据单条染色体图像旋转角度并放缩提取出真实单条染色体像素坐标
 # params: 单条染色体图像路径
 # return: 单条染色体中心，单条染色体所有像素坐标
-def getSingleChromosomePoints(imagePath):
+def getSingleChromosomePoints(imagePath, angle, rotateAngle):
     image = cv2.imread(imagePath)
     if len(image.shape) == 3:
         image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     (h, w) = image.shape[:2]
     (cX, cY) = (w // 2, h // 2)
-    ang = rd.randint(0, 360)
+    # ang = rd.randint(0, 360)
+    ang = angle + rotateAngle
     # 获取仿射变换矩阵
     M = cv2.getRotationMatrix2D((cX, cY), ang, 1.0)
     # 根据仿射变换矩阵执行仿射变换
     rotatedImage = cv2.warpAffine(image, M, (w, h), borderValue=255)
     # 对旋转后的图像进行放缩
-    rotatedImage = imutils.resize(rotatedImage, width=140)
+    randWidth = rd.randint(110, 125)
+    rotatedImage = imutils.resize(rotatedImage, width=randWidth)
     _, tmpImage = cv2.threshold(rotatedImage, 230, 255, 0)
     num_labels, labels, stats, centers = cv2.connectedComponentsWithStats(
         cv2.bitwise_not(tmpImage), 8, ltype=cv2.CV_32S)
@@ -173,19 +198,57 @@ def generateSingleChromosomeList(n):
     rd.shuffle(singleChromosomeList)
     return singleChromosomeList[:n]
 
+# function: 在短小染色体类的单条染色体中每类随机挑选k条
+# params: 总共需要的染色体条数
+# return: n条单条染色体的图像路径集合
+def generateSingleChromosomeSmallList(n):
+    
+    singleChromosomeList = []
+    singleSrcDirs = ['/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromo16_solo',
+                     '/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromo17_solo',
+                     '/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromo18_solo',
+                     '/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromo19_solo',
+                     '/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromo20_solo',
+                     '/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromo21_solo',
+                     '/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromo22_solo',
+                     '/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromoX_solo',
+                     '/home/guest01/projects/chromos/utils/chromotest/singleChromosome/chromoY_solo']
+    # 遍历每一类染色体选取其中一张单条染色体图像
+    for i in range(len(singleSrcDirs)):
+        singleSrcDirImages, _ = imgTool.ReadPath(singleSrcDirs[i])
+        indexs = np.random.randint(len(singleSrcDirImages) - 1, size=6)
+        for index in indexs:
+            singleChromosomeList.append(singleSrcDirImages[index])
+    while(len(singleChromosomeList) < n):
+        labelDirIndex = rd.randint(len(singleSrcDirs)-1)
+        singleSrcDirImages, _ = imgTool.ReadPath(singleSrcDirs[labelDirIndex])
+        indexs = np.random.randint(len(singleSrcDirImages) - 1, size=6)
+        for index in indexs:
+            singleChromosomeList.append(singleSrcDirImages[index])
+    rd.shuffle(singleChromosomeList)
+    # print(singleChromosomeList)
+    return singleChromosomeList[:n]
 
 # function: 在所有的json和背景图像中随机选取进行组合
 # params: json目录路径，背景图像目录路径
 # return: 选取json文件路径，选取背景图像路径
-def generateRandomJsonAndBackgroundPath(jsonPath, backgroundPath):
+def generateRandomJsonAndBackgroundPath(jsonPath, backgroundPath, i):
     jsonFiles, _ = imgTool.ReadPath(jsonPath)
     backgroundFiles, _ = imgTool.ReadPath(backgroundPath)
-    jsonIndex = rd.randint(0, len(jsonFiles) - 1)
+    # jsonIndex = rd.randint(0, len(jsonFiles) - 1)
+    jsonIndex = 0
+    # 用于生成不同种类的组合图像
+    if i<150:
+        jsonIndex = rd.randint(0, 76)
+    elif i<300:
+        jsonIndex = rd.randint(77, 263)
+    else:
+        jsonIndex = rd.randint(0, 263)
     backgroundIndex = rd.randint(0, len(backgroundFiles) - 1)
     return jsonFiles[jsonIndex], backgroundFiles[backgroundIndex]
 
 
-# function: 根据json文件中染色体实例的中心点，将随机选取的单条染色体置于该点处生成新的原始染色体图像
+# function: 根据json文件中染色体实例的中心点，将在每类染色体中随机选取的单条染色体置于该点处生成新的原始染色体图像
 # params: json文件路劲，背景图像路径
 # return: 自动生成的原始染色体图像, 该图像的所有染色体实例轮廓标注信息
 def generateOriginChromosomeImage(jsonPath, backgroundPath):
@@ -194,13 +257,15 @@ def generateOriginChromosomeImage(jsonPath, backgroundPath):
     if len(background.shape) == 3:
         background = cv2.cvtColor(background, cv2.COLOR_RGB2GRAY)
     # 获取json文件的所有染色体实例的中心和染色体像素坐标集
-    _, jsonCenterList, _ = getJsonAreaAndPoints(jsonPath)
+    _, _, jsonCenterList, _, angleList, _ = getJsonAreaAndPoints(jsonPath)
     # 获取随机的n条单挑染色体图像的路径
-    singleChromosomeList = generateSingleChromosomeList(len(jsonCenterList))
+    singleChromosomeList = generateSingleChromosomeSmallList(len(jsonCenterList))
     print(jsonPath, len(jsonCenterList), len(singleChromosomeList))
+    # 根据原始图像中每条染色体与y轴的角度全都随机旋转rotateAngle度
+    rotateAngle = rd.randint(0, 360)
     for i in range(len(jsonCenterList)):
         single, singleCenter, singlePoints = getSingleChromosomePoints(
-            singleChromosomeList[i])
+            singleChromosomeList[i], angleList[i], rotateAngle)
         singleMask, singleValid = pointsToMask(singlePoints, single.shape[0],
                                   single.shape[1])
         if singleValid == False:
@@ -222,6 +287,42 @@ def generateOriginChromosomeImage(jsonPath, backgroundPath):
             contoursPoints.append(contourPoints.tolist())
     return background, contoursPoints
 
+
+# function: 根据json文件中染色体实例的中心点，在随机json中随机选取其中一条染色体置于该点处生成新的原始染色体图像
+# params: json文件路劲，背景图像路径
+# return: 自动生成的原始染色体图像, 该图像的所有染色体实例轮廓标注信息
+def generateOriginChromosomeFixImage(jsonPath, backgroundPath, idx):
+    contoursPoints = []
+    background = cv2.imread(backgroundPath)
+    if len(background.shape) == 3:
+        background = cv2.cvtColor(background, cv2.COLOR_RGB2GRAY)
+    # 获取json文件的所有染色体实例的中心和染色体像素坐标集
+    _, _, jsonCenterList, _, angleList, _ = getJsonAreaAndPoints(jsonPath)
+    # 根据原始图像中每条染色体与y轴的角度全都随机旋转rotateAngle度
+    for i in range(len(jsonCenterList)):
+        singleFromJsonPath, _ = generateRandomJsonAndBackgroundPath(jsonDir, backgroundDir, idx)
+        fromJsonImage, _, centerList, pointsList, _, shapesList = getJsonAreaAndPoints(singleFromJsonPath)
+        chooseSingle = rd.randint(0, len(centerList)-1)
+        singleCenter = centerList[chooseSingle]
+        singlePoints = pointsList[chooseSingle]
+        singleContourPoints = shapesList[chooseSingle]["points"]
+        singleMask, _ = pointsToMask(singlePoints, fromJsonImage.shape[0],
+                                  fromJsonImage.shape[1])
+        # 注意centers的i,j坐标是以(w,h)格式展示
+        offsetI = jsonCenterList[i][0] - singleCenter[0]
+        offsetJ = jsonCenterList[i][1] - singleCenter[1]
+        backgroundPoints = singlePoints + [offsetI, offsetJ]
+        singleContour = (np.array(singleContourPoints) + [offsetI, offsetJ]).tolist()
+        backgroundMask, _ = pointsToMask(backgroundPoints, background.shape[0],
+                                      background.shape[1])
+        # background[backgroundMask] = fromJsonImage[singleMask]
+        background[singleMask] = fromJsonImage[singleMask]
+        # 获取该条染色体的轮廓标注信息
+        # contourPoints = contour.reshape((contour.shape[0], 2))
+        # contourPoints为array数组格式数据，需要转为list后才能用于构建labelme的json文件
+        # contoursPoints.append(contourPoints.tolist())
+        contoursPoints.append(singleContourPoints)
+    return background, contoursPoints
 
 # function: 生成json中shapes字段内容
 # params: 图像
@@ -325,9 +426,6 @@ def siftMask(maskPath):
 
 
 if __name__ == '__main__':
-    jsonDir = "/home/guest01/projects/chromos/utils/chromotest/augmentation"
-    backgroundDir = "/home/guest01/projects/chromos/utils/chromotest_result/augmentationSample"
-    savePath = "/home/guest01/projects/chromos/dataset/segmentation_dataset/test_fake_data_annotated/"
     # 根据染色体像素个数判断其放缩比例
     # resize = getChromosomeResize(jsonPath, srcPath)
     jsonSamples = [
@@ -353,15 +451,19 @@ if __name__ == '__main__':
         "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.080.A.json",
         "/home/guest01/projects/chromos/utils/chromotest/augmentation/21-Y342.105.A.json",
     ]
-    for i in range(50):
+    for i in range(500):
         imagePath = savePath + "/fake" + str(i) + ".png"
-        jsonPath, backgroundPath = generateRandomJsonAndBackgroundPath(jsonDir, backgroundDir)
-        # jsonPath = jsonSamples[rd.randint(0, len(jsonSamples)-1)]
-        jsonPath = "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2140.049.O.json"
+        jsonPath, backgroundPath = generateRandomJsonAndBackgroundPath(jsonDir, backgroundDir, i)
+        jsonPath = jsonSamples[rd.randint(0, len(jsonSamples)-1)]
+        # jsonPath = "/home/guest01/projects/chromos/utils/chromotest/augmentation/18-Y2140.049.O.json"
+        # jsonPath = "/home/guest01/projects/chromos/dataset/segmentation_dataset/origin_224images_annotated/21-Y342.001.A.json"
+        if i%2==0:
+            backgroundPath = "/home/guest01/projects/chromos/utils/chromotest_result/augmentationSample/white.png"
         image, contoursPoints = generateOriginChromosomeImage(jsonPath, backgroundPath)
         cv2.imwrite(imagePath, image)
         generateOriginChromosomeJson(imagePath, savePath, contoursPoints)
     
+    # getChromosomeAngle(np.array([1,1+math.sqrt(3)]), np.array([2,1]))
     # t = "/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_image_format/MasksFake500/"
     # ms, _ = imgTool.ReadPath(t)
     # for m in ms:

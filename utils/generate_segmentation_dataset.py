@@ -232,8 +232,8 @@ def Plt():
     plt.savefig("/home/guest01/projects/chromos/utils/chromotest/testMat.png")
 
 if __name__ == '__main__':
-    srcPath = "/home/guest01/projects/chromos/utils/chromotest/cla1"
-    dstPath = "/home/guest01/projects/chromos/utils/chromotest/cla1"
+    srcPath = "/home/guest01/projects/chromos/utils/chromotest/segmentation"
+    dstPath = "/home/guest01/projects/chromos/utils/chromotest_result/segmentation"
     imagePaths, _ = imgTool.ReadPath(srcPath)
     for imagePath in imagePaths:
         generateJson(imagePath, dstPath)

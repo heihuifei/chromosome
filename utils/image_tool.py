@@ -74,6 +74,24 @@ def parsePath(path):
     (filenamePrefix, filenamePostfix) = os.path.splitext(filename)
     return filenamePrefix, filenamePostfix, filename, fatherPath
 
+# function: 根据目录路径批量修改文件名
+# params: 目录路径
+# return: null
+def Rename(path):
+    filePaths, _ = ReadPath(path)
+    for filePath in filePaths:
+        pre, post, filename, _ = parsePath(filePath)
+        newName = path + os.sep + pre + ".small" + post
+        os.rename(filePath, newName)
+
+def Delete(path):
+    filePaths, _ = ReadPath(path)
+    for i in range(len(filePaths)):
+        pre, post, filename, _ = parsePath(filePaths[i])
+        if pre[0:4]=='fake':
+            if int(pre[4:])%2==0 and int(pre[4:])<1000:
+                print(pre[4:], " ", filePaths[i])
+                os.remove(filePaths[i])
 
 if __name__ == '__main__':
     # 用于测试各个工具函数的正确性
@@ -81,4 +99,6 @@ if __name__ == '__main__':
         parsePath(
             "/home/guest01/projects/chromos/utils/chromotest/classification/161923.054.K.JPG"
         ))
-    print(ReadPath("/home/guest01/projects/chromos/utils"))
+    # Delete("/home/guest01/projects/chromos/dataset/segmentation_dataset/train_origin77and187images_fake1000_withClear_annotated")
+    # print(ReadPath("/home/guest01/projects/chromos/utils"))
+    Rename("/home/guest01/projects/chromos/dataset/segmentation_dataset/ttt")
