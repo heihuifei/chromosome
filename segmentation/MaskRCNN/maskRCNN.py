@@ -15,7 +15,7 @@ from torchvision.models.detection import FasterRCNN
 from torchvision.models.detection.rpn import AnchorGenerator
 
 sys.path.append("../")
-from detection.engine import train_one_epoch, evaluate
+from detection.engine import train_one_epoch, evaluate, myEvaluate
 import detection.utils as utils
 import detection.transforms as T
 
@@ -27,13 +27,13 @@ class MyDataset(object):
         self.transforms = transforms
         # load all image files, sorting them to
         # ensure that they are aligned
-        self.imgs = list(sorted(os.listdir(os.path.join(root, "Images"))))
-        self.masks = list(sorted(os.listdir(os.path.join(root, "Masks"))))
+        self.imgs = list(sorted(os.listdir(os.path.join(root, "ImagesOrigin"))))
+        self.masks = list(sorted(os.listdir(os.path.join(root, "MasksOrigin"))))
 
     def __getitem__(self, idx):
         # load images and masks
-        img_path = os.path.join(self.root, "Images", self.imgs[idx])
-        mask_path = os.path.join(self.root, "Masks", self.masks[idx])
+        img_path = os.path.join(self.root, "ImagesOrigin", self.imgs[idx])
+        mask_path = os.path.join(self.root, "MasksOrigin", self.masks[idx])
         img = Image.open(img_path).convert("RGB")
         # note that we haven't converted the mask to RGB,
         # because each color corresponds to a different instance
@@ -159,6 +159,20 @@ def get_transform(train):
     return T.Compose(transforms)
 
 
+# function: 对已经保存的模型输出其ap指标
+# params: 模型，数据集，设备
+# return: null
+def showEvaluation(model, data_loader_test, device):
+    model = getFinetuningModel(2)
+    model = model.to(device)
+    weight = torch.load(
+        "/home/guest01/projects/chromos/segmentation/MaskRCNN/maskrcnn_resnet50_on314_for24_modelweights.pth"
+    )
+    model.load_state_dict(weight)
+    # model = torch.load("/home/guest01/projects/chromos/outputModels/segmentationModels/maskrcnn_resnet50_for0_model.pth")
+    t = myEvaluate(model, data_loader_test, device=device)
+
+
 def main():
     datasetPath = "/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_image_format"
     # train on the GPU or on the CPU, if a GPU is not available
@@ -171,10 +185,11 @@ def main():
     dataset_test = MyDataset(datasetPath, get_transform(train=False))
 
     # split the dataset in train and test set
-    # 返回一个0~len-1的随机排序列表
+    # 返回一个0~len-1的随机排序列表list
     indices = torch.randperm(len(dataset)).tolist()
+    # indices = np.arange(len(dataset)).tolist()
     dataset = torch.utils.data.Subset(dataset, indices[:-50])
-    dataset_test = torch.utils.data.Subset(dataset_test, indices[-50:])
+    dataset_test = torch.utils.data.Subset(dataset_test, indices[1:2])
 
     # define training and validation data loaders
     data_loader = torch.utils.data.DataLoader(dataset,
@@ -204,9 +219,10 @@ def main():
                                                    step_size=3,
                                                    gamma=0.1)
     # let's train it for 10 epochs
-    num_epochs = 25
+    num_epochs = 10
 
     for epoch in range(num_epochs):
+        #break
         # train for one epoch, printing every 10 iterations
         train_one_epoch(model,
                         optimizer,
@@ -223,6 +239,7 @@ def main():
             "../../outputModels/segmentationModels/maskrcnn_resnet50_for" +
             str(epoch) + "_modelweights.pth")
     print("That's it!")
+    showEvaluation(None, data_loader_test, device)
 
 
 if __name__ == "__main__":

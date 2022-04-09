@@ -6,5 +6,6 @@ chromotest
 chromotest_result
 labelme
 segmentInstances
+utils/imageTest
 *.pth
 __pycache__
