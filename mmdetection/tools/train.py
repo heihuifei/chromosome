@@ -176,17 +176,24 @@ def main():
     meta['seed'] = seed
     meta['exp_name'] = osp.basename(args.config)
 
+    # 先通过配置映射构建model,顺序为detector->two_stage->backbone->neck->rpn_head->roi_head
+    # 此时只是进行detector的创建, 只涉及rpn, rpn_proposal, rcnn等设置, 不涉及数据处理
     model = build_detector(
         cfg.model,
         train_cfg=cfg.get('train_cfg'),
         test_cfg=cfg.get('test_cfg'))
     model.init_weights()
 
+    # 先通过配置映射构建dataset, 根据type(如CocoDataset)构建该类, pipeline完成数据集的格式化
+    # 然后可以通过该类对象调用其内部的各种方法完成数据准备,datasets是list对象
+    # 包括多个dataset类对象, 如训练数据集类, 测试数据集类
     datasets = [build_dataset(cfg.data.train)]
+    # 一般默认workflow为1, 表示所有训练结束后进行验证测试
     if len(cfg.workflow) == 2:
         val_dataset = copy.deepcopy(cfg.data.val)
         val_dataset.pipeline = cfg.data.train.pipeline
         datasets.append(build_dataset(val_dataset))
+    # 对于checkpoint模型的配置文件, 一般没有设置
     if cfg.checkpoint_config is not None:
         # save mmdet version, config file content and class names in
         # checkpoints as meta data

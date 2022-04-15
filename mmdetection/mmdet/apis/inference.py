@@ -14,6 +14,7 @@ from mmdet.datasets.pipelines import Compose
 from mmdet.models import build_detector
 
 
+# 在最开始的时候根据config初始化detector模型
 def init_detector(config, checkpoint=None, device='cuda:0', cfg_options=None):
     """Initialize a detector from config file.
 

@@ -106,6 +106,9 @@ class SingleRoIExtractor(BaseRoIExtractor):
             # inds中的个数，即判断该特征图中映射的roi数量
             if inds.numel() > 0:
                 rois_ = rois[inds]
+                # roi_layers是比如ROIAlign; forward函数的args为inputs, rois,二者含义为
+                # inputs: NCHW images; rois: Bx5 boxes. First column is the index into N.The other 4 columns are xyxy.
+                # roi_layers将roi的大小映射到feat图上, 最终生成output_size大小的特征图,即进行池化操作
                 roi_feats_t = self.roi_layers[i](feats[i], rois_)
                 roi_feats[inds] = roi_feats_t
             else:
@@ -118,4 +121,8 @@ class SingleRoIExtractor(BaseRoIExtractor):
                 roi_feats += sum(
                     x.view(-1)[0]
                     for x in self.parameters()) * 0. + feats[i].sum() * 0.
+        # roi_feats初始化为全0的每个roi对应的out_channels特征
+        # for循环筛选每层特征图上的rois得到该层上有效rois的inds, 
+        # 然后使用roi_layers针对该层feat和rois得到roi_feats_t, 
+        # 最后将roi_feats_t加入到roi_feat
         return roi_feats

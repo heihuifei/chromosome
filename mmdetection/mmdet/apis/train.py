@@ -96,6 +96,7 @@ def train_detector(model,
 
     runner_type = 'EpochBasedRunner' if 'runner' not in cfg else cfg.runner[
         'type']
+    # 针对datasets中的训练/测试dataset构建dataloader
     data_loaders = [
         build_dataloader(
             ds,
@@ -206,4 +207,5 @@ def train_detector(model,
         runner.resume(cfg.resume_from)
     elif cfg.load_from:
         runner.load_checkpoint(cfg.load_from)
+    # 通过EpochBasedRunner执行其run方法,完成整个流程的训练及测试流程
     runner.run(data_loaders, cfg.workflow)

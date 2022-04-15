@@ -69,14 +69,19 @@ class CocoDataset(CustomDataset):
             list[dict]: Annotation info from COCO api.
         """
 
+        # coco内部格式为anns, cats, imgs = {}, {}, {}, imgToAnns, catToImgs = {[]}, {[]}
+        # 其中anns是以实例对象为单位, cats是以数据集种类数, imgs是以图像为单位，几者之间以imgToAnns, catToImgs进行映射联系
         self.coco = COCO(ann_file)
         # The order of returned `cat_ids` will not
         # change with the order of the CLASSES
         self.cat_ids = self.coco.get_cat_ids(cat_names=self.CLASSES)
 
+        # 将类别映射为数字label
         self.cat2label = {cat_id: i for i, cat_id in enumerate(self.cat_ids)}
         self.img_ids = self.coco.get_img_ids()
+        # data_info存储的是imgs的信息,包括img_id, fileame等
         data_infos = []
+        # total_ann_ids存储的是每张img_id对应的ann_id
         total_ann_ids = []
         for i in self.img_ids:
             info = self.coco.load_imgs([i])[0]

@@ -164,6 +164,8 @@ class BaseDetector(BaseModule, metaclass=ABCMeta):
         should be double nested (i.e.  List[Tensor], List[List[dict]]), with
         the outer list indicating test time augmentations.
         """
+        # 其中img是当前batch的图像信息[[[[x11, x12, ...]]],[[[x11, x12...]]]]
+        # img_metas是图像的一些尺寸, 绝对路径, 放缩大小等信息，该函数由train_step调用
         if torch.onnx.is_in_onnx_export():
             assert len(img_metas) == 1
             return self.onnx_export(img[0], img_metas[0])
@@ -245,6 +247,10 @@ class BaseDetector(BaseModule, metaclass=ABCMeta):
                   DDP, it means the batch size on each GPU), which is used for
                   averaging the logs.
         """
+        # 调用train_step后调用self函数便是执行model(base.py)的foward函数
+        # data即上层runner中传入的data_batch，是一个dict, 包含img_metas, img, gt_bbox, gt_labels, gt_masks等关键字kv信息
+        # 通过**kwargs方式将img及其标注信息传入foward函数
+        print("this is data=data_batch's gt_masks in train_step in base.py: ", data['gt_masks'], data['gt_masks'][0][0])
         losses = self(**data)
         loss, log_vars = self._parse_losses(losses)
 

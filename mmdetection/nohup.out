@@ -1,540 +1,0 @@
-`fused_weight_gradient_mlp_cuda` module not found. gradient accumulation fusion with weight gradient computation disabled.
-/home/guest01/projects/chromos/mmdetection/mmdet/utils/setup_env.py:32: UserWarning: Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed.
-  warnings.warn(
-/home/guest01/projects/chromos/mmdetection/mmdet/utils/setup_env.py:42: UserWarning: Setting MKL_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed.
-  warnings.warn(
-2022-03-14 12:34:24,095 - mmdet - INFO - Environment info:
-------------------------------------------------------------
-sys.platform: linux
-Python: 3.8.11 (default, Aug  3 2021, 15:09:35) [GCC 7.5.0]
-CUDA available: True
-GPU 0: Tesla V100-PCIE-32GB
-CUDA_HOME: /usr/local/cuda
-NVCC: Build cuda_11.0_bu.TC445_37.28845127_0
-GCC: gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
-PyTorch: 1.7.1+cu110
-PyTorch compiling details: PyTorch built with:
-  - GCC 7.3
-  - C++ Version: 201402
-  - Intel(R) Math Kernel Library Version 2020.0.0 Product Build 20191122 for Intel(R) 64 architecture applications
-  - Intel(R) MKL-DNN v1.6.0 (Git Hash 5ef631a030a6f73131c77892041042805a06064f)
-  - OpenMP 201511 (a.k.a. OpenMP 4.5)
-  - NNPACK is enabled
-  - CPU capability usage: AVX2
-  - CUDA Runtime 11.0
-  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80
-  - CuDNN 8.0.5
-  - Magma 2.5.2
-  - Build settings: BLAS=MKL, BUILD_TYPE=Release, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -fopenmp -DNDEBUG -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DUSE_VULKAN_WRAPPER -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, USE_CUDA=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, 
-
-TorchVision: 0.8.2+cu110
-OpenCV: 4.5.3
-MMCV: 1.4.4
-MMCV Compiler: GCC 7.3
-MMCV CUDA Compiler: 11.0
-MMDetection: 2.22.0+70f6d9c
-------------------------------------------------------------
-
-2022-03-14 12:34:25,095 - mmdet - INFO - Distributed training: False
-2022-03-14 12:34:26,042 - mmdet - INFO - Config:
-model = dict(
-    type='MaskScoringRCNN',
-    backbone=dict(
-        type='ResNet',
-        depth=50,
-        num_stages=4,
-        out_indices=(0, 1, 2, 3),
-        frozen_stages=1,
-        norm_cfg=dict(type='BN', requires_grad=False),
-        norm_eval=True,
-        style='caffe',
-        init_cfg=dict(
-            type='Pretrained',
-            checkpoint='open-mmlab://detectron2/resnet50_caffe')),
-    neck=dict(
-        type='FPN',
-        in_channels=[256, 512, 1024, 2048],
-        out_channels=256,
-        num_outs=5),
-    rpn_head=dict(
-        type='RPNHead',
-        in_channels=256,
-        feat_channels=256,
-        anchor_generator=dict(
-            type='AnchorGenerator',
-            scales=[8],
-            ratios=[0.5, 1.0, 2.0],
-            strides=[4, 8, 16, 32, 64]),
-        bbox_coder=dict(
-            type='DeltaXYWHBBoxCoder',
-            target_means=[0.0, 0.0, 0.0, 0.0],
-            target_stds=[1.0, 1.0, 1.0, 1.0]),
-        loss_cls=dict(
-            type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0),
-        loss_bbox=dict(type='L1Loss', loss_weight=1.0)),
-    roi_head=dict(
-        type='MaskScoringRoIHead',
-        bbox_roi_extractor=dict(
-            type='SingleRoIExtractor',
-            roi_layer=dict(type='RoIAlign', output_size=7, sampling_ratio=0),
-            out_channels=256,
-            featmap_strides=[4, 8, 16, 32]),
-        bbox_head=dict(
-            type='Shared2FCBBoxHead',
-            in_channels=256,
-            fc_out_channels=1024,
-            roi_feat_size=7,
-            num_classes=1,
-            bbox_coder=dict(
-                type='DeltaXYWHBBoxCoder',
-                target_means=[0.0, 0.0, 0.0, 0.0],
-                target_stds=[0.1, 0.1, 0.2, 0.2]),
-            reg_class_agnostic=False,
-            loss_cls=dict(
-                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
-            loss_bbox=dict(type='L1Loss', loss_weight=1.0)),
-        mask_roi_extractor=dict(
-            type='SingleRoIExtractor',
-            roi_layer=dict(type='RoIAlign', output_size=14, sampling_ratio=0),
-            out_channels=256,
-            featmap_strides=[4, 8, 16, 32]),
-        mask_head=dict(
-            type='FCNMaskHead',
-            num_convs=4,
-            in_channels=256,
-            conv_out_channels=256,
-            num_classes=1,
-            loss_mask=dict(
-                type='CrossEntropyLoss', use_mask=True, loss_weight=1.0)),
-        mask_iou_head=dict(
-            type='MaskIoUHead',
-            num_convs=4,
-            num_fcs=2,
-            roi_feat_size=14,
-            in_channels=256,
-            conv_out_channels=256,
-            fc_out_channels=1024,
-            num_classes=1)),
-    train_cfg=dict(
-        rpn=dict(
-            assigner=dict(
-                type='MaxIoUAssigner',
-                pos_iou_thr=0.7,
-                neg_iou_thr=0.3,
-                min_pos_iou=0.3,
-                match_low_quality=True,
-                ignore_iof_thr=-1),
-            sampler=dict(
-                type='RandomSampler',
-                num=256,
-                pos_fraction=0.5,
-                neg_pos_ub=-1,
-                add_gt_as_proposals=False),
-            allowed_border=-1,
-            pos_weight=-1,
-            debug=False),
-        rpn_proposal=dict(
-            nms_pre=2000,
-            max_per_img=1000,
-            nms=dict(type='nms', iou_threshold=0.7),
-            min_bbox_size=0),
-        rcnn=dict(
-            assigner=dict(
-                type='MaxIoUAssigner',
-                pos_iou_thr=0.5,
-                neg_iou_thr=0.5,
-                min_pos_iou=0.5,
-                match_low_quality=True,
-                ignore_iof_thr=-1),
-            sampler=dict(
-                type='RandomSampler',
-                num=512,
-                pos_fraction=0.25,
-                neg_pos_ub=-1,
-                add_gt_as_proposals=True),
-            mask_size=28,
-            pos_weight=-1,
-            debug=False,
-            mask_thr_binary=0.5)),
-    test_cfg=dict(
-        rpn=dict(
-            nms_pre=1000,
-            max_per_img=1000,
-            nms=dict(type='nms', iou_threshold=0.7),
-            min_bbox_size=0),
-        rcnn=dict(
-            score_thr=0.05,
-            nms=dict(type='nms', iou_threshold=0.5),
-            max_per_img=100,
-            mask_thr_binary=0.5)))
-dataset_type = 'COCODataset'
-data_root = 'data/coco/'
-img_norm_cfg = dict(
-    mean=[103.53, 116.28, 123.675], std=[1.0, 1.0, 1.0], to_rgb=False)
-train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
-    dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
-    dict(type='RandomFlip', flip_ratio=0.5),
-    dict(
-        type='Normalize',
-        mean=[103.53, 116.28, 123.675],
-        std=[1.0, 1.0, 1.0],
-        to_rgb=False),
-    dict(type='Pad', size_divisor=32),
-    dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks'])
-]
-test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(
-        type='MultiScaleFlipAug',
-        img_scale=(1333, 800),
-        flip=False,
-        transforms=[
-            dict(type='Resize', keep_ratio=True),
-            dict(type='RandomFlip'),
-            dict(
-                type='Normalize',
-                mean=[103.53, 116.28, 123.675],
-                std=[1.0, 1.0, 1.0],
-                to_rgb=False),
-            dict(type='Pad', size_divisor=32),
-            dict(type='ImageToTensor', keys=['img']),
-            dict(type='Collect', keys=['img'])
-        ])
-]
-data = dict(
-    samples_per_gpu=2,
-    workers_per_gpu=2,
-    train=dict(
-        type='CocoDataset',
-        ann_file=
-        '/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_train_origin77and187images_overlap1000images.json',
-        img_prefix=
-        '/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/train_origin_77and187_overlap_1000',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
-            dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
-            dict(type='RandomFlip', flip_ratio=0.5),
-            dict(
-                type='Normalize',
-                mean=[103.53, 116.28, 123.675],
-                std=[1.0, 1.0, 1.0],
-                to_rgb=False),
-            dict(type='Pad', size_divisor=32),
-            dict(type='DefaultFormatBundle'),
-            dict(
-                type='Collect',
-                keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks'])
-        ],
-        classes=('chromos', )),
-    val=dict(
-        type='CocoDataset',
-        ann_file=
-        '/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_val_origin_23and37images.json',
-        img_prefix=
-        '/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/val_origin_23and37',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(
-                type='MultiScaleFlipAug',
-                img_scale=(1333, 800),
-                flip=False,
-                transforms=[
-                    dict(type='Resize', keep_ratio=True),
-                    dict(type='RandomFlip'),
-                    dict(
-                        type='Normalize',
-                        mean=[103.53, 116.28, 123.675],
-                        std=[1.0, 1.0, 1.0],
-                        to_rgb=False),
-                    dict(type='Pad', size_divisor=32),
-                    dict(type='ImageToTensor', keys=['img']),
-                    dict(type='Collect', keys=['img'])
-                ])
-        ],
-        classes=('chromos', )),
-    test=dict(
-        type='CocoDataset',
-        ann_file=
-        '/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_val_origin_23and37images.json',
-        img_prefix=
-        '/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/val_origin_23and37',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(
-                type='MultiScaleFlipAug',
-                img_scale=(1333, 800),
-                flip=False,
-                transforms=[
-                    dict(type='Resize', keep_ratio=True),
-                    dict(type='RandomFlip'),
-                    dict(
-                        type='Normalize',
-                        mean=[103.53, 116.28, 123.675],
-                        std=[1.0, 1.0, 1.0],
-                        to_rgb=False),
-                    dict(type='Pad', size_divisor=32),
-                    dict(type='ImageToTensor', keys=['img']),
-                    dict(type='Collect', keys=['img'])
-                ])
-        ],
-        classes=('chromos', )))
-evaluation = dict(metric=['bbox', 'segm'])
-optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
-optimizer_config = dict(grad_clip=None)
-lr_config = dict(
-    policy='step',
-    warmup='linear',
-    warmup_iters=500,
-    warmup_ratio=0.001,
-    step=[16, 22])
-runner = dict(type='EpochBasedRunner', max_epochs=24)
-checkpoint_config = dict(interval=1)
-log_config = dict(interval=50, hooks=[dict(type='CustomizedTextLoggerHook')])
-custom_hooks = [dict(type='NumClassCheckHook')]
-dist_params = dict(backend='nccl')
-log_level = 'INFO'
-load_from = '/home/guest01/projects/chromos/checkpoint/ms_rcnn_r50_caffe_fpn_2x_coco_bbox_mAP-0.388__segm_mAP-0.363_20200506_004738-ee87b137.pth'
-resume_from = None
-workflow = [('train', 1)]
-opencv_num_threads = 0
-mp_start_method = 'fork'
-classes = ('chromos', )
-work_dir = '/home/guest01/projects/chromos/outputModels/segmentationModels/msrcnn/ms_rcnn_r50_caffe_2x_origin_fake1000/'
-auto_resume = False
-gpu_ids = [0]
-
-2022-03-14 12:34:26,042 - mmdet - INFO - Set random seed to 1597005093, deterministic: False
-2022-03-14 12:34:27,118 - mmdet - INFO - initialize ResNet with init_cfg {'type': 'Pretrained', 'checkpoint': 'open-mmlab://detectron2/resnet50_caffe'}
-2022-03-14 12:34:27,119 - mmcv - INFO - load model from: open-mmlab://detectron2/resnet50_caffe
-2022-03-14 12:34:27,120 - mmcv - INFO - load checkpoint from openmmlab path: open-mmlab://detectron2/resnet50_caffe
-2022-03-14 12:34:27,603 - mmcv - WARNING - The model and loaded state dict do not match exactly
-
-unexpected key in source state_dict: conv1.bias
-
-2022-03-14 12:34:28,475 - mmdet - INFO - initialize FPN with init_cfg {'type': 'Xavier', 'layer': 'Conv2d', 'distribution': 'uniform'}
-2022-03-14 12:34:28,638 - mmdet - INFO - initialize RPNHead with init_cfg {'type': 'Normal', 'layer': 'Conv2d', 'std': 0.01}
-2022-03-14 12:34:28,660 - mmdet - INFO - initialize Shared2FCBBoxHead with init_cfg [{'type': 'Normal', 'std': 0.01, 'override': {'name': 'fc_cls'}}, {'type': 'Normal', 'std': 0.001, 'override': {'name': 'fc_reg'}}, {'type': 'Xavier', 'distribution': 'uniform', 'override': [{'name': 'shared_fcs'}, {'name': 'cls_fcs'}, {'name': 'reg_fcs'}]}]
-2022-03-14 12:34:28,960 - mmdet - INFO - initialize MaskIoUHead with init_cfg [{'type': 'Kaiming', 'override': {'name': 'convs'}}, {'type': 'Caffe2Xavier', 'override': {'name': 'fcs'}}, {'type': 'Normal', 'std': 0.01, 'override': {'name': 'fc_mask_iou'}}]
-/home/guest01/projects/chromos/mmdetection/mmdet/datasets/api_wrappers/coco_api.py:20: UserWarning: mmpycocotools is deprecated. Please install official pycocotools by "pip install pycocotools"
-  warnings.warn(
-/home/guest01/projects/chromos/mmdetection/mmdet/datasets/api_wrappers/coco_api.py:20: UserWarning: mmpycocotools is deprecated. Please install official pycocotools by "pip install pycocotools"
-  warnings.warn(
-2022-03-14 12:34:33,747 - mmdet - INFO - load checkpoint from local path: /home/guest01/projects/chromos/checkpoint/ms_rcnn_r50_caffe_fpn_2x_coco_bbox_mAP-0.388__segm_mAP-0.363_20200506_004738-ee87b137.pth
-2022-03-14 12:34:33,968 - mmdet - WARNING - The model and loaded state dict do not match exactly
-
-size mismatch for roi_head.bbox_head.fc_cls.weight: copying a param with shape torch.Size([81, 1024]) from checkpoint, the shape in current model is torch.Size([2, 1024]).
-size mismatch for roi_head.bbox_head.fc_cls.bias: copying a param with shape torch.Size([81]) from checkpoint, the shape in current model is torch.Size([2]).
-size mismatch for roi_head.bbox_head.fc_reg.weight: copying a param with shape torch.Size([320, 1024]) from checkpoint, the shape in current model is torch.Size([4, 1024]).
-size mismatch for roi_head.bbox_head.fc_reg.bias: copying a param with shape torch.Size([320]) from checkpoint, the shape in current model is torch.Size([4]).
-size mismatch for roi_head.mask_head.conv_logits.weight: copying a param with shape torch.Size([80, 256, 1, 1]) from checkpoint, the shape in current model is torch.Size([1, 256, 1, 1]).
-size mismatch for roi_head.mask_head.conv_logits.bias: copying a param with shape torch.Size([80]) from checkpoint, the shape in current model is torch.Size([1]).
-size mismatch for roi_head.mask_iou_head.fc_mask_iou.weight: copying a param with shape torch.Size([80, 1024]) from checkpoint, the shape in current model is torch.Size([1, 1024]).
-size mismatch for roi_head.mask_iou_head.fc_mask_iou.bias: copying a param with shape torch.Size([80]) from checkpoint, the shape in current model is torch.Size([1]).
-2022-03-14 12:34:33,978 - mmdet - INFO - Start running, host: guest01@compute01, work_dir: /home/guest01/projects/chromos/outputModels/segmentationModels/msrcnn/ms_rcnn_r50_caffe_2x_origin_fake1000
-2022-03-14 12:34:33,978 - mmdet - INFO - Hooks will be executed in the following order:
-before_run:
-(VERY_HIGH   ) StepLrUpdaterHook                  
-(NORMAL      ) CheckpointHook                     
-(LOW         ) EvalHook                           
-(VERY_LOW    ) CustomizedTextLoggerHook           
- -------------------- 
-before_train_epoch:
-(VERY_HIGH   ) StepLrUpdaterHook                  
-(NORMAL      ) NumClassCheckHook                  
-(LOW         ) IterTimerHook                      
-(LOW         ) EvalHook                           
-(VERY_LOW    ) CustomizedTextLoggerHook           
- -------------------- 
-before_train_iter:
-(VERY_HIGH   ) StepLrUpdaterHook                  
-(LOW         ) IterTimerHook                      
-(LOW         ) EvalHook                           
- -------------------- 
-after_train_iter:
-(ABOVE_NORMAL) OptimizerHook                      
-(NORMAL      ) CheckpointHook                     
-(LOW         ) IterTimerHook                      
-(LOW         ) EvalHook                           
-(VERY_LOW    ) CustomizedTextLoggerHook           
- -------------------- 
-after_train_epoch:
-(NORMAL      ) CheckpointHook                     
-(LOW         ) EvalHook                           
-(VERY_LOW    ) CustomizedTextLoggerHook           
- -------------------- 
-before_val_epoch:
-(NORMAL      ) NumClassCheckHook                  
-(LOW         ) IterTimerHook                      
-(VERY_LOW    ) CustomizedTextLoggerHook           
- -------------------- 
-before_val_iter:
-(LOW         ) IterTimerHook                      
- -------------------- 
-after_val_iter:
-(LOW         ) IterTimerHook                      
- -------------------- 
-after_val_epoch:
-(VERY_LOW    ) CustomizedTextLoggerHook           
- -------------------- 
-after_run:
-(VERY_LOW    ) CustomizedTextLoggerHook           
- -------------------- 
-2022-03-14 12:34:33,978 - mmdet - INFO - workflow: [('train', 1)], max: 24 epochs
-2022-03-14 12:34:33,978 - mmdet - INFO - Checkpoints will be saved to /home/guest01/projects/chromos/outputModels/segmentationModels/msrcnn/ms_rcnn_r50_caffe_2x_origin_fake1000 by HardDiskBackend.
-loading annotations into memory...
-Done (t=1.33s)
-creating index...
-index created!
-loading annotations into memory...
-Done (t=0.06s)
-creating index...
-index created!
-2022-03-14 12:35:15,211 - mmdet - INFO - Epoch [1][50/632]	lr: 1.978e-03, layer_0_lr: 1.978e-03, eta: 3:27:27, time: 0.823, data_time: 0.345, memory: 3500, loss_rpn_cls: 0.1442, loss_rpn_bbox: 0.1927, loss_cls: 0.5117, acc: 73.4824, loss_bbox: 0.7629, loss_mask: 0.9865, loss_mask_iou: 0.0475, loss: 2.6455
-2022-03-14 12:35:54,246 - mmdet - INFO - Epoch [1][100/632]	lr: 3.976e-03, layer_0_lr: 3.976e-03, eta: 3:21:25, time: 0.781, data_time: 0.300, memory: 3500, loss_rpn_cls: 0.0180, loss_rpn_bbox: 0.1570, loss_cls: 0.3213, acc: 85.9609, loss_bbox: 0.4834, loss_mask: 0.2564, loss_mask_iou: 0.0058, loss: 1.2418
-2022-03-14 12:36:33,805 - mmdet - INFO - Epoch [1][150/632]	lr: 5.974e-03, layer_0_lr: 5.974e-03, eta: 3:19:50, time: 0.791, data_time: 0.301, memory: 3500, loss_rpn_cls: 0.0205, loss_rpn_bbox: 0.1587, loss_cls: 0.2877, acc: 87.6035, loss_bbox: 0.4243, loss_mask: 0.2320, loss_mask_iou: 0.0045, loss: 1.1277
-2022-03-14 12:37:12,261 - mmdet - INFO - Epoch [1][200/632]	lr: 7.972e-03, layer_0_lr: 7.972e-03, eta: 3:17:21, time: 0.769, data_time: 0.291, memory: 3500, loss_rpn_cls: 0.0182, loss_rpn_bbox: 0.1607, loss_cls: 0.2666, acc: 88.7656, loss_bbox: 0.4007, loss_mask: 0.2211, loss_mask_iou: 0.0043, loss: 1.0716
-2022-03-14 12:37:51,618 - mmdet - INFO - Epoch [1][250/632]	lr: 9.970e-03, layer_0_lr: 9.970e-03, eta: 3:16:29, time: 0.787, data_time: 0.295, memory: 3500, loss_rpn_cls: 0.0205, loss_rpn_bbox: 0.1554, loss_cls: 0.2577, acc: 89.1660, loss_bbox: 0.3892, loss_mask: 0.2119, loss_mask_iou: 0.0041, loss: 1.0388
-2022-03-14 12:38:30,449 - mmdet - INFO - Epoch [1][300/632]	lr: 1.197e-02, layer_0_lr: 1.197e-02, eta: 3:15:16, time: 0.777, data_time: 0.289, memory: 3500, loss_rpn_cls: 0.0176, loss_rpn_bbox: 0.1561, loss_cls: 0.2463, acc: 89.6094, loss_bbox: 0.3860, loss_mask: 0.2155, loss_mask_iou: 0.0041, loss: 1.0256
-2022-03-14 12:39:08,067 - mmdet - INFO - Epoch [1][350/632]	lr: 1.397e-02, layer_0_lr: 1.397e-02, eta: 3:13:21, time: 0.753, data_time: 0.287, memory: 3500, loss_rpn_cls: 0.0216, loss_rpn_bbox: 0.1651, loss_cls: 0.2576, acc: 89.0234, loss_bbox: 0.3823, loss_mask: 0.2126, loss_mask_iou: 0.0047, loss: 1.0439
-2022-03-14 12:39:47,237 - mmdet - INFO - Epoch [1][400/632]	lr: 1.596e-02, layer_0_lr: 1.596e-02, eta: 3:12:42, time: 0.783, data_time: 0.297, memory: 3500, loss_rpn_cls: 0.0187, loss_rpn_bbox: 0.1691, loss_cls: 0.2538, acc: 89.4316, loss_bbox: 0.3834, loss_mask: 0.2017, loss_mask_iou: 0.0043, loss: 1.0309
-2022-03-14 12:40:25,172 - mmdet - INFO - Epoch [1][450/632]	lr: 1.796e-02, layer_0_lr: 1.796e-02, eta: 3:11:24, time: 0.759, data_time: 0.287, memory: 3500, loss_rpn_cls: 0.0187, loss_rpn_bbox: 0.1556, loss_cls: 0.2376, acc: 89.8555, loss_bbox: 0.3692, loss_mask: 0.2010, loss_mask_iou: 0.0039, loss: 0.9860
-2022-03-14 12:41:03,625 - mmdet - INFO - Epoch [1][500/632]	lr: 1.996e-02, layer_0_lr: 1.996e-02, eta: 3:10:28, time: 0.769, data_time: 0.289, memory: 3500, loss_rpn_cls: 0.0245, loss_rpn_bbox: 0.1622, loss_cls: 0.2401, acc: 89.8965, loss_bbox: 0.3744, loss_mask: 0.2062, loss_mask_iou: 0.0048, loss: 1.0122
-2022-03-14 12:41:41,834 - mmdet - INFO - Epoch [1][550/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 3:09:29, time: 0.764, data_time: 0.298, memory: 3500, loss_rpn_cls: 0.0178, loss_rpn_bbox: 0.1589, loss_cls: 0.2503, acc: 89.3809, loss_bbox: 0.3747, loss_mask: 0.1976, loss_mask_iou: 0.0040, loss: 1.0033
-2022-03-14 12:42:20,572 - mmdet - INFO - Epoch [1][600/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 3:08:47, time: 0.775, data_time: 0.295, memory: 3500, loss_rpn_cls: 0.0216, loss_rpn_bbox: 0.1614, loss_cls: 0.2436, acc: 89.5977, loss_bbox: 0.3647, loss_mask: 0.1983, loss_mask_iou: 0.0050, loss: 0.9946
-2022-03-14 12:42:45,481 - mmdet - INFO - Saving checkpoint at 1 epochs
-[                                                  ] 0/60, elapsed: 0s, ETA:[                                  ] 1/60, 1.7 task/s, elapsed: 1s, ETA:    36s[>                                 ] 2/60, 2.3 task/s, elapsed: 1s, ETA:    26s[>                                 ] 3/60, 2.5 task/s, elapsed: 1s, ETA:    23s[>>                                ] 4/60, 2.9 task/s, elapsed: 1s, ETA:    19s[>>                                ] 5/60, 3.2 task/s, elapsed: 2s, ETA:    17s[>>>                               ] 6/60, 3.4 task/s, elapsed: 2s, ETA:    16s[>>>                               ] 7/60, 3.5 task/s, elapsed: 2s, ETA:    15s[>>>>                              ] 8/60, 3.7 task/s, elapsed: 2s, ETA:    14s[>>>>>                             ] 9/60, 3.8 task/s, elapsed: 2s, ETA:    13s[>>>>>                            ] 10/60, 3.9 task/s, elapsed: 3s, ETA:    13s[>>>>>>                           ] 11/60, 4.0 task/s, elapsed: 3s, ETA:    12s[>>>>>>                           ] 12/60, 4.1 task/s, elapsed: 3s, ETA:    12s[>>>>>>>                          ] 13/60, 4.2 task/s, elapsed: 3s, ETA:    11s[>>>>>>>                          ] 14/60, 4.3 task/s, elapsed: 3s, ETA:    11s[>>>>>>>>                         ] 15/60, 4.3 task/s, elapsed: 3s, ETA:    10s[>>>>>>>>                         ] 16/60, 4.3 task/s, elapsed: 4s, ETA:    10s[>>>>>>>>>                        ] 17/60, 4.4 task/s, elapsed: 4s, ETA:    10s[>>>>>>>>>                        ] 18/60, 4.4 task/s, elapsed: 4s, ETA:     9s[>>>>>>>>>>                       ] 19/60, 4.5 task/s, elapsed: 4s, ETA:     9s[>>>>>>>>>>>                      ] 20/60, 4.5 task/s, elapsed: 4s, ETA:     9s[>>>>>>>>>>>                      ] 21/60, 4.5 task/s, elapsed: 5s, ETA:     9s[>>>>>>>>>>>>                     ] 22/60, 4.5 task/s, elapsed: 5s, ETA:     9s[>>>>>>>>>>>>                     ] 23/60, 4.5 task/s, elapsed: 5s, ETA:     8s[>>>>>>>>>>>>>                    ] 24/60, 4.5 task/s, elapsed: 5s, ETA:     8s[>>>>>>>>>>>>>                    ] 25/60, 4.5 task/s, elapsed: 6s, ETA:     8s[>>>>>>>>>>>>>>                   ] 26/60, 4.5 task/s, elapsed: 6s, ETA:     8s[>>>>>>>>>>>>>>                   ] 27/60, 4.5 task/s, elapsed: 6s, ETA:     7s[>>>>>>>>>>>>>>>                  ] 28/60, 4.5 task/s, elapsed: 6s, ETA:     7s[>>>>>>>>>>>>>>>                  ] 29/60, 4.5 task/s, elapsed: 6s, ETA:     7s[>>>>>>>>>>>>>>>>                 ] 30/60, 4.5 task/s, elapsed: 7s, ETA:     7s[>>>>>>>>>>>>>>>>>                ] 31/60, 4.5 task/s, elapsed: 7s, ETA:     6s[>>>>>>>>>>>>>>>>>                ] 32/60, 4.6 task/s, elapsed: 7s, ETA:     6s[>>>>>>>>>>>>>>>>>>               ] 33/60, 4.6 task/s, elapsed: 7s, ETA:     6s[>>>>>>>>>>>>>>>>>>               ] 34/60, 4.6 task/s, elapsed: 7s, ETA:     6s[>>>>>>>>>>>>>>>>>>>              ] 35/60, 4.6 task/s, elapsed: 8s, ETA:     5s[>>>>>>>>>>>>>>>>>>>              ] 36/60, 4.6 task/s, elapsed: 8s, ETA:     5s[>>>>>>>>>>>>>>>>>>>>             ] 37/60, 4.7 task/s, elapsed: 8s, ETA:     5s[>>>>>>>>>>>>>>>>>>>>             ] 38/60, 4.7 task/s, elapsed: 8s, ETA:     5s[>>>>>>>>>>>>>>>>>>>>>            ] 39/60, 4.7 task/s, elapsed: 8s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>           ] 40/60, 4.7 task/s, elapsed: 9s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>           ] 41/60, 4.7 task/s, elapsed: 9s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>>          ] 42/60, 4.7 task/s, elapsed: 9s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>>          ] 43/60, 4.7 task/s, elapsed: 9s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>>>         ] 44/60, 4.7 task/s, elapsed: 9s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>        ] 45/60, 4.7 task/s, elapsed: 10s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>        ] 46/60, 4.7 task/s, elapsed: 10s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>       ] 47/60, 4.7 task/s, elapsed: 10s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>       ] 48/60, 4.7 task/s, elapsed: 10s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>>      ] 49/60, 4.7 task/s, elapsed: 10s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>      ] 50/60, 4.7 task/s, elapsed: 11s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>     ] 51/60, 4.7 task/s, elapsed: 11s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>     ] 52/60, 4.7 task/s, elapsed: 11s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 53/60, 4.7 task/s, elapsed: 11s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 54/60, 4.7 task/s, elapsed: 11s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 55/60, 4.7 task/s, elapsed: 12s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 56/60, 4.7 task/s, elapsed: 12s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 57/60, 4.7 task/s, elapsed: 12s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 58/60, 4.7 task/s, elapsed: 12s, ETA:     0s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 59/60, 4.7 task/s, elapsed: 13s, ETA:     0s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 60/60, 4.7 task/s, elapsed: 13s, ETA:     0s2022-03-14 12:43:04,300 - mmdet - INFO - Evaluating bbox...
-2022-03-14 12:43:07,094 - mmdet - INFO - 
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.647
-Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=1000 ] = 0.935
-Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=1000 ] = 0.761
-Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.661
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.551
-Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = -1.000
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.699
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=300 ] = 0.699
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.699
-Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.698
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.729
-Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = -1.000
-
-2022-03-14 12:43:07,095 - mmdet - INFO - Evaluating segm...
-/home/guest01/projects/chromos/mmdetection/mmdet/datasets/coco.py:474: UserWarning: The key "bbox" is deleted for more accurate mask AP of small/medium/large instances since v2.12.0. This does not change the overall mAP calculation.
-  warnings.warn(
-/home/guest01/anaconda3/envs/pytorch1.9/lib/python3.8/site-packages/pycocotools/cocoeval.py:410: DeprecationWarning: `np.float` is a deprecated alias for the builtin `float`. To silence this warning, use `float` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.float64` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  tp_sum = np.cumsum(tps, axis=1).astype(dtype=np.float)
-2022-03-14 12:43:10,104 - mmdet - INFO - 
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.583
-Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=1000 ] = 0.935
-Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=1000 ] = 0.716
-Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.582
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.631
-Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = -1.000
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.627
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=300 ] = 0.627
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.627
-Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.626
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.659
-Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = -1.000
-
-2022-03-14 12:43:10,111 - mmdet - INFO - Exp name: my_ms_rcnn_r50_2x.py
-2022-03-14 12:43:10,112 - mmdet - INFO - Epoch(val) [1][60]	bbox_mAP: 0.6470, bbox_mAP_50: 0.9350, bbox_mAP_75: 0.7610, bbox_mAP_s: 0.6610, bbox_mAP_m: 0.5510, bbox_mAP_l: -1.0000, bbox_mAP_copypaste: 0.647 0.935 0.761 0.661 0.551 -1.000, segm_mAP: 0.5830, segm_mAP_50: 0.9350, segm_mAP_75: 0.7160, segm_mAP_s: 0.5820, segm_mAP_m: 0.6310, segm_mAP_l: -1.0000, segm_mAP_copypaste: 0.583 0.935 0.716 0.582 0.631 -1.000
-Loading and preparing results...
-DONE (t=0.00s)
-creating index...
-index created!
-Running per image evaluation...
-Evaluate annotation type *bbox*
-DONE (t=2.72s).
-Accumulating evaluation results...
-DONE (t=0.06s).
-Loading and preparing results...
-DONE (t=0.03s)
-creating index...
-index created!
-Running per image evaluation...
-Evaluate annotation type *segm*
-DONE (t=2.89s).
-Accumulating evaluation results...
-DONE (t=0.07s).
-/home/guest01/anaconda3/envs/pytorch1.9/lib/python3.8/site-packages/mmcv/runner/hooks/logger/text.py:112: DeprecationWarning: an integer is required (got type float).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
-  mem_mb = torch.tensor([mem / (1024 * 1024)],
-2022-03-14 12:43:50,881 - mmdet - INFO - Epoch [2][50/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:59:33, time: 0.814, data_time: 0.339, memory: 3500, loss_rpn_cls: 0.0168, loss_rpn_bbox: 0.1525, loss_cls: 0.2286, acc: 90.5547, loss_bbox: 0.3561, loss_mask: 0.1927, loss_mask_iou: 0.0036, loss: 0.9502
-2022-03-14 12:44:29,345 - mmdet - INFO - Epoch [2][100/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:59:21, time: 0.769, data_time: 0.294, memory: 3500, loss_rpn_cls: 0.0200, loss_rpn_bbox: 0.1516, loss_cls: 0.2279, acc: 90.6074, loss_bbox: 0.3553, loss_mask: 0.1925, loss_mask_iou: 0.0046, loss: 0.9519
-2022-03-14 12:45:07,871 - mmdet - INFO - Epoch [2][150/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:59:07, time: 0.771, data_time: 0.296, memory: 3500, loss_rpn_cls: 0.0175, loss_rpn_bbox: 0.1460, loss_cls: 0.2286, acc: 90.5449, loss_bbox: 0.3512, loss_mask: 0.1918, loss_mask_iou: 0.0040, loss: 0.9392
-2022-03-14 12:45:46,648 - mmdet - INFO - Epoch [2][200/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:58:54, time: 0.775, data_time: 0.299, memory: 3500, loss_rpn_cls: 0.0183, loss_rpn_bbox: 0.1500, loss_cls: 0.2351, acc: 90.0898, loss_bbox: 0.3583, loss_mask: 0.1914, loss_mask_iou: 0.0038, loss: 0.9569
-2022-03-14 12:46:24,845 - mmdet - INFO - Epoch [2][250/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:58:29, time: 0.764, data_time: 0.290, memory: 3500, loss_rpn_cls: 0.0189, loss_rpn_bbox: 0.1461, loss_cls: 0.2205, acc: 90.8730, loss_bbox: 0.3407, loss_mask: 0.1881, loss_mask_iou: 0.0035, loss: 0.9179
-2022-03-14 12:47:02,837 - mmdet - INFO - Epoch [2][300/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:57:59, time: 0.760, data_time: 0.292, memory: 3500, loss_rpn_cls: 0.0146, loss_rpn_bbox: 0.1423, loss_cls: 0.2163, acc: 90.9023, loss_bbox: 0.3442, loss_mask: 0.1831, loss_mask_iou: 0.0033, loss: 0.9038
-2022-03-14 12:47:41,344 - mmdet - INFO - Epoch [2][350/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:57:36, time: 0.770, data_time: 0.290, memory: 3500, loss_rpn_cls: 0.0133, loss_rpn_bbox: 0.1439, loss_cls: 0.2150, acc: 90.9766, loss_bbox: 0.3418, loss_mask: 0.1871, loss_mask_iou: 0.0034, loss: 0.9043
-2022-03-14 12:48:17,645 - mmdet - INFO - Epoch [2][400/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:56:41, time: 0.726, data_time: 0.277, memory: 3500, loss_rpn_cls: 0.0139, loss_rpn_bbox: 0.1387, loss_cls: 0.2093, acc: 91.1406, loss_bbox: 0.3310, loss_mask: 0.1835, loss_mask_iou: 0.0035, loss: 0.8799
-2022-03-14 12:48:55,080 - mmdet - INFO - Epoch [2][450/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:56:03, time: 0.749, data_time: 0.284, memory: 3500, loss_rpn_cls: 0.0150, loss_rpn_bbox: 0.1418, loss_cls: 0.2235, acc: 90.6035, loss_bbox: 0.3364, loss_mask: 0.1834, loss_mask_iou: 0.0036, loss: 0.9038
-2022-03-14 12:49:32,241 - mmdet - INFO - Epoch [2][500/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:55:21, time: 0.743, data_time: 0.287, memory: 3500, loss_rpn_cls: 0.0157, loss_rpn_bbox: 0.1367, loss_cls: 0.2120, acc: 91.1992, loss_bbox: 0.3359, loss_mask: 0.1840, loss_mask_iou: 0.0035, loss: 0.8877
-2022-03-14 12:50:10,078 - mmdet - INFO - Epoch [2][550/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:54:48, time: 0.757, data_time: 0.287, memory: 3500, loss_rpn_cls: 0.0145, loss_rpn_bbox: 0.1406, loss_cls: 0.2119, acc: 91.1465, loss_bbox: 0.3387, loss_mask: 0.1866, loss_mask_iou: 0.0034, loss: 0.8957
-2022-03-14 12:50:48,763 - mmdet - INFO - Epoch [2][600/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:54:24, time: 0.774, data_time: 0.295, memory: 3500, loss_rpn_cls: 0.0148, loss_rpn_bbox: 0.1393, loss_cls: 0.2088, acc: 91.3672, loss_bbox: 0.3258, loss_mask: 0.1794, loss_mask_iou: 0.0034, loss: 0.8715
-2022-03-14 12:51:12,938 - mmdet - INFO - Saving checkpoint at 2 epochs
-[                                                  ] 0/60, elapsed: 0s, ETA:[                                  ] 1/60, 2.0 task/s, elapsed: 1s, ETA:    30s[>                                 ] 2/60, 2.9 task/s, elapsed: 1s, ETA:    20s[>                                 ] 3/60, 3.5 task/s, elapsed: 1s, ETA:    16s[>>                                ] 4/60, 3.9 task/s, elapsed: 1s, ETA:    14s[>>                                ] 5/60, 4.1 task/s, elapsed: 1s, ETA:    13s[>>>                               ] 6/60, 4.3 task/s, elapsed: 1s, ETA:    12s[>>>                               ] 7/60, 4.4 task/s, elapsed: 2s, ETA:    12s[>>>>                              ] 8/60, 4.6 task/s, elapsed: 2s, ETA:    11s[>>>>>                             ] 9/60, 4.7 task/s, elapsed: 2s, ETA:    11s[>>>>>                            ] 10/60, 4.8 task/s, elapsed: 2s, ETA:    10s[>>>>>>                           ] 11/60, 4.8 task/s, elapsed: 2s, ETA:    10s[>>>>>>                           ] 12/60, 4.9 task/s, elapsed: 2s, ETA:    10s[>>>>>>>                          ] 13/60, 5.0 task/s, elapsed: 3s, ETA:     9s[>>>>>>>                          ] 14/60, 5.1 task/s, elapsed: 3s, ETA:     9s[>>>>>>>>                         ] 15/60, 5.1 task/s, elapsed: 3s, ETA:     9s[>>>>>>>>                         ] 16/60, 5.1 task/s, elapsed: 3s, ETA:     9s[>>>>>>>>>                        ] 17/60, 5.2 task/s, elapsed: 3s, ETA:     8s[>>>>>>>>>                        ] 18/60, 5.2 task/s, elapsed: 3s, ETA:     8s[>>>>>>>>>>                       ] 19/60, 5.2 task/s, elapsed: 4s, ETA:     8s[>>>>>>>>>>>                      ] 20/60, 5.2 task/s, elapsed: 4s, ETA:     8s[>>>>>>>>>>>                      ] 21/60, 5.2 task/s, elapsed: 4s, ETA:     7s[>>>>>>>>>>>>                     ] 22/60, 5.3 task/s, elapsed: 4s, ETA:     7s[>>>>>>>>>>>>                     ] 23/60, 5.3 task/s, elapsed: 4s, ETA:     7s[>>>>>>>>>>>>>                    ] 24/60, 5.3 task/s, elapsed: 4s, ETA:     7s[>>>>>>>>>>>>>                    ] 25/60, 5.4 task/s, elapsed: 5s, ETA:     7s[>>>>>>>>>>>>>>                   ] 26/60, 5.4 task/s, elapsed: 5s, ETA:     6s[>>>>>>>>>>>>>>                   ] 27/60, 5.4 task/s, elapsed: 5s, ETA:     6s[>>>>>>>>>>>>>>>                  ] 28/60, 5.4 task/s, elapsed: 5s, ETA:     6s[>>>>>>>>>>>>>>>                  ] 29/60, 5.4 task/s, elapsed: 5s, ETA:     6s[>>>>>>>>>>>>>>>>                 ] 30/60, 5.4 task/s, elapsed: 6s, ETA:     6s[>>>>>>>>>>>>>>>>>                ] 31/60, 5.4 task/s, elapsed: 6s, ETA:     5s[>>>>>>>>>>>>>>>>>                ] 32/60, 5.4 task/s, elapsed: 6s, ETA:     5s[>>>>>>>>>>>>>>>>>>               ] 33/60, 5.4 task/s, elapsed: 6s, ETA:     5s[>>>>>>>>>>>>>>>>>>               ] 34/60, 5.4 task/s, elapsed: 6s, ETA:     5s[>>>>>>>>>>>>>>>>>>>              ] 35/60, 5.4 task/s, elapsed: 6s, ETA:     5s[>>>>>>>>>>>>>>>>>>>              ] 36/60, 5.5 task/s, elapsed: 7s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>             ] 37/60, 5.5 task/s, elapsed: 7s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>             ] 38/60, 5.5 task/s, elapsed: 7s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>            ] 39/60, 5.5 task/s, elapsed: 7s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>           ] 40/60, 5.5 task/s, elapsed: 7s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>           ] 41/60, 5.5 task/s, elapsed: 7s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>          ] 42/60, 5.5 task/s, elapsed: 8s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>          ] 43/60, 5.5 task/s, elapsed: 8s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>         ] 44/60, 5.5 task/s, elapsed: 8s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>         ] 45/60, 5.5 task/s, elapsed: 8s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>        ] 46/60, 5.5 task/s, elapsed: 8s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>        ] 47/60, 5.5 task/s, elapsed: 9s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>       ] 48/60, 5.5 task/s, elapsed: 9s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>       ] 49/60, 5.5 task/s, elapsed: 9s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>      ] 50/60, 5.5 task/s, elapsed: 9s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>     ] 51/60, 5.4 task/s, elapsed: 9s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>     ] 52/60, 5.4 task/s, elapsed: 10s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 53/60, 5.4 task/s, elapsed: 10s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 54/60, 5.4 task/s, elapsed: 10s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 55/60, 5.4 task/s, elapsed: 10s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 56/60, 5.4 task/s, elapsed: 10s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 57/60, 5.4 task/s, elapsed: 11s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 58/60, 5.4 task/s, elapsed: 11s, ETA:     0s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 59/60, 5.4 task/s, elapsed: 11s, ETA:     0s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 60/60, 5.4 task/s, elapsed: 11s, ETA:     0s2022-03-14 12:51:29,762 - mmdet - INFO - Evaluating bbox...
-2022-03-14 12:51:32,237 - mmdet - INFO - 
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.650
-Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=1000 ] = 0.929
-Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=1000 ] = 0.781
-Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.662
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.565
-Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = -1.000
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.697
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=300 ] = 0.697
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.697
-Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.696
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.735
-Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = -1.000
-
-2022-03-14 12:51:32,237 - mmdet - INFO - Evaluating segm...
-/home/guest01/projects/chromos/mmdetection/mmdet/datasets/coco.py:474: UserWarning: The key "bbox" is deleted for more accurate mask AP of small/medium/large instances since v2.12.0. This does not change the overall mAP calculation.
-  warnings.warn(
-/home/guest01/anaconda3/envs/pytorch1.9/lib/python3.8/site-packages/pycocotools/cocoeval.py:410: DeprecationWarning: `np.float` is a deprecated alias for the builtin `float`. To silence this warning, use `float` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.float64` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  tp_sum = np.cumsum(tps, axis=1).astype(dtype=np.float)
-2022-03-14 12:51:34,801 - mmdet - INFO - 
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.561
-Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=1000 ] = 0.919
-Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=1000 ] = 0.699
-Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.560
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.617
-Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = -1.000
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.606
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=300 ] = 0.606
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.606
-Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.605
-Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.628
-Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = -1.000
-
-2022-03-14 12:51:34,811 - mmdet - INFO - Exp name: my_ms_rcnn_r50_2x.py
-2022-03-14 12:51:34,812 - mmdet - INFO - Epoch(val) [2][60]	bbox_mAP: 0.6500, bbox_mAP_50: 0.9290, bbox_mAP_75: 0.7810, bbox_mAP_s: 0.6620, bbox_mAP_m: 0.5650, bbox_mAP_l: -1.0000, bbox_mAP_copypaste: 0.650 0.929 0.781 0.662 0.565 -1.000, segm_mAP: 0.5610, segm_mAP_50: 0.9190, segm_mAP_75: 0.6990, segm_mAP_s: 0.5600, segm_mAP_m: 0.6170, segm_mAP_l: -1.0000, segm_mAP_copypaste: 0.561 0.919 0.699 0.560 0.617 -1.000
-Loading and preparing results...
-DONE (t=0.00s)
-creating index...
-index created!
-Running per image evaluation...
-Evaluate annotation type *bbox*
-DONE (t=2.40s).
-Accumulating evaluation results...
-DONE (t=0.06s).
-Loading and preparing results...
-DONE (t=0.02s)
-creating index...
-index created!
-Running per image evaluation...
-Evaluate annotation type *segm*
-DONE (t=2.48s).
-Accumulating evaluation results...
-DONE (t=0.05s).
-/home/guest01/anaconda3/envs/pytorch1.9/lib/python3.8/site-packages/mmcv/runner/hooks/logger/text.py:112: DeprecationWarning: an integer is required (got type float).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
-  mem_mb = torch.tensor([mem / (1024 * 1024)],
-2022-03-14 12:52:15,522 - mmdet - INFO - Epoch [3][50/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:49:42, time: 0.813, data_time: 0.327, memory: 3500, loss_rpn_cls: 0.0152, loss_rpn_bbox: 0.1332, loss_cls: 0.2074, acc: 91.4590, loss_bbox: 0.3261, loss_mask: 0.1816, loss_mask_iou: 0.0036, loss: 0.8671
-2022-03-14 12:52:52,641 - mmdet - INFO - Epoch [3][100/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:49:09, time: 0.743, data_time: 0.266, memory: 3500, loss_rpn_cls: 0.0180, loss_rpn_bbox: 0.1409, loss_cls: 0.2140, acc: 91.1094, loss_bbox: 0.3344, loss_mask: 0.1851, loss_mask_iou: 0.0037, loss: 0.8960
-2022-03-14 12:53:29,732 - mmdet - INFO - Epoch [3][150/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:48:35, time: 0.742, data_time: 0.270, memory: 3500, loss_rpn_cls: 0.0158, loss_rpn_bbox: 0.1372, loss_cls: 0.2069, acc: 91.4141, loss_bbox: 0.3233, loss_mask: 0.1799, loss_mask_iou: 0.0034, loss: 0.8665
-2022-03-14 12:54:06,748 - mmdet - INFO - Epoch [3][200/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:48:01, time: 0.740, data_time: 0.266, memory: 3500, loss_rpn_cls: 0.0157, loss_rpn_bbox: 0.1322, loss_cls: 0.2051, acc: 91.4336, loss_bbox: 0.3234, loss_mask: 0.1771, loss_mask_iou: 0.0037, loss: 0.8572
-2022-03-14 12:54:44,024 - mmdet - INFO - Epoch [3][250/632]	lr: 2.000e-02, layer_0_lr: 2.000e-02, eta: 2:47:28, time: 0.746, data_time: 0.264, memory: 3500, loss_rpn_cls: 0.0117, loss_rpn_bbox: 0.1374, loss_cls: 0.1971, acc: 91.6992, loss_bbox: 0.3213, loss_mask: 0.1745, loss_mask_iou: 0.0033, loss: 0.8453

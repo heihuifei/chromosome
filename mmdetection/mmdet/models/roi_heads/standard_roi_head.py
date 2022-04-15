@@ -98,6 +98,8 @@ class StandardRoIHead(BaseRoIHead, BBoxTestMixin, MaskTestMixin):
                     feats=[lvl_feat[i][None] for lvl_feat in x])
                 sampling_results.append(sampling_result)
 
+        print("this is x in standard_roi_head: ", type(x), len(x), x)
+        print("this is gt_masks in stantard_roi_head: ", len(gt_masks), gt_masks)
         losses = dict()
         # bbox head forward and loss
         if self.with_bbox:

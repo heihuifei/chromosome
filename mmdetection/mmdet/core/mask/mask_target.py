@@ -102,6 +102,8 @@ def mask_target_single(pos_proposals, pos_assigned_gt_inds, gt_masks, cfg):
         >>>     pos_proposals, pos_assigned_gt_inds, gt_masks, cfg)
         >>> assert mask_targets.shape == (5,) + cfg['mask_size']
     """
+    print("this is pos_proposals in mask_target: ", len(pos_proposals), pos_proposals)
+    print("this is gt_masks in mask_target: ", len(gt_masks), gt_masks)
     device = pos_proposals.device
     mask_size = _pair(cfg.mask_size)
     binarize = not cfg.get('soft_mask_target', False)
@@ -109,10 +111,13 @@ def mask_target_single(pos_proposals, pos_assigned_gt_inds, gt_masks, cfg):
     if num_pos > 0:
         proposals_np = pos_proposals.cpu().numpy()
         maxh, maxw = gt_masks.height, gt_masks.width
+        # 使用clip将proposal_np的值限制在0, maxw之间
         proposals_np[:, [0, 2]] = np.clip(proposals_np[:, [0, 2]], 0, maxw)
         proposals_np[:, [1, 3]] = np.clip(proposals_np[:, [1, 3]], 0, maxh)
         pos_assigned_gt_inds = pos_assigned_gt_inds.cpu().numpy()
 
+        # gt_masks是Bitmap类,用于存储一张图像上的所有instance,其中crop_and_resize用于
+        # Crop each bitmask by the given box, and resize results to (mask_size, mask_size).
         mask_targets = gt_masks.crop_and_resize(
             proposals_np,
             mask_size,
