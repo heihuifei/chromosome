@@ -21,8 +21,8 @@ import generate_background as gb
 import generate_classification_dataset as gcd
 import generate_segmentation_dataset as gsd
 
-maskDir = "/home/guest01/projects/chromos/dataset/segmentation_dataset/train_origin77and187images_fake1500_withClear_annotated/"
-saveDir = "/home/guest01/projects/chromos/dataset/detection_dataset/chromos/chromos_origin_fake1500/train/"
+maskDir = "/home/guest01/projects/chromos/dataset/segmentation_dataset/val_origin23and37images_annotated/"
+saveDir = "/home/guest01/projects/chromos/dataset/detection_dataset/chromos/chromos_origin_fake1500/val/"
 
 
 # function: 根据标注txt文件在图像上绘制旋转的四边形
@@ -127,6 +127,24 @@ def generateImageAnnfile(jsonPath, savePath):
             f.write('\n')
 
 
+# function: 根据json文件路径生成每张图像的mask标注轮廓点
+# params: json文件路径
+# return: null
+def generateImageMaskAnnfile(jsonPath, savePath):
+    filepre, _, _, _ = imgTool.parsePath(jsonPath)
+    data = json.load(open(jsonPath))
+    dataShapes = data["shapes"]
+    if os.path.exists(savePath + filepre + ".mask.txt"):
+        os.remove(savePath + filepre + ".mask.txt")
+    with open(savePath + filepre + ".mask.txt", 'a+') as f:
+        for datashape in dataShapes:
+            maskAnnPolygonPoints = datashape["points"]
+            maskAnnLine = ''
+            for point in maskAnnPolygonPoints:
+                maskAnnLine = maskAnnLine + str(point[0]) + ' ' + str(point[1]) + ' '
+            f.writelines(maskAnnLine)
+            f.write('\n')
+
 
 if __name__ == '__main__':
     # 根据染色体像素个数判断其放缩比例
@@ -136,5 +154,5 @@ if __name__ == '__main__':
         print(maskPath)
         _, filepost, _, _ = imgTool.parsePath(maskPath)
         if filepost == ".json":
-            generateImageAnnfile(maskPath, saveDir)
+            generateImageMaskAnnfile(maskPath, saveDir)
     # generateImageAnnfile("/home/guest01/projects/chromos/dataset/segmentation_dataset/origin_100images_annotated/18-Y2090.130.O.json")
