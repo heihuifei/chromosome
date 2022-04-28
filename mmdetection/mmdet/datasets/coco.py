@@ -93,6 +93,7 @@ class CocoDataset(CustomDataset):
             total_ann_ids), f"Annotation ids in '{ann_file}' are not unique!"
         return data_infos
 
+    # 在准备数据集阶段, 由prepare_train_img函数调用获取ann_info信息传入results进行pipeline处理
     def get_ann_info(self, idx):
         """Get COCO annotation by index.
 

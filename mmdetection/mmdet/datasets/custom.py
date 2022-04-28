@@ -232,12 +232,16 @@ class CustomDataset(Dataset):
                 introduced by pipeline.
         """
 
+        # 获取data_infos内的img信息
         img_info = self.data_infos[idx]
+        # 根据idx获取data_infos中的ann字段信息,即bbox,labels,masks
         ann_info = self.get_ann_info(idx)
+        # 将img_info和ann_info组装成dict作为result并进行字段添加
         results = dict(img_info=img_info, ann_info=ann_info)
         if self.proposals is not None:
             results['proposals'] = self.proposals[idx]
         self.pre_pipeline(results)
+        # 最终进行results的pipeline处理
         return self.pipeline(results)
 
     def prepare_test_img(self, idx):

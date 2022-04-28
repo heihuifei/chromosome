@@ -3,8 +3,13 @@ import math
 
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 from mmcv.image import imread, imwrite
 from mmcv.visualization.color import color_val
+from matplotlib.collections import PatchCollection
+from matplotlib.patches import Polygon
+
+from mmdet.core.mask.structures import bitmap_to_polygon
 
 
 def imshow(img, win_name='', wait_time=0):
@@ -27,10 +32,141 @@ def imshow(img, win_name='', wait_time=0):
     else:
         ret = cv2.waitKey(wait_time)
 
+def _get_adaptive_scales(areas, min_area=800, max_area=30000):
+    """Get adaptive scales according to areas.
+
+    The scale range is [0.5, 1.0]. When the area is less than
+    ``'min_area'``, the scale is 0.5 while the area is larger than
+    ``'max_area'``, the scale is 1.0.
+
+    Args:
+        areas (ndarray): The areas of bboxes or masks with the
+            shape of (n, ).
+        min_area (int): Lower bound areas for adaptive scales.
+            Default: 800.
+        max_area (int): Upper bound areas for adaptive scales.
+            Default: 30000.
+
+    Returns:
+        ndarray: The adaotive scales with the shape of (n, ).
+    """
+    scales = 0.5 + (areas - min_area) / (max_area - min_area)
+    scales = np.clip(scales, 0.5, 1.0)
+    return scales
+
+def _get_bias_color(base, max_dist=30):
+    """Get different colors for each masks.
+
+    Get different colors for each masks by adding a bias
+    color to the base category color.
+    Args:
+        base (ndarray): The base category color with the shape
+            of (3, ).
+        max_dist (int): The max distance of bias. Default: 30.
+
+    Returns:
+        ndarray: The new color for a mask with the shape of (3, ).
+    """
+    new_color = base + np.random.randint(
+        low=-max_dist, high=max_dist + 1, size=3)
+    return np.clip(new_color, 0, 255, new_color)
+
+def draw_labels(ax,
+                labels,
+                positions,
+                scores=None,
+                class_names=None,
+                color='w',
+                font_size=8,
+                scales=None,
+                horizontal_alignment='left'):
+    """Draw labels on the axes.
+
+    Args:
+        ax (matplotlib.Axes): The input axes.
+        labels (ndarray): The labels with the shape of (n, ).
+        positions (ndarray): The positions to draw each labels.
+        scores (ndarray): The scores for each labels.
+        class_names (list[str]): The class names.
+        color (list[tuple] | matplotlib.color): The colors for labels.
+        font_size (int): Font size of texts. Default: 8.
+        scales (list[float]): Scales of texts. Default: None.
+        horizontal_alignment (str): The horizontal alignment method of
+            texts. Default: 'left'.
+
+    Returns:
+        matplotlib.Axes: The result axes.
+    """
+    for i, (pos, label) in enumerate(zip(positions, labels)):
+        label_text = class_names[
+            label] if class_names is not None else f'class {label}'
+        if scores is not None:
+            label_text += f'|{scores[i]:.02f}'
+        text_color = color[i] if isinstance(color, list) else color
+
+        font_size_mask = font_size if scales is None else font_size * scales[i]
+        ax.text(
+            pos[0],
+            pos[1],
+            f'{label_text}',
+            bbox={
+                'facecolor': 'black',
+                'alpha': 0.8,
+                'pad': 0.7,
+                'edgecolor': 'none'
+            },
+            color=text_color,
+            fontsize=font_size_mask,
+            verticalalignment='top',
+            horizontalalignment=horizontal_alignment)
+
+    return ax
+
+def draw_masks(ax, img, masks, color=None, with_edge=True, alpha=0.8):
+    """Draw masks on the image and their edges on the axes.
+
+    Args:
+        ax (matplotlib.Axes): The input axes.
+        img (ndarray): The image with the shape of (3, h, w).
+        masks (ndarray): The masks with the shape of (n, h, w).
+        color (ndarray): The colors for each masks with the shape
+            of (n, 3).
+        with_edge (bool): Whether to draw edges. Default: True.
+        alpha (float): Transparency of bounding boxes. Default: 0.8.
+
+    Returns:
+        matplotlib.Axes: The result axes.
+        ndarray: The result image.
+    """
+    taken_colors = set([0, 0, 0])
+    if color is None:
+        random_colors = np.random.randint(0, 255, (masks.size(0), 3))
+        color = [tuple(c) for c in random_colors]
+        color = np.array(color, dtype=np.uint8)
+    polygons = []
+    for i, mask in enumerate(masks):
+        if with_edge:
+            contours, _ = bitmap_to_polygon(mask)
+            polygons += [Polygon(c) for c in contours]
+
+        color_mask = color[i]
+        while tuple(color_mask) in taken_colors:
+            color_mask = _get_bias_color(color_mask)
+        taken_colors.add(tuple(color_mask))
+
+        mask = mask.astype(bool)
+        img[mask] = img[mask] * (1 - alpha) + color_mask * alpha
+
+    p = PatchCollection(
+        polygons, facecolor='none', edgecolors='w', linewidths=1, alpha=0.8)
+    ax.add_collection(p)
+
+    return ax, img
 
 def imshow_det_rbboxes(img,
                        bboxes,
                        labels,
+                       segms=None,
                        class_names=None,
                        score_thr=0.3,
                        bbox_color=(226, 43, 138),
@@ -67,6 +203,7 @@ def imshow_det_rbboxes(img,
     inds = scores > score_thr
     bboxes = bboxes[inds, :]
     labels = labels[inds]
+    segms = segms[inds, :]
 
     bbox_color = (226, 43,
                   138) if bbox_color is None else color_val(bbox_color)
@@ -93,6 +230,40 @@ def imshow_det_rbboxes(img,
                       (int(xc) + text_width, int(yc) + 3), (0, 128, 0), -1)
         cv2.putText(img, label_text, (int(xc), int(yc)), font, font_scale,
                     text_color, 1)
+
+    # remove white edges by set subplot margin
+    plt.subplots_adjust(left=0, right=1, bottom=0, top=1)
+    ax = plt.gca()
+    ax.axis('off')
+    num_bboxes = bboxes.shape[0]
+
+    if segms is not None:
+        colors = [[0,0,0] for _ in labels]
+        colors = np.array(colors, dtype=np.uint8)
+        draw_masks(ax, img, segms, colors, with_edge=True)
+
+        if num_bboxes < segms.shape[0]:
+            segms = segms[num_bboxes:]
+            horizontal_alignment = 'center'
+            areas = []
+            positions = []
+            for mask in segms:
+                _, _, stats, centroids = cv2.connectedComponentsWithStats(
+                    mask.astype(np.uint8), connectivity=8)
+                largest_id = np.argmax(stats[1:, -1]) + 1
+                positions.append(centroids[largest_id])
+                areas.append(stats[largest_id, -1])
+            areas = np.stack(areas, axis=0)
+            scales = _get_adaptive_scales(areas)
+            draw_labels(
+                ax,
+                labels[num_bboxes:],
+                positions,
+                class_names=class_names,
+                color=text_color,
+                font_size=8,
+                scales=scales,
+                horizontal_alignment=horizontal_alignment)
 
     if show:
         imshow(img, win_name, wait_time)

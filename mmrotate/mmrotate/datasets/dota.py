@@ -16,10 +16,12 @@ from mmcv.ops import nms_rotated
 from mmdet.datasets.custom import CustomDataset
 
 from mmrotate.core import obb2poly_np, poly2obb_np
-from mmrotate.core.evaluation import eval_rbbox_map
+from mmrotate.core.evaluation import eval_rbbox_map, eval_mask_map
 from .builder import ROTATED_DATASETS
+from pycocotools import mask as maskUtils
 
 
+# change it, add mask information by hxp
 @ROTATED_DATASETS.register_module()
 class DOTADataset(CustomDataset):
     """DOTA dataset for detection.
@@ -58,23 +60,29 @@ class DOTADataset(CustomDataset):
         cls_map = {c: i
                    for i, c in enumerate(self.CLASSES)
                    }  # in mmdet v2.0 label is 0-based
-        ann_files = glob.glob(ann_folder + '/*.txt')
+        # change /*.txt to /*.bbox.txt because add .mask.txt annotations file
+        ann_files = glob.glob(ann_folder + '/*.bbox.txt')
+        # 使用 ann_mask_files 来表示mask标注文件
+        ann_mask_files = glob.glob(ann_folder + '/*.mask.txt')
         data_infos = []
         if not ann_files:  # test phase
             ann_files = glob.glob(ann_folder + '/*.png')
             for ann_file in ann_files:
                 data_info = {}
-                img_id = osp.split(ann_file)[1][:-4]
+                img_id = osp.split(ann_file)[1][:-9]
                 img_name = img_id + '.png'
                 data_info['filename'] = img_name
                 data_info['ann'] = {}
                 data_info['ann']['bboxes'] = []
                 data_info['ann']['labels'] = []
+                data_info['ann']['masks'] = []
                 data_infos.append(data_info)
         else:
+            assert len(ann_files) == len(ann_mask_files), 'len(ann_files) must be equal to len(ann_mask_files)'
             for ann_file in ann_files:
+                ann_mask_file = ann_file[:-9] + '.mask.txt'
                 data_info = {}
-                img_id = osp.split(ann_file)[1][:-4]
+                img_id = osp.split(ann_file)[1][:-9]
                 img_name = img_id + '.png'
                 data_info['filename'] = img_name
                 data_info['ann'] = {}
@@ -84,6 +92,7 @@ class DOTADataset(CustomDataset):
                 gt_bboxes_ignore = []
                 gt_labels_ignore = []
                 gt_polygons_ignore = []
+                gt_masks_ann = []
 
                 if os.path.getsize(ann_file) == 0:
                     continue
@@ -106,6 +115,19 @@ class DOTADataset(CustomDataset):
                             gt_bboxes.append([x, y, w, h, a])
                             gt_labels.append(label)
                             gt_polygons.append(poly)
+                with open(ann_mask_file) as f_mask:
+                    s_mask = f_mask.readlines()
+                    for si_mask in s_mask:
+                        gt_mask_ann = []
+                        mask_polypoints_info = si_mask.split()
+                        # TODO: Test print
+                        for mask_polypoint in mask_polypoints_info:
+                            gt_mask_ann.append(np.float32(mask_polypoint))
+                        gt_masks_ann.append([gt_mask_ann])
+                # print("this is ann_file and ann_mask_file in load_annotation in dota: ", ann_file, ann_mask_file)
+                # print("this is gt_bboxes in load_annotation int dota: ", type(gt_bboxes), len(gt_bboxes), gt_bboxes)
+                # print("this is gt_masks in load_annotation int dota: ", type(gt_masks_ann), len(gt_masks_ann), gt_masks_ann)
+                # assert len(gt_bboxes) == len(gt_masks_ann[0]), 'len(gt_bboxes) must be equal to len(gt_masks_ann)'
 
                 if gt_bboxes:
                     data_info['ann']['bboxes'] = np.array(
@@ -114,12 +136,15 @@ class DOTADataset(CustomDataset):
                         gt_labels, dtype=np.int64)
                     data_info['ann']['polygons'] = np.array(
                         gt_polygons, dtype=np.float32)
+                    # 增加的masks需要判断list或者array类型
+                    data_info['ann']['masks'] = gt_masks_ann
                 else:
                     data_info['ann']['bboxes'] = np.zeros((0, 5),
                                                           dtype=np.float32)
                     data_info['ann']['labels'] = np.array([], dtype=np.int64)
                     data_info['ann']['polygons'] = np.zeros((0, 8),
                                                             dtype=np.float32)
+                    data_info['ann']['masks'] = [[[]]]
 
                 if gt_polygons_ignore:
                     data_info['ann']['bboxes_ignore'] = np.array(
@@ -139,7 +164,58 @@ class DOTADataset(CustomDataset):
                 data_infos.append(data_info)
 
         self.img_ids = [*map(lambda x: x['filename'][:-4], data_infos)]
+        # print("this is return data_infos in dota: ", data_infos)
         return data_infos
+
+    # 重写custom中的prepare_train_img以便添加mask中需要的height和width信息
+    def prepare_train_img(self, idx):
+        """Get training data and annotations after pipeline.
+
+        Args:
+            idx (int): Index of data.
+
+        Returns:
+            dict: Training data and annotation after pipeline with new keys \
+                introduced by pipeline.
+        """
+
+        # 获取data_infos内的img信息
+        img_info = self.data_infos[idx]
+        # TODO: 根据具体的数据图像大小可能需要做出修改
+        img_info['height'] = 1024
+        img_info['width'] = 1024
+        # 根据idx获取data_infos中的ann字段信息,即bbox,labels,masks
+        ann_info = self.get_ann_info(idx)
+        # 将img_info和ann_info组装成dict作为result并进行字段添加
+        results = dict(img_info=img_info, ann_info=ann_info)
+        if self.proposals is not None:
+            results['proposals'] = self.proposals[idx]
+        self.pre_pipeline(results)
+        # 最终进行results的pipeline处理
+        return self.pipeline(results)
+
+    # 重写custom中的prepare_test_img以便添加mask中需要的height和width信息
+    def prepare_test_img(self, idx):
+        """Get testing data after pipeline.
+
+        Args:
+            idx (int): Index of data.
+
+        Returns:
+            dict: Testing data after pipeline with new keys introduced by \
+                pipeline.
+        """
+
+        img_info = self.data_infos[idx]
+        # TODO: 根据具体的数据图像大小可能需要做出修改
+        img_info['height'] = 1024
+        img_info['width'] = 1024
+        results = dict(img_info=img_info)
+        if self.proposals is not None:
+            results['proposals'] = self.proposals[idx]
+        self.pre_pipeline(results)
+        return self.pipeline(results)
+
 
     def _filter_imgs(self):
         """Filter images without ground truths."""
@@ -182,6 +258,7 @@ class DOTADataset(CustomDataset):
             nproc (int): Processes used for computing TP and FP.
                 Default: 4.
         """
+        # print("this is results in evaluate in dota: ", results)
         nproc = min(nproc, os.cpu_count())
         if not isinstance(metric, str):
             assert len(metric) == 1
@@ -190,6 +267,7 @@ class DOTADataset(CustomDataset):
         if metric not in allowed_metrics:
             raise KeyError(f'metric {metric} is not supported')
         annotations = [self.get_ann_info(i) for i in range(len(self))]
+        # print("this is annotations in evaluate in dota: ", annotations)
         eval_results = {}
         if metric == 'mAP':
             assert isinstance(iou_thr, float)
@@ -202,6 +280,15 @@ class DOTADataset(CustomDataset):
                 logger=logger,
                 nproc=nproc)
             eval_results['mAP'] = mean_ap
+            mask_mean_ap, _ = eval_mask_map(
+                results,
+                annotations,
+                scale_ranges=scale_ranges,
+                iou_thr=iou_thr,
+                dataset=self.CLASSES,
+                logger=logger,
+                nproc=nproc)
+            eval_results['mask_mAP'] = mask_mean_ap
         else:
             raise NotImplementedError
 

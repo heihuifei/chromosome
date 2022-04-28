@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/datasets/dotav1.py', '../_base_/schedules/schedule_1x.py',
+    '../_base_/datasets/dotav1.py', '../_base_/schedules/schedule_3x.py',
     '../_base_/default_runtime.py'
 ]
 
@@ -68,7 +68,25 @@ model = dict(
             reg_class_agnostic=True,
             loss_cls=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
-            loss_bbox=dict(type='SmoothL1Loss', beta=1.0, loss_weight=1.0))),
+            loss_bbox=dict(type='SmoothL1Loss', beta=1.0, loss_weight=1.0)),
+        mask_roi_extractor=dict(
+            type='RotatedSingleRoIExtractor',
+            # output_size(tuple): h, w
+            roi_layer=dict(
+                type='RoIAlignRotated',
+                out_size=14,
+                sample_num=2,
+                clockwise=True),
+            out_channels=256,
+            featmap_strides=[4, 8, 16, 32]),
+        mask_head=dict(
+            type='RotatedFCNMaskHead',
+            num_convs=4,
+            in_channels=256,
+            conv_out_channels=256,
+            num_classes=1,
+            loss_mask=dict(
+                type='CrossEntropyLoss', use_mask=True, loss_weight=1.0))),
     train_cfg=dict(
         rpn=dict(
             assigner=dict(
@@ -107,6 +125,7 @@ model = dict(
                 pos_fraction=0.25,
                 neg_pos_ub=-1,
                 add_gt_as_proposals=True),
+            mask_size=28,
             pos_weight=-1,
             debug=False)),
     test_cfg=dict(
@@ -120,13 +139,14 @@ model = dict(
             min_bbox_size=0,
             score_thr=0.05,
             nms=dict(iou_thr=0.1),
-            max_per_img=2000)))
+            max_per_img=2000,
+            mask_thr_binary=0.5)))
 
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations', with_bbox=True),
+    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
     dict(type='RResize', img_scale=(1024, 1024)),
     dict(
         type='RRandomFlip',
@@ -136,7 +156,7 @@ train_pipeline = [
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size_divisor=32),
     dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
+    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks'])
 ]
 data = dict(
     train=dict(pipeline=train_pipeline, version=angle_version),

@@ -10,8 +10,8 @@ from mmcv.ops.carafe import CARAFEPack
 from mmcv.runner import BaseModule, ModuleList, auto_fp16, force_fp32
 from torch.nn.modules.utils import _pair
 
-from mmdet.core import mask_target
-from mmdet.models.builder import HEADS, build_loss
+from mmrotate.core import mask_target, obb2xyxy
+from ...builder import ROTATED_HEADS, build_loss
 
 BYTES_PER_FLOAT = 4
 # TODO: This memory limit may be too much or too little. It would be better to
@@ -19,8 +19,8 @@ BYTES_PER_FLOAT = 4
 GPU_MEM_LIMIT = 1024**3  # 1 GB memory limit
 
 
-@HEADS.register_module()
-class FCNMaskHead(BaseModule):
+@ROTATED_HEADS.register_module()
+class RotatedFCNMaskHead(BaseModule):
 
     def __init__(self,
                  num_convs=4,
@@ -39,7 +39,7 @@ class FCNMaskHead(BaseModule):
                  init_cfg=None):
         assert init_cfg is None, 'To prevent abnormal initialization ' \
                                  'behavior, init_cfg is not allowed to be set'
-        super(FCNMaskHead, self).__init__(init_cfg)
+        super(RotatedFCNMaskHead, self).__init__(init_cfg)
         self.upsample_cfg = upsample_cfg.copy()
         if self.upsample_cfg['type'] not in [
                 None, 'deconv', 'nearest', 'bilinear', 'carafe'
@@ -113,7 +113,7 @@ class FCNMaskHead(BaseModule):
         self.debug_imgs = None
 
     def init_weights(self):
-        super(FCNMaskHead, self).init_weights()
+        super(RotatedFCNMaskHead, self).init_weights()
         for m in [self.upsample, self.conv_logits]:
             if m is None:
                 continue
@@ -176,7 +176,8 @@ class FCNMaskHead(BaseModule):
         loss['loss_mask'] = loss_mask
         return loss
 
-    def get_seg_masks(self, mask_pred, det_bboxes, det_labels, rcnn_test_cfg,
+    # change the det_bboxes to det_rbboxes
+    def get_seg_masks(self, mask_pred, det_rbboxes, det_labels, rcnn_test_cfg,
                       ori_shape, scale_factor, rescale):
         """Get segmentation masks from mask_pred and bboxes.
 
@@ -185,7 +186,7 @@ class FCNMaskHead(BaseModule):
                 For single-scale testing, mask_pred is the direct output of
                 model, whose type is Tensor, while for multi-scale testing,
                 it will be converted to numpy array outside of this method.
-            det_bboxes (Tensor): shape (n, 4/5)
+            det_rbboxes (Tensor): shape (n, 5/6)
             det_labels (Tensor): shape (n, )
             rcnn_test_cfg (dict): rcnn testing config
             ori_shape (Tuple): original image height and width, shape (2,)
@@ -211,7 +212,7 @@ class FCNMaskHead(BaseModule):
             >>> inputs = torch.rand(N, self.in_channels, H, W)
             >>> mask_pred = self.forward(inputs)
             >>> # Each input is associated with some bounding box
-            >>> det_bboxes = torch.Tensor([[1, 1, 42, 42 ]] * N)
+            >>> det_rbboxes = torch.Tensor([[1, 1, 42, 42, 15 ]] * N)
             >>> det_labels = torch.randint(0, C, size=(N,))
             >>> rcnn_test_cfg = mmcv.Config({'mask_thr_binary': 0, })
             >>> ori_shape = (H * 4, W * 4)
@@ -219,7 +220,7 @@ class FCNMaskHead(BaseModule):
             >>> rescale = False
             >>> # Encoded masks are a list for each category.
             >>> encoded_masks = self.get_seg_masks(
-            >>>     mask_pred, det_bboxes, det_labels, rcnn_test_cfg, ori_shape,
+            >>>     mask_pred, det_rbboxes, det_labels, rcnn_test_cfg, ori_shape,
             >>>     scale_factor, rescale
             >>> )
             >>> assert len(encoded_masks) == C
@@ -229,11 +230,12 @@ class FCNMaskHead(BaseModule):
             mask_pred = mask_pred.sigmoid()
         else:
             # In AugTest, has been activated before
-            mask_pred = det_bboxes.new_tensor(mask_pred)
+            mask_pred = det_rbboxes.new_tensor(mask_pred)
 
         device = mask_pred.device
         cls_segms = [[] for _ in range(self.num_classes)
                      ]  # BG is not included in num_classes
+        det_bboxes = obb2xyxy(det_rbboxes)
         bboxes = det_bboxes[:, :4]
         labels = det_labels
 
@@ -385,11 +387,8 @@ def _do_paste_mask(masks, boxes, img_h, img_w, skip_empty=True):
 
     N = masks.shape[0]
 
-    # img_y, img_x分别创建了两个tensor, (0.5, 1.5, 2.5, 2.5... h+0.5), (0.5, 1.5, 2.5, 3.5, ...w+0.5)
     img_y = torch.arange(y0_int, y1_int, device=device).to(torch.float32) + 0.5
     img_x = torch.arange(x0_int, x1_int, device=device).to(torch.float32) + 0.5
-    # img_y是一维[0.5,1.5,2.5 ... ], y0是二维[[y1],[y2],[y3]...], img_y-y0得到每个[num_bbox, 1017]大小的tensor
-    # img_x, img_y计算后得到每个图像像素点和每个bbox的偏移量关系
     img_y = (img_y - y0) / (y1 - y0) * 2 - 1
     img_x = (img_x - x0) / (x1 - x0) * 2 - 1
     # img_x, img_y have shapes (N, w), (N, h)
@@ -402,7 +401,6 @@ def _do_paste_mask(masks, boxes, img_h, img_w, skip_empty=True):
             inds = torch.where(torch.isinf(img_y))
             img_y[inds] = 0
 
-    # 将img_x, img_y进行扩展, [num_bbox, 1017]扩展为[num_bbox, 896, 1017],扩展的数据是将原来该维数据进行复制
     gx = img_x[:, None, :].expand(N, img_y.size(1), img_x.size(1))
     gy = img_y[:, :, None].expand(N, img_y.size(1), img_x.size(1))
     grid = torch.stack([gx, gy], dim=3)

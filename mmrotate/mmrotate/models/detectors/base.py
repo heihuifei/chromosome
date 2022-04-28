@@ -66,6 +66,7 @@ class RotatedBaseDetector(BaseDetector):
         ]
         labels = np.concatenate(labels)
         # draw segmentation masks
+        segms = None
         if segm_result is not None and len(labels) > 0:
             segms = mmcv.concat_list(segm_result)
             inds = np.where(bboxes[:, -1] > score_thr)[0]
@@ -80,13 +81,15 @@ class RotatedBaseDetector(BaseDetector):
                 mask = segms[i]
                 img[mask] = img[mask] * 0.5 + color_mask * 0.5
         # if out_file specified, do not show image in window
+        segms = np.array(segms)
         if out_file is not None:
             show = False
         # draw bounding boxes
-        imshow_det_rbboxes(
+        img = imshow_det_rbboxes(
             img,
             bboxes,
             labels,
+            segms,
             class_names=self.CLASSES,
             score_thr=score_thr,
             bbox_color=bbox_color,

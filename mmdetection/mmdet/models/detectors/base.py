@@ -250,7 +250,7 @@ class BaseDetector(BaseModule, metaclass=ABCMeta):
         # 调用train_step后调用self函数便是执行model(base.py)的foward函数
         # data即上层runner中传入的data_batch，是一个dict, 包含img_metas, img, gt_bbox, gt_labels, gt_masks等关键字kv信息
         # 通过**kwargs方式将img及其标注信息传入foward函数
-        print("this is data=data_batch's gt_masks in train_step in base.py: ", data['gt_masks'], data['gt_masks'][0][0])
+        # print("this is data=data_batch in train_step in base.py: ", data)
         losses = self(**data)
         loss, log_vars = self._parse_losses(losses)
 
@@ -266,6 +266,7 @@ class BaseDetector(BaseModule, metaclass=ABCMeta):
         during val epochs. Note that the evaluation after training epochs is
         not implemented with this method, but an evaluation hook.
         """
+        # print("this is data=data_batch in val_step in base.py: ", data)
         losses = self(**data)
         loss, log_vars = self._parse_losses(losses)
 
@@ -315,6 +316,7 @@ class BaseDetector(BaseModule, metaclass=ABCMeta):
         Returns:
             img (Tensor): Only if not `show` or `out_file`
         """
+        print("this is result in show_result in base: ", result)
         img = mmcv.imread(img)
         img = img.copy()
         if isinstance(result, tuple):

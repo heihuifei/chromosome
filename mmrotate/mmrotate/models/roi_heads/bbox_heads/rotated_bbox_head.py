@@ -178,6 +178,7 @@ class RotatedBBoxHead(BaseModule):
         # original implementation uses new_zeros since BG are set to be 0
         # now use empty & fill because BG cat_id = num_classes,
         # FG cat_id = [0, num_classes-1]
+        # 填充(num_samples)大小的tensor值为num_classes
         labels = pos_bboxes.new_full((num_samples, ),
                                      self.num_classes,
                                      dtype=torch.long)
@@ -186,9 +187,11 @@ class RotatedBBoxHead(BaseModule):
         bbox_weights = pos_bboxes.new_zeros(num_samples, 5)
         if num_pos > 0:
             labels[:num_pos] = pos_gt_labels
+            # 将正样本的权重赋为1
             pos_weight = 1.0 if cfg.pos_weight <= 0 else cfg.pos_weight
             label_weights[:num_pos] = pos_weight
             if not self.reg_decoded_bbox:
+                # 根据pos_bboxes和pos_gt_bboxes采用bbox_coder对其进行编码返回偏导函数如dx,dy,dw,dh,da
                 pos_bbox_targets = self.bbox_coder.encode(
                     pos_bboxes, pos_gt_bboxes)
             else:
@@ -197,6 +200,7 @@ class RotatedBBoxHead(BaseModule):
                 # the predicted boxes and regression targets should be with
                 # absolute coordinate format.
                 pos_bbox_targets = pos_gt_bboxes
+            # 通过encode得到偏导数后将正样本函数对象置入bbox_targets
             bbox_targets[:num_pos, :] = pos_bbox_targets
             bbox_weights[:num_pos, :] = 1
         if num_neg > 0:

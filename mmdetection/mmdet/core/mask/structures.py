@@ -354,6 +354,7 @@ class BitmapMasks(BaseInstanceMasks):
         rois = torch.cat([fake_inds, bboxes], dim=1)  # Nx5
         rois = rois.to(device=device)
         if num_bbox > 0:
+            # index_select根据idxs获取0(行)维度的self.masks
             gt_masks_th = torch.from_numpy(self.masks).to(device).index_select(
                 0, inds).to(dtype=rois.dtype)
             targets = roi_align(gt_masks_th[:, None, :, :], rois, out_shape,

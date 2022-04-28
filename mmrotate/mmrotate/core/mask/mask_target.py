@@ -3,7 +3,9 @@ import numpy as np
 import torch
 from torch.nn.modules.utils import _pair
 
+from mmrotate.core import obb2xyxy
 
+# 主要用于针对旋转proposal进行计算其偏导数targets
 def mask_target(pos_proposals_list, pos_assigned_gt_inds_list, gt_masks_list,
                 cfg):
     """Compute mask target for positive proposals in multiple images.
@@ -102,14 +104,18 @@ def mask_target_single(pos_proposals, pos_assigned_gt_inds, gt_masks, cfg):
         >>>     pos_proposals, pos_assigned_gt_inds, gt_masks, cfg)
         >>> assert mask_targets.shape == (5,) + cfg['mask_size']
     """
+    # print("this is pos_proposals in mask_target: ", len(pos_proposals), pos_proposals)
     device = pos_proposals.device
     mask_size = _pair(cfg.mask_size)
     binarize = not cfg.get('soft_mask_target', False)
     num_pos = pos_proposals.size(0)
     if num_pos > 0:
-        proposals_np = pos_proposals.cpu().numpy()
+        # 可以先将所有的rbbox格式转为hbbox格式
+        pos_hproposals = obb2xyxy(pos_proposals, 'oc')
+        proposals_np = pos_hproposals.cpu().numpy()
         maxh, maxw = gt_masks.height, gt_masks.width
         # 使用clip将proposal_np的值限制在0, maxw之间
+        # 由于是rotated proposal, 因此proposals_np并非[batchid,x1,y1,x2,y2]而是[batchid,cx,cy,w,h,a]
         proposals_np[:, [0, 2]] = np.clip(proposals_np[:, [0, 2]], 0, maxw)
         proposals_np[:, [1, 3]] = np.clip(proposals_np[:, [1, 3]], 0, maxh)
         pos_assigned_gt_inds = pos_assigned_gt_inds.cpu().numpy()
