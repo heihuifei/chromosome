@@ -7,6 +7,7 @@ import numpy as np
 import pycocotools.mask as maskUtils
 import torch
 from mmcv.ops.roi_align import roi_align
+from mmcv.ops.roi_align_rotated import roi_align_rotated
 
 
 class BaseInstanceMasks(metaclass=ABCMeta):
@@ -357,8 +358,46 @@ class BitmapMasks(BaseInstanceMasks):
             # index_select根据idxs获取0(行)维度的self.masks
             gt_masks_th = torch.from_numpy(self.masks).to(device).index_select(
                 0, inds).to(dtype=rois.dtype)
+            # 输出(N, out_shape[0], out_shape[1])大小的mask数组
             targets = roi_align(gt_masks_th[:, None, :, :], rois, out_shape,
                                 1.0, 0, 'avg', True).squeeze(1)
+            if binarize:
+                resized_masks = (targets >= 0.5).cpu().numpy()
+            else:
+                resized_masks = targets.cpu().numpy()
+        else:
+            resized_masks = []
+        return BitmapMasks(resized_masks, *out_shape)
+
+    def rotated_crop_and_resize(self,
+                        rbboxes,
+                        out_shape,
+                        inds,
+                        device='cpu',
+                        interpolation='bilinear',
+                        binarize=True):
+        """See :func:`BaseInstanceMasks.crop_and_resize`."""
+        if len(self.masks) == 0:
+            empty_masks = np.empty((0, *out_shape), dtype=np.uint8)
+            return BitmapMasks(empty_masks, *out_shape)
+
+        # convert rbboxes to tensor
+        if isinstance(rbboxes, np.ndarray):
+            rbboxes = torch.from_numpy(rbboxes).to(device=device)
+        if isinstance(inds, np.ndarray):
+            inds = torch.from_numpy(inds).to(device=device)
+
+        num_rbbox = rbboxes.shape[0]
+        fake_inds = torch.arange(
+            num_rbbox, device=device).to(dtype=rbboxes.dtype)[:, None]
+        rois = torch.cat([fake_inds, rbboxes], dim=1)  # Nx6
+        rois = rois.to(device=device)
+        if num_rbbox > 0:
+            # index_select根据idxs获取0(行)维度的self.masks
+            gt_masks_th = torch.from_numpy(self.masks).to(device).index_select(
+                0, inds).to(dtype=rois.dtype)
+            targets = roi_align_rotated(gt_masks_th[:, None, :, :], rois, out_shape,
+                                1.0, 0, True, True).squeeze(1)
             if binarize:
                 resized_masks = (targets >= 0.5).cpu().numpy()
             else:

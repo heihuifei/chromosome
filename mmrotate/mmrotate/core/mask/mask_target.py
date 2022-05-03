@@ -1,9 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from mmrotate.core.bbox.transforms import poly2obb
 import numpy as np
 import torch
 from torch.nn.modules.utils import _pair
 
-from mmrotate.core import obb2xyxy
+from mmrotate.core import obb2xyxy, obb2poly
 
 # 主要用于针对旋转proposal进行计算其偏导数targets
 def mask_target(pos_proposals_list, pos_assigned_gt_inds_list, gt_masks_list,
@@ -58,6 +59,8 @@ def mask_target(pos_proposals_list, pos_assigned_gt_inds_list, gt_masks_list,
         >>> assert mask_targets.shape == (5,) + cfg['mask_size']
     """
     cfg_list = [cfg for _ in range(len(pos_proposals_list))]
+    # 第一个参数function以参数序列中的每个元素调用function函数,
+    # 返回包含每次function函数返回值的新列表
     mask_targets = map(mask_target_single, pos_proposals_list,
                        pos_assigned_gt_inds_list, gt_masks_list, cfg_list)
     mask_targets = list(mask_targets)
@@ -110,19 +113,19 @@ def mask_target_single(pos_proposals, pos_assigned_gt_inds, gt_masks, cfg):
     binarize = not cfg.get('soft_mask_target', False)
     num_pos = pos_proposals.size(0)
     if num_pos > 0:
-        # 可以先将所有的rbbox格式转为hbbox格式
-        pos_hproposals = obb2xyxy(pos_proposals, 'oc')
-        proposals_np = pos_hproposals.cpu().numpy()
         maxh, maxw = gt_masks.height, gt_masks.width
-        # 使用clip将proposal_np的值限制在0, maxw之间
-        # 由于是rotated proposal, 因此proposals_np并非[batchid,x1,y1,x2,y2]而是[batchid,cx,cy,w,h,a]
-        proposals_np[:, [0, 2]] = np.clip(proposals_np[:, [0, 2]], 0, maxw)
-        proposals_np[:, [1, 3]] = np.clip(proposals_np[:, [1, 3]], 0, maxh)
+        # 将(cx,cy,w,h,a)格式转为(x1,y1,x2,y2,x3,y3,x4,y4)
+        pos_proposals_poly = obb2poly(pos_proposals).cpu().numpy()
+        pos_proposals_poly[:, [0, 2, 4, 6]] = np.clip(pos_proposals_poly[:, [0, 2, 4, 6]], 0, maxw)
+        pos_proposals_poly[:, [1, 3, 5, 7]] = np.clip(pos_proposals_poly[:, [1, 3, 5, 7]], 0, maxh)
+        pos_proposals_poly_device = torch.from_numpy(pos_proposals_poly).to(device)
+        proposals_np = poly2obb(pos_proposals_poly_device).cpu().numpy()
+
         pos_assigned_gt_inds = pos_assigned_gt_inds.cpu().numpy()
 
         # gt_masks是Bitmap类,用于存储一张图像上的所有instance,其中crop_and_resize用于
         # Crop each bitmask by the given box, and resize results to (mask_size, mask_size).
-        mask_targets = gt_masks.crop_and_resize(
+        mask_targets = gt_masks.rotated_crop_and_resize(
             proposals_np,
             mask_size,
             device=device,
