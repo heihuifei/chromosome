@@ -224,6 +224,7 @@ class LoadAnnotations:
     def __init__(self,
                  with_bbox=True,
                  with_label=True,
+                 with_rbbox=False,
                  with_mask=False,
                  with_seg=False,
                  poly2mask=True,
@@ -231,6 +232,7 @@ class LoadAnnotations:
                  file_client_args=dict(backend='disk')):
         self.with_bbox = with_bbox
         self.with_label = with_label
+        self.with_rbbox = with_rbbox
         self.with_mask = with_mask
         self.with_seg = with_seg
         self.poly2mask = poly2mask
@@ -264,6 +266,40 @@ class LoadAnnotations:
             results['gt_bboxes_ignore'] = gt_bboxes_ignore.copy()
             results['bbox_fields'].append('gt_bboxes_ignore')
         results['bbox_fields'].append('gt_bboxes')
+
+        gt_is_group_ofs = ann_info.get('gt_is_group_ofs', None)
+        if gt_is_group_ofs is not None:
+            results['gt_is_group_ofs'] = gt_is_group_ofs.copy()
+
+        return results
+    
+    def _load_rbboxes(self, results):
+        """Private function to load bounding box annotations.
+
+        Args:
+            results (dict): Result dict from :obj:`mmdet.CustomDataset`.
+
+        Returns:
+            dict: The dict contains loaded bounding box annotations.
+        """
+
+        ann_info = results['ann_info']
+        results['gt_rbboxes'] = ann_info['rbboxes'].copy()
+
+        if self.denorm_bbox:
+            h, w = results['img_shape'][:2]
+            bbox_num = results['gt_rbboxes'].shape[0]
+            if bbox_num != 0:
+                # TODO: 需要根据rbbox进行修改, 但由于denorm默认为False因此暂未修改
+                results['gt_rbboxes'][:, 0::2] *= w
+                results['gt_rbboxes'][:, 1::2] *= h
+            results['gt_rbboxes'] = results['gt_rbboxes'].astype(np.float32)
+
+        gt_rbboxes_ignore = ann_info.get('rbboxes_ignore', None)
+        if gt_rbboxes_ignore is not None:
+            results['gt_rbboxes_ignore'] = gt_rbboxes_ignore.copy()
+            results['rbbox_fields'].append('gt_rbboxes_ignore')
+        results['rbbox_fields'].append('gt_rbboxes')
 
         gt_is_group_ofs = ann_info.get('gt_is_group_ofs', None)
         if gt_is_group_ofs is not None:
@@ -391,6 +427,10 @@ class LoadAnnotations:
                 return None
         if self.with_label:
             results = self._load_labels(results)
+        if self.with_rbbox:
+            results = self._load_rbboxes(results)
+            if results is None:
+                return None
         if self.with_mask:
             results = self._load_masks(results)
         if self.with_seg:

@@ -9,7 +9,7 @@ import mmcv
 import numpy as np
 from numpy import random
 
-from mmdet.core import PolygonMasks, find_inside_bboxes
+from mmdet.core import PolygonMasks, find_inside_bboxes, norm_angle
 from mmdet.core.evaluation.bbox_overlaps import bbox_overlaps
 from ..builder import PIPELINES
 
@@ -247,6 +247,18 @@ class Resize:
                 bboxes[:, 1::2] = np.clip(bboxes[:, 1::2], 0, img_shape[0])
             results[key] = bboxes
 
+    def _resize_rbboxes(self, results):
+        """Resize bounding rboxes with ``results['scale_factor']``."""
+        for key in results.get('rbbox_fields', []):
+            rbboxes = results[key]
+            orig_shape = rbboxes.shape
+            rbboxes = rbboxes.reshape((-1, 5))
+            w_scale, h_scale, _, _ = results['scale_factor']
+            rbboxes[:, 0] *= w_scale
+            rbboxes[:, 1] *= h_scale
+            rbboxes[:, 2:4] *= np.sqrt(w_scale * h_scale)
+            results[key] = rbboxes.reshape(orig_shape)
+
     def _resize_masks(self, results):
         """Resize masks with ``results['scale']``"""
         for key in results.get('mask_fields', []):
@@ -307,6 +319,7 @@ class Resize:
 
         self._resize_img(results)
         self._resize_bboxes(results)
+        self._resize_rbboxes(results)
         self._resize_masks(results)
         self._resize_seg(results)
         return results
@@ -359,7 +372,7 @@ class RandomFlip:
             corresponding direction.
     """
 
-    def __init__(self, flip_ratio=None, direction='horizontal'):
+    def __init__(self, flip_ratio=None, direction='horizontal', version='oc'):
         if isinstance(flip_ratio, list):
             assert mmcv.is_list_of(flip_ratio, float)
             assert 0 <= sum(flip_ratio) <= 1
@@ -384,6 +397,7 @@ class RandomFlip:
 
         if isinstance(flip_ratio, list):
             assert len(self.flip_ratio) == len(self.direction)
+        self.version = version
 
     def bbox_flip(self, bboxes, img_shape, direction):
         """Flip bboxes horizontally.
@@ -418,6 +432,39 @@ class RandomFlip:
         else:
             raise ValueError(f"Invalid flipping direction '{direction}'")
         return flipped
+
+    def rbbox_flip(self, rbboxes, img_shape, direction):
+        """Flip rbboxes horizontally or vertically.
+
+        Args:
+            rbboxes(ndarray): shape (..., 5*k)
+            img_shape(tuple): (height, width)
+
+        Returns:
+            numpy.ndarray: Flipped bounding boxes.
+        """
+        assert rbboxes.shape[-1] % 5 == 0
+        orig_shape = rbboxes.shape
+        rbboxes = rbboxes.reshape((-1, 5))
+        flipped = rbboxes.copy()
+        if direction == 'horizontal':
+            flipped[:, 0] = img_shape[1] - rbboxes[:, 0] - 1
+        elif direction == 'vertical':
+            flipped[:, 1] = img_shape[0] - rbboxes[:, 1] - 1
+        elif direction == 'diagonal':
+            flipped[:, 0] = img_shape[1] - rbboxes[:, 0] - 1
+            flipped[:, 1] = img_shape[0] - rbboxes[:, 1] - 1
+            return flipped.reshape(orig_shape)
+        else:
+            raise ValueError(f'Invalid flipping direction "{direction}"')
+        if self.version == 'oc':
+            rotated_flag = (rbboxes[:, 4] != np.pi / 2)
+            flipped[rotated_flag, 4] = np.pi / 2 - rbboxes[rotated_flag, 4]
+            flipped[rotated_flag, 2] = rbboxes[rotated_flag, 3],
+            flipped[rotated_flag, 3] = rbboxes[rotated_flag, 2]
+        else:
+            flipped[:, 4] = norm_angle(np.pi - rbboxes[:, 4], self.version)
+        return flipped.reshape(orig_shape)
 
     def __call__(self, results):
         """Call function to flip bounding boxes, masks, semantic segmentation
@@ -462,6 +509,11 @@ class RandomFlip:
             # flip bboxes
             for key in results.get('bbox_fields', []):
                 results[key] = self.bbox_flip(results[key],
+                                              results['img_shape'],
+                                              results['flip_direction'])
+            # flip rbboxes
+            for key in results.get('rbbox_fields', []):
+                results[key] = self.rbbox_flip(results[key],
                                               results['img_shape'],
                                               results['flip_direction'])
             # flip masks
