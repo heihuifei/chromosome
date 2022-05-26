@@ -2,6 +2,7 @@
 import cv2
 import matplotlib.pyplot as plt
 import mmcv
+import math
 import numpy as np
 import pycocotools.mask as mask_util
 from matplotlib.collections import PatchCollection
@@ -96,6 +97,39 @@ def draw_bboxes(ax, bboxes, color='g', alpha=0.8, thickness=2):
         bbox_int = bbox.astype(np.int32)
         poly = [[bbox_int[0], bbox_int[1]], [bbox_int[0], bbox_int[3]],
                 [bbox_int[2], bbox_int[3]], [bbox_int[2], bbox_int[1]]]
+        np_poly = np.array(poly).reshape((4, 2))
+        polygons.append(Polygon(np_poly))
+    p = PatchCollection(
+        polygons,
+        facecolor='none',
+        edgecolors=color,
+        linewidths=thickness,
+        alpha=alpha)
+    ax.add_collection(p)
+
+    return ax
+
+
+def draw_rbboxes(ax, rbboxes, color='g', alpha=0.8, thickness=2):
+    """Draw bounding boxes on the axes.
+
+    Args:
+        ax (matplotlib.Axes): The input axes.
+        rbboxes (ndarray): The input bounding boxes with the shape
+            of (n, 5).
+        color (list[tuple] | matplotlib.color): the colors for each
+            bounding boxes.
+        alpha (float): Transparency of bounding boxes. Default: 0.8.
+        thickness (int): Thickness of lines. Default: 2.
+
+    Returns:
+        matplotlib.Axes: The result axes.
+    """
+    polygons = []
+    for i, rbbox in enumerate(rbboxes):
+        x1, y1, x2, y2, x3, y3, x4, y4 = obb2poly(rbbox[:5])
+        poly = [[int(x1), int(y1)], [int(x2), int(y2)],
+                [int(x3), int(y3)], [int(x4), int(y4)]]
         np_poly = np.array(poly).reshape((4, 2))
         polygons.append(Polygon(np_poly))
     p = PatchCollection(
@@ -372,6 +406,198 @@ def imshow_det_bboxes(img,
 
     return img
 
+def imshow_det_bboxes_rbboxes(img,
+                      bboxes=None,
+                      labels=None,
+                      rbboxes=None,
+                      rlabels=None,
+                      segms=None,
+                      class_names=None,
+                      score_thr=0,
+                      bbox_color='green',
+                      text_color='green',
+                      mask_color=None,
+                      thickness=2,
+                      font_size=8,
+                      win_name='',
+                      show=True,
+                      wait_time=0,
+                      out_file=None):
+    """Draw rbboxes and class labels (with scores) on an image.
+
+    Args:
+        img (str | ndarray): The image to be displayed.
+        bboxes (ndarray): Bounding boxes (with scores), shaped (n, 4) or
+            (n, 5).
+        labels (ndarray): Labels of bboxes.
+        segms (ndarray | None): Masks, shaped (n,h,w) or None.
+        class_names (list[str]): Names of each classes.
+        score_thr (float): Minimum score of bboxes to be shown. Default: 0.
+        bbox_color (list[tuple] | tuple | str | None): Colors of bbox lines.
+           If a single color is given, it will be applied to all classes.
+           The tuple of color should be in RGB order. Default: 'green'.
+        text_color (list[tuple] | tuple | str | None): Colors of texts.
+           If a single color is given, it will be applied to all classes.
+           The tuple of color should be in RGB order. Default: 'green'.
+        mask_color (list[tuple] | tuple | str | None, optional): Colors of
+           masks. If a single color is given, it will be applied to all
+           classes. The tuple of color should be in RGB order.
+           Default: None.
+        thickness (int): Thickness of lines. Default: 2.
+        font_size (int): Font size of texts. Default: 13.
+        show (bool): Whether to show the image. Default: True.
+        win_name (str): The window name. Default: ''.
+        wait_time (float): Value of waitKey param. Default: 0.
+        out_file (str, optional): The filename to write the image.
+            Default: None.
+
+    Returns:
+        ndarray: The image with bboxes drawn on it.
+    """
+    assert bboxes is None or bboxes.ndim == 2, \
+        f' bboxes ndim should be 2, but its ndim is {bboxes.ndim}.'
+    assert labels.ndim == 1, \
+        f' labels ndim should be 1, but its ndim is {labels.ndim}.'
+    assert bboxes is None or bboxes.shape[1] == 4 or bboxes.shape[1] == 5, \
+        f' bboxes.shape[1] should be 4 or 5, but its {bboxes.shape[1]}.'
+    assert bboxes is None or bboxes.shape[0] <= labels.shape[0], \
+        'labels.shape[0] should not be less than bboxes.shape[0].'
+    assert rbboxes is None or rbboxes.ndim == 2, \
+        f' rbboxes ndim should be 2, but its ndim is {rbboxes.ndim}.'
+    assert rlabels.ndim == 1, \
+        f' rlabels ndim should be 1, but its ndim is {rlabels.ndim}.'
+    assert rbboxes is None or rbboxes.shape[1] == 5 or rbboxes.shape[1] == 6, \
+        f' rbboxes.shape[1] should be 5 or 6, but its {rbboxes.shape[1]}.'
+    assert rbboxes is None or rbboxes.shape[0] <= rlabels.shape[0], \
+        'rlabels.shape[0] should not be less than rbboxes.shape[0].'
+    assert segms is None or segms.shape[0] == labels.shape[0], \
+        'segms.shape[0] and labels.shape[0] should have the same length.'
+    assert segms is not None or bboxes is not None or rbboxes is not None, \
+        'segms and bboxes and rbboxes should not be None at the same time.'
+
+    img = mmcv.imread(img).astype(np.uint8)
+
+    if score_thr > 0:
+        assert bboxes is not None and bboxes.shape[1] == 5
+        scores = bboxes[:, -1]
+        inds = scores > score_thr
+        bboxes = bboxes[inds, :]
+        labels = labels[inds]
+        if segms is not None:
+            segms = segms[inds, ...]
+        assert rbboxes is not None and rbboxes.shape[1] == 6
+        rscores = rbboxes[:, -1]
+        rinds = rscores > score_thr
+        rbboxes = rbboxes[rinds, :]
+        rlabels = rlabels[rinds]
+
+    img = mmcv.bgr2rgb(img)
+    width, height = img.shape[1], img.shape[0]
+    img = np.ascontiguousarray(img)
+
+    fig = plt.figure(win_name, frameon=False)
+    plt.title(win_name)
+    canvas = fig.canvas
+    dpi = fig.get_dpi()
+    # add a small EPS to avoid precision lost due to matplotlib's truncation
+    # (https://github.com/matplotlib/matplotlib/issues/15363)
+    fig.set_size_inches((width + EPS) / dpi, (height + EPS) / dpi)
+
+    # remove white edges by set subplot margin
+    plt.subplots_adjust(left=0, right=1, bottom=0, top=1)
+    ax = plt.gca()
+    ax.axis('off')
+
+    max_label = int(max(labels) if len(labels) > 0 else 0)
+    max_rlabel = int(max(rlabels) if len(rlabels) > 0 else 0)
+    text_palette = palette_val(get_palette(text_color, max_label + 1))
+    text_rpalette = palette_val(get_palette(text_color, max_rlabel + 1))
+    text_colors = [text_palette[label] for label in labels]
+    text_rcolors = [text_palette[rlabel] for rlabel in rlabels]
+
+    num_bboxes = 0
+    if bboxes is not None:
+        num_bboxes = bboxes.shape[0]
+        bbox_palette = palette_val(get_palette(bbox_color, max_label + 1))
+        colors = [bbox_palette[label] for label in labels[:num_bboxes]]
+        # draw_bboxes(ax, bboxes, colors, alpha=0.8, thickness=thickness)
+
+        horizontal_alignment = 'left'
+        positions = bboxes[:, :2].astype(np.int32) + thickness
+        areas = (bboxes[:, 3] - bboxes[:, 1]) * (bboxes[:, 2] - bboxes[:, 0])
+        scales = _get_adaptive_scales(areas)
+        scores = bboxes[:, 4] if bboxes.shape[1] == 5 else None
+        draw_labels(
+            ax,
+            labels[:num_bboxes],
+            positions,
+            scores=scores,
+            class_names=class_names,
+            color=text_colors,
+            font_size=font_size,
+            scales=scales,
+            horizontal_alignment=horizontal_alignment)
+
+    if rbboxes is not None:
+        num_rbboxes = rbboxes.shape[0]
+        rbbox_palette = palette_val(get_palette(bbox_color, max_rlabel + 1))
+        rcolors = [rbbox_palette[rlabel] for rlabel in rlabels[:num_rbboxes]]
+        draw_rbboxes(ax, rbboxes, rcolors, alpha=0.8, thickness=thickness)
+
+    if segms is not None:
+        mask_palette = get_palette(mask_color, max_label + 1)
+        colors = [mask_palette[label] for label in labels]
+        colors = np.array(colors, dtype=np.uint8)
+        draw_masks(ax, img, segms, colors, with_edge=True)
+
+        if num_bboxes < segms.shape[0]:
+            segms = segms[num_bboxes:]
+            horizontal_alignment = 'center'
+            areas = []
+            positions = []
+            for mask in segms:
+                _, _, stats, centroids = cv2.connectedComponentsWithStats(
+                    mask.astype(np.uint8), connectivity=8)
+                largest_id = np.argmax(stats[1:, -1]) + 1
+                positions.append(centroids[largest_id])
+                areas.append(stats[largest_id, -1])
+            areas = np.stack(areas, axis=0)
+            scales = _get_adaptive_scales(areas)
+            draw_labels(
+                ax,
+                labels[num_bboxes:],
+                positions,
+                class_names=class_names,
+                color=text_colors,
+                font_size=font_size,
+                scales=scales,
+                horizontal_alignment=horizontal_alignment)
+
+    plt.imshow(img)
+
+    stream, _ = canvas.print_to_buffer()
+    buffer = np.frombuffer(stream, dtype='uint8')
+    img_rgba = buffer.reshape(height, width, 4)
+    rgb, alpha = np.split(img_rgba, [3], axis=2)
+    img = rgb.astype('uint8')
+    img = mmcv.rgb2bgr(img)
+
+    if show:
+        # We do not use cv2 for display because in some cases, opencv will
+        # conflict with Qt, it will output a warning: Current thread
+        # is not the object's thread. You can refer to
+        # https://github.com/opencv/opencv-python/issues/46 for details
+        if wait_time == 0:
+            plt.show()
+        else:
+            plt.show(block=False)
+            plt.pause(wait_time)
+    if out_file is not None:
+        mmcv.imwrite(img, out_file)
+
+    plt.close()
+
+    return img
 
 def imshow_gt_det_bboxes(img,
                          annotation,
@@ -522,3 +748,26 @@ def imshow_gt_det_bboxes(img,
         wait_time=wait_time,
         out_file=out_file)
     return img
+
+def obb2poly(rbbox):
+    """Convert oriented bounding boxes to polygons.
+
+    Args:
+        obb (torch.Tensor): [x_ctr,y_ctr,w,h,angle]
+    Returns:
+        poly (torch.Tensor): [x0,y0,x1,y1,x2,y2,x3,y3]
+    """
+    x = rbbox[0]
+    y = rbbox[1]
+    w = rbbox[2]
+    h = rbbox[3]
+    a = rbbox[4]
+    cosa = math.cos(a)
+    sina = math.sin(a)
+    wx, wy = w / 2 * cosa, w / 2 * sina
+    hx, hy = -h / 2 * sina, h / 2 * cosa
+    p1x, p1y = x - wx - hx, y - wy - hy
+    p2x, p2y = x + wx - hx, y + wy - hy
+    p3x, p3y = x + wx + hx, y + wy + hy
+    p4x, p4y = x - wx + hx, y - wy + hy
+    return [p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y]
