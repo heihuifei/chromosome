@@ -10,6 +10,7 @@ from .losses import *  # noqa: F401,F403
 from .necks import *  # noqa: F401,F403
 from .plugins import *  # noqa: F401,F403
 from .roi_heads import *  # noqa: F401,F403
+from .rroi_heads import *  # noqa: F401,F403
 from .seg_heads import *  # noqa: F401,F403
 
 __all__ = [

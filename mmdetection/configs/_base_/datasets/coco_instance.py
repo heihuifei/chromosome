@@ -46,4 +46,6 @@ data = dict(
         ann_file=data_root + 'annotations/instances_val2017.json',
         img_prefix=data_root + 'val2017/',
         pipeline=test_pipeline))
-evaluation = dict(metric=['bbox', 'segm'])
+# 注意metric在测试segm的时候会对gt的segm进行修改由于在测试、
+# rbbox的时候需要使用segm的gt结果因此需要将rbbox在segm之前进行测试
+evaluation = dict(metric=['bbox', 'rbbox', 'segm'])

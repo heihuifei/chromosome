@@ -4,11 +4,12 @@ from .anchor_generator import (AnchorGenerator, LegacyAnchorGenerator,
 from .builder import (ANCHOR_GENERATORS, PRIOR_GENERATORS,
                       build_anchor_generator, build_prior_generator)
 from .point_generator import MlvlPointGenerator, PointGenerator
-from .utils import anchor_inside_flags, calc_region, images_to_levels
+from .utils import anchor_inside_flags, calc_region, images_to_levels, rotated_anchor_inside_flags
 
 __all__ = [
     'AnchorGenerator', 'LegacyAnchorGenerator', 'anchor_inside_flags',
     'PointGenerator', 'images_to_levels', 'calc_region',
     'build_anchor_generator', 'ANCHOR_GENERATORS', 'YOLOAnchorGenerator',
-    'build_prior_generator', 'PRIOR_GENERATORS', 'MlvlPointGenerator'
+    'build_prior_generator', 'PRIOR_GENERATORS', 'MlvlPointGenerator',
+    'rotated_anchor_inside_flags'
 ]

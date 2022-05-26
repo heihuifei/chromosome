@@ -29,6 +29,7 @@ from .reppoints_head import RepPointsHead
 from .retina_head import RetinaHead
 from .retina_sepbn_head import RetinaSepBNHead
 from .rpn_head import RPNHead
+from .rrpn_head import RRPNHead
 from .sabl_retina_head import SABLRetinaHead
 from .solo_head import DecoupledSOLOHead, DecoupledSOLOLightHead, SOLOHead
 from .ssd_head import SSDHead
@@ -50,5 +51,6 @@ __all__ = [
     'CascadeRPNHead', 'EmbeddingRPNHead', 'LDHead', 'CascadeRPNHead',
     'AutoAssignHead', 'DETRHead', 'YOLOFHead', 'DeformableDETRHead',
     'SOLOHead', 'DecoupledSOLOHead', 'CenterNetHead', 'YOLOXHead',
-    'DecoupledSOLOLightHead', 'LADHead', 'TOODHead', 'MaskFormerHead'
+    'DecoupledSOLOLightHead', 'LADHead', 'TOODHead', 'MaskFormerHead',
+    'RRPNHead'
 ]
