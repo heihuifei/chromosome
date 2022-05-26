@@ -187,7 +187,7 @@ class CocoDataset(CustomDataset):
             if ann['category_id'] not in self.cat_ids:
                 continue
             bbox = [x1, y1, x1 + w, y1 + h]
-            rbbox = poly_to_rbbox([img_info['width'],img_info['height']], ann.get('segmentation'))
+            rbbox = poly_to_rbbox([img_info['width'], img_info['height']], ann.get('segmentation'))
             poly = np.array(rbbox, dtype=np.float32)
             try:
                 rx, ry, rw, rh, ra = poly2obb_np_oc(poly)
@@ -287,10 +287,16 @@ class CocoDataset(CustomDataset):
     def _segm2json(self, results):
         """Convert instance segmentation results to COCO json style."""
         bbox_json_results = []
+        rbbox_json_results = []
         segm_json_results = []
         for idx in range(len(self)):
             img_id = self.img_ids[idx]
-            det, seg = results[idx]
+            rdet = None
+            if len(results[idx]) == 2:
+                det, seg = results[idx]
+            elif len(results[idx]) == 3:
+                det, seg, rdet = results[idx]
+            # bbox and mask results
             for label in range(len(det)):
                 # bbox results
                 bboxes = det[label]
@@ -320,7 +326,24 @@ class CocoDataset(CustomDataset):
                         segms[i]['counts'] = segms[i]['counts'].decode()
                     data['segmentation'] = segms[i]
                     segm_json_results.append(data)
-        return bbox_json_results, segm_json_results
+            if rdet == None:
+                continue
+            # rbbox results
+            for label in range(len(rdet)):
+                # rbbox results
+                rbboxes = rdet[label]
+                for i in range(rbboxes.shape[0]):
+                    data = dict()
+                    data['image_id'] = img_id
+                    # rbbox已经是cx, cy, w, h, a, score的数据
+                    data['rbbox'] = rbboxes[i][:5]
+                    data['score'] = float(rbboxes[i][5])
+                    data['category_id'] = self.cat_ids[label]
+                    rbbox_json_results.append(data)
+        if len(results[0]) == 2:
+            return bbox_json_results, segm_json_results
+        elif len(results[0]) == 3:
+            return bbox_json_results, segm_json_results, rbbox_json_results
 
     def results2json(self, results, outfile_prefix):
         """Dump the detection results to a COCO style json file.
@@ -352,8 +375,11 @@ class CocoDataset(CustomDataset):
             result_files['bbox'] = f'{outfile_prefix}.bbox.json'
             result_files['proposal'] = f'{outfile_prefix}.bbox.json'
             result_files['segm'] = f'{outfile_prefix}.segm.json'
+            result_files['rbbox'] = f'{outfile_prefix}.rbbox.json'
             mmcv.dump(json_results[0], result_files['bbox'])
             mmcv.dump(json_results[1], result_files['segm'])
+            if len(results[0]) == 3:
+                mmcv.dump(json_results[2], result_files['rbbox'])
         elif isinstance(results[0], np.ndarray):
             json_results = self._proposal2json(results)
             result_files['proposal'] = f'{outfile_prefix}.proposal.json'
@@ -455,7 +481,7 @@ class CocoDataset(CustomDataset):
         """
 
         metrics = metric if isinstance(metric, list) else [metric]
-        allowed_metrics = ['bbox', 'segm', 'proposal', 'proposal_fast']
+        allowed_metrics = ['bbox', 'segm', 'rbbox', 'proposal', 'proposal_fast']
         for metric in metrics:
             if metric not in allowed_metrics:
                 raise KeyError(f'metric {metric} is not supported')
@@ -491,6 +517,7 @@ class CocoDataset(CustomDataset):
             if metric not in result_files:
                 raise KeyError(f'{metric} is not in results')
             try:
+                # 获取到result_files里面的metric key对应的预测内容list
                 predictions = mmcv.load(result_files[metric])
                 if iou_type == 'segm':
                     # Refer to https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocotools/coco.py#L331  # noqa

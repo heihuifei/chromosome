@@ -36,11 +36,13 @@ from .sparse_rcnn import SparseRCNN
 from .tood import TOOD
 from .trident_faster_rcnn import TridentFasterRCNN
 from .two_stage import TwoStageDetector
+from .oriented_two_stage import OrientedTwoStageDetector
 from .vfnet import VFNet
 from .yolact import YOLACT
 from .yolo import YOLOV3
 from .yolof import YOLOF
 from .yolox import YOLOX
+from .mask_score_oriented_rcnn import MaskScoringOrientedRCNN
 
 __all__ = [
     'ATSS', 'BaseDetector', 'SingleStageDetector', 'TwoStageDetector', 'RPN',
@@ -51,5 +53,5 @@ __all__ = [
     'VFNet', 'DETR', 'TridentFasterRCNN', 'SparseRCNN', 'SCNet', 'SOLO',
     'DeformableDETR', 'AutoAssign', 'YOLOF', 'CenterNet', 'YOLOX',
     'TwoStagePanopticSegmentor', 'PanopticFPN', 'QueryInst', 'LAD', 'TOOD',
-    'MaskFormer'
+    'MaskFormer', 'OrientedTwoStageDetector', 'MaskScoringOrientedRCNN'
 ]
