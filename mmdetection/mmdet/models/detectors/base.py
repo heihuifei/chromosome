@@ -316,7 +316,6 @@ class BaseDetector(BaseModule, metaclass=ABCMeta):
         Returns:
             img (Tensor): Only if not `show` or `out_file`
         """
-        print("this is result in show_result in base: ", result)
         img = mmcv.imread(img)
         img = img.copy()
         if isinstance(result, tuple):

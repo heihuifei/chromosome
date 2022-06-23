@@ -99,11 +99,17 @@ def multi_gpu_test(model, data_loader, tmpdir=None, gpu_collect=False):
     time.sleep(2)  # This line can prevent deadlock problem in some cases.
     for i, data in enumerate(data_loader):
         with torch.no_grad():
+            # results为[([array(n, 4)], [[array(w, h), array(w, h)...]])]: bbox, segm
+            # 或[([array(n, 4)], [[array(w, h), array(w, h)...]], [array(n, 5)])]: bbox, segm, rbbox
             result = model(return_loss=False, rescale=True, **data)
             # encode mask results
             if isinstance(result[0], tuple):
-                result = [(bbox_results, encode_mask_results(mask_results))
-                          for bbox_results, mask_results in result]
+                if len(result[0]) == 2:
+                    result = [(bbox_results, encode_mask_results(mask_results))
+                            for bbox_results, mask_results in result]
+                elif len(result[0]) == 3:
+                    result = [(bbox_results, encode_mask_results(mask_results), rbbox_results)
+                            for bbox_results, mask_results, rbbox_results in result]
         results.extend(result)
 
         if rank == 0:

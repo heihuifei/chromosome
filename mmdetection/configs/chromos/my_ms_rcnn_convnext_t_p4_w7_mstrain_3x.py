@@ -25,17 +25,17 @@ dataset_type = 'COCODataset'
 classes = ('chromos',)
 data = dict(
     train=dict(
-        img_prefix='/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/train_origin_77and187_overlap_1500',
+        img_prefix='/root/autodl-tmp/chromosome/dataset/dataset/segmentation_dataset/chromosome_coco_format/chromos/train_origin_77and187_overlap_1500',
         classes=classes,
-        ann_file='/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_train_origin77and187images_overlap1500images.json'),
+        ann_file='/root/autodl-tmp/chromosome/dataset/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_train_origin77and187images_overlap1500images.json'),
     val=dict(
-        img_prefix='/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/val_origin_23and37',
+        img_prefix='/root/autodl-tmp/chromosome/dataset/dataset/segmentation_dataset/chromosome_coco_format/chromos/val_origin_23and37',
         classes=classes,
-        ann_file='/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_val_origin_23and37images.json'),
+        ann_file='/root/autodl-tmp/chromosome/dataset/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_val_origin_23and37images.json'),
     test=dict(
-        img_prefix='/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/val_origin_23and37',
+        img_prefix='/root/autodl-tmp/chromosome/dataset/dataset/segmentation_dataset/chromosome_coco_format/chromos/val_origin_23and37',
         classes=classes,
-        ann_file='/home/guest01/projects/chromos/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_val_origin_23and37images.json'))
+        ann_file='/root/autodl-tmp/chromosome/dataset/dataset/segmentation_dataset/chromosome_coco_format/chromos/annotations/instances_val_origin_23and37images.json'))
 
 # We can use the pre-trained Mask RCNN model to obtain higher performance
-load_from = '/home/guest01/projects/chromos/checkpoint/mask_rcnn_convnext_tiny_1k_3x.pth'
+load_from = '/root/autodl-tmp/chromosome/checkpoint/mask_rcnn_convnext_tiny_1k_3x.pth'

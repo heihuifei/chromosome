@@ -5,13 +5,13 @@ img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+    dict(type='LoadAnnotations', with_bbox=True, with_rbbox=True, with_mask=True),
     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
-    dict(type='RandomFlip', flip_ratio=0.5),
+    dict(type='RandomFlip', flip_ratio=0.5, version='le90'),
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size_divisor=32),
     dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks']),
+    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_rbboxes', 'gt_masks']),
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -46,4 +46,6 @@ data = dict(
         ann_file=data_root + 'annotations/instances_val2017.json',
         img_prefix=data_root + 'val2017/',
         pipeline=test_pipeline))
-evaluation = dict(metric=['bbox', 'segm'])
+# 注意metric在测试segm的时候会对gt的segm进行修改由于在测试、rbbox的时候
+# 需要使用segm的gt结果因此需要在测试segm时在ann中增加一个rle_segmentation字段
+evaluation = dict(metric=['bbox', 'segm', 'rbbox'])

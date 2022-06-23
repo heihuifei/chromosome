@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import contextlib
 import io
+import cv2
 import itertools
 import logging
 import os.path as osp
@@ -10,6 +11,7 @@ from collections import OrderedDict
 
 import mmcv
 import numpy as np
+import PIL.ImageDraw
 from mmcv.utils import print_log
 from terminaltables import AsciiTable
 
@@ -71,23 +73,29 @@ class CocoDataset(CustomDataset):
 
         # coco内部格式为anns, cats, imgs = {}, {}, {}, imgToAnns, catToImgs = {[]}, {[]}
         # 其中anns是以实例对象为单位, cats是以数据集种类数, imgs是以图像为单位，几者之间以imgToAnns, catToImgs进行映射联系
+        # COCO只是用于将标注图像中的img, cat, ann进行分离存储为list并进行映射，不对内部的box和mask进行处理
         self.coco = COCO(ann_file)
         # The order of returned `cat_ids` will not
         # change with the order of the CLASSES
+        # 获取CLASSES对应的cat_ids, chromos一种类别则只对应1
         self.cat_ids = self.coco.get_cat_ids(cat_names=self.CLASSES)
 
         # 将类别映射为数字label
         self.cat2label = {cat_id: i for i, cat_id in enumerate(self.cat_ids)}
+        # 获取所有的img_id
         self.img_ids = self.coco.get_img_ids()
         # data_info存储的是imgs的信息,包括img_id, fileame等
         data_infos = []
         # total_ann_ids存储的是每张img_id对应的ann_id
         total_ann_ids = []
         for i in self.img_ids:
+            # i组成[i]的list参数输入后结果魏list获取第一个即对每张图像获取info
             info = self.coco.load_imgs([i])[0]
             info['filename'] = info['file_name']
             data_infos.append(info)
+            # 根据img_ids获取所有img对应的实例对象的ann
             ann_ids = self.coco.get_ann_ids(img_ids=[i])
+            # 进行list的合并
             total_ann_ids.extend(ann_ids)
         assert len(set(total_ann_ids)) == len(
             total_ann_ids), f"Annotation ids in '{ann_file}' are not unique!"
@@ -161,8 +169,10 @@ class CocoDataset(CustomDataset):
                 decoded into binary masks.
         """
         gt_bboxes = []
+        gt_rbboxes = []
         gt_labels = []
         gt_bboxes_ignore = []
+        gt_rbboxes_ignore = []
         gt_masks_ann = []
         for i, ann in enumerate(ann_info):
             if ann.get('ignore', False):
@@ -177,31 +187,46 @@ class CocoDataset(CustomDataset):
             if ann['category_id'] not in self.cat_ids:
                 continue
             bbox = [x1, y1, x1 + w, y1 + h]
+            rbbox = poly_to_rbbox([img_info['width'], img_info['height']], ann.get('segmentation'))
+            poly = np.array(rbbox, dtype=np.float32)
+            try:
+                rx, ry, rw, rh, ra = poly2obb_np_oc(poly)
+                rbbox = [rx, ry, rw, rh, ra]
+            except:  # noqa: E722, 需要添加这个，防止poly2obb_np_oc返回空时报错返回值数量不一致
+                rbbox = [x1+w/2, y1+h/2, w, h, np.float32(0)]
             if ann.get('iscrowd', False):
                 gt_bboxes_ignore.append(bbox)
+                gt_rbboxes_ignore.append(rbbox)
             else:
                 gt_bboxes.append(bbox)
+                gt_rbboxes.append(rbbox)
                 gt_labels.append(self.cat2label[ann['category_id']])
                 gt_masks_ann.append(ann.get('segmentation', None))
 
         if gt_bboxes:
             gt_bboxes = np.array(gt_bboxes, dtype=np.float32)
+            gt_rbboxes = np.array(gt_rbboxes, dtype=np.float32)
             gt_labels = np.array(gt_labels, dtype=np.int64)
         else:
             gt_bboxes = np.zeros((0, 4), dtype=np.float32)
+            gt_rbboxes = np.zeros((0, 5), dtype=np.float32)
             gt_labels = np.array([], dtype=np.int64)
 
         if gt_bboxes_ignore:
             gt_bboxes_ignore = np.array(gt_bboxes_ignore, dtype=np.float32)
+            gt_rbboxes_ignore = np.array(gt_rbboxes_ignore, dtype=np.float32)
         else:
             gt_bboxes_ignore = np.zeros((0, 4), dtype=np.float32)
+            gt_rbboxes_ignore = np.zeros((0, 5), dtype=np.float32)
 
         seg_map = img_info['filename'].replace('jpg', 'png')
 
         ann = dict(
             bboxes=gt_bboxes,
+            rbboxes=gt_rbboxes,
             labels=gt_labels,
             bboxes_ignore=gt_bboxes_ignore,
+            rbboxes_ignore=gt_rbboxes_ignore,
             masks=gt_masks_ann,
             seg_map=seg_map)
 
@@ -262,10 +287,16 @@ class CocoDataset(CustomDataset):
     def _segm2json(self, results):
         """Convert instance segmentation results to COCO json style."""
         bbox_json_results = []
+        rbbox_json_results = []
         segm_json_results = []
         for idx in range(len(self)):
             img_id = self.img_ids[idx]
-            det, seg = results[idx]
+            rdet = None
+            if len(results[idx]) == 2:
+                det, seg = results[idx]
+            elif len(results[idx]) == 3:
+                det, seg, rdet = results[idx]
+            # bbox and mask results
             for label in range(len(det)):
                 # bbox results
                 bboxes = det[label]
@@ -295,7 +326,24 @@ class CocoDataset(CustomDataset):
                         segms[i]['counts'] = segms[i]['counts'].decode()
                     data['segmentation'] = segms[i]
                     segm_json_results.append(data)
-        return bbox_json_results, segm_json_results
+            if rdet == None:
+                continue
+            # rbbox results
+            for label in range(len(rdet)):
+                # rbbox results
+                rbboxes = rdet[label]
+                for i in range(rbboxes.shape[0]):
+                    data = dict()
+                    data['image_id'] = img_id
+                    # rbbox已经是cx, cy, w, h, a, score的数据
+                    data['rbbox'] = rbboxes[i][:5]
+                    data['score'] = float(rbboxes[i][5])
+                    data['category_id'] = self.cat_ids[label]
+                    rbbox_json_results.append(data)
+        if len(results[0]) == 2:
+            return bbox_json_results, segm_json_results
+        elif len(results[0]) == 3:
+            return bbox_json_results, segm_json_results, rbbox_json_results
 
     def results2json(self, results, outfile_prefix):
         """Dump the detection results to a COCO style json file.
@@ -327,8 +375,11 @@ class CocoDataset(CustomDataset):
             result_files['bbox'] = f'{outfile_prefix}.bbox.json'
             result_files['proposal'] = f'{outfile_prefix}.bbox.json'
             result_files['segm'] = f'{outfile_prefix}.segm.json'
+            result_files['rbbox'] = f'{outfile_prefix}.rbbox.json'
             mmcv.dump(json_results[0], result_files['bbox'])
             mmcv.dump(json_results[1], result_files['segm'])
+            if len(results[0]) == 3:
+                mmcv.dump(json_results[2], result_files['rbbox'])
         elif isinstance(results[0], np.ndarray):
             json_results = self._proposal2json(results)
             result_files['proposal'] = f'{outfile_prefix}.proposal.json'
@@ -430,7 +481,7 @@ class CocoDataset(CustomDataset):
         """
 
         metrics = metric if isinstance(metric, list) else [metric]
-        allowed_metrics = ['bbox', 'segm', 'proposal', 'proposal_fast']
+        allowed_metrics = ['bbox', 'segm', 'rbbox', 'proposal', 'proposal_fast']
         for metric in metrics:
             if metric not in allowed_metrics:
                 raise KeyError(f'metric {metric} is not supported')
@@ -466,6 +517,7 @@ class CocoDataset(CustomDataset):
             if metric not in result_files:
                 raise KeyError(f'{metric} is not in results')
             try:
+                # 获取到result_files里面的metric key对应的预测内容list
                 predictions = mmcv.load(result_files[metric])
                 if iou_type == 'segm':
                     # Refer to https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocotools/coco.py#L331  # noqa
@@ -599,3 +651,76 @@ class CocoDataset(CustomDataset):
         if tmp_dir is not None:
             tmp_dir.cleanup()
         return eval_results
+
+
+# function: 根据输入四个点的坐标数组，返回按照顺时针排列的四个点坐标数组
+# params: 坐标点数组
+# return: 坐标点list
+def generateClockwisePoints(points):
+    # sort by points[:, 0], then by poins[:, 1], return index, 先按w排再按h排
+    sort1 = np.lexsort((points[:,1], points[:,0]))
+    # 根据第一列、第二列优先级进行排序后获取左上顶点
+    left_top = points[sort1[0]]
+    # 根据第一列、第二列优先级进行排序后获取右下顶点
+    right_down = points[sort1[3]]
+    # sort by points[:, 1], then by poins[:, 0], return index, 先按h排再按w排
+    sort2 = np.lexsort((points[:,0], points[:,1]))
+    top_right = points[sort2[0]]
+    # 如果h相等, 则取w更大的点
+    if points[sort2[0]][1]==points[sort2[1]][1]:
+        top_right = points[sort2[1]]
+    down_left = points[sort2[3]]
+    # 如果h相等, 则取w更小的点
+    if points[sort2[2]][1]==points[sort2[3]][1]:
+        down_left = points[sort2[2]]
+    return np.array([left_top, top_right, right_down, down_left], dtype=np.float32)
+
+# function: 根据polygon生成其最小外接矩形即rbbox
+# params: 图像尺寸, 坐标点数组
+# return: rbbox的坐标点数组
+def poly_to_rbbox(img_shape,
+                  points):
+    mask = np.zeros(img_shape[:2], dtype=np.uint8)
+    mask = PIL.Image.fromarray(mask)
+    draw = PIL.ImageDraw.Draw(mask)
+    points = np.array(points).reshape(-1, 2)
+    xy = [tuple(point) for point in points]
+    assert len(xy) > 2, "Polygon must have points more than 2"
+    draw.polygon(xy=xy, outline=1, fill=1)
+    mask = np.array(mask, dtype=bool)
+    tmp_img = np.zeros(img_shape, 'uint8')
+    tmp_img[mask] = 255
+    # 通过np.where找到该实例的所有点坐标
+    areaPoints = np.column_stack(np.where(tmp_img > 0))
+    # 将坐标x, y互换
+    areaPoints = areaPoints[:, ::-1]
+    min_rect = cv2.minAreaRect(areaPoints)
+    # 获取到矩形框的四个顶点坐标(int值), 具有随机性, 坐标(w, h)=(x, y)
+    box = np.int0(cv2.boxPoints(min_rect))
+    annBoxPoints = generateClockwisePoints(box)
+    return annBoxPoints
+
+
+def poly2obb_np_oc(poly):
+    """Convert polygons to oriented bounding boxes.
+
+    Args:
+        polys (ndarray): [x0,y0,x1,y1,x2,y2,x3,y3]
+    Returns:
+        obbs (ndarray): [x_ctr,y_ctr,w,h,angle]
+    """
+    bboxps = np.array(poly).reshape((4, 2))
+    rbbox = cv2.minAreaRect(bboxps)
+    x, y, w, h, a = rbbox[0][0], rbbox[0][1], rbbox[1][0], rbbox[1][1], rbbox[
+        2]
+    if w < 2 or h < 2:
+        return
+    while not 0 < a <= 90:
+        if a == -90:
+            a += 180
+        else:
+            a += 90
+            w, h = h, w
+    a = a / 180 * np.pi
+    assert 0 < a <= np.pi / 2
+    return x, y, w, h, a
