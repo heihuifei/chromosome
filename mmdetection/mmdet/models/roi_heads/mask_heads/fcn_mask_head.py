@@ -389,7 +389,7 @@ def _do_paste_mask(masks, boxes, img_h, img_w, skip_empty=True):
     img_y = torch.arange(y0_int, y1_int, device=device).to(torch.float32) + 0.5
     img_x = torch.arange(x0_int, x1_int, device=device).to(torch.float32) + 0.5
     # img_y是一维[0.5,1.5,2.5 ... ], y0是二维[[y1],[y2],[y3]...], img_y-y0得到每个[num_bbox, 1017]大小的tensor
-    # img_x, img_y计算后得到每个图像像素点和每个bbox的偏移量关系
+    # means to rescale the coordinates of image into range [0, 1] and then rescale and shift it into range [-1, 1].
     img_y = (img_y - y0) / (y1 - y0) * 2 - 1
     img_x = (img_x - x0) / (x1 - x0) * 2 - 1
     # img_x, img_y have shapes (N, w), (N, h)
