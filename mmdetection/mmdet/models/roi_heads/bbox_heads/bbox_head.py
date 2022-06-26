@@ -267,6 +267,7 @@ class BBoxHead(BaseModule):
         if cls_score is not None:
             avg_factor = max(torch.sum(label_weights > 0).float().item(), 1.)
             if cls_score.numel() > 0:
+                print("this is in bbox_loss, loss_cls's input cls_score and labels: ", type(cls_score), cls_score, type(labels), labels)
                 loss_cls_ = self.loss_cls(
                     cls_score,
                     labels,

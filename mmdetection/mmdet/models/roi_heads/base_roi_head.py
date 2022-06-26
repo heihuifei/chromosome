@@ -14,6 +14,7 @@ class BaseRoIHead(BaseModule, metaclass=ABCMeta):
                  bbox_head=None,
                  mask_roi_extractor=None,
                  mask_head=None,
+                 count_head=None,
                  shared_head=None,
                  train_cfg=None,
                  test_cfg=None,
@@ -32,6 +33,9 @@ class BaseRoIHead(BaseModule, metaclass=ABCMeta):
         if mask_head is not None:
             self.init_mask_head(mask_roi_extractor, mask_head)
 
+        if count_head is not None:
+            self.init_count_head(count_head)
+
         self.init_assigner_sampler()
 
     @property
@@ -49,6 +53,11 @@ class BaseRoIHead(BaseModule, metaclass=ABCMeta):
         """bool: whether the RoI head contains a `shared_head`"""
         return hasattr(self, 'shared_head') and self.shared_head is not None
 
+    @property
+    def with_count(self):
+        """bool: whether the RoI head contains a `count_head`"""
+        return hasattr(self, 'count_head') and self.count_head is not None
+
     @abstractmethod
     def init_bbox_head(self):
         """Initialize ``bbox_head``"""
@@ -57,6 +66,11 @@ class BaseRoIHead(BaseModule, metaclass=ABCMeta):
     @abstractmethod
     def init_mask_head(self):
         """Initialize ``mask_head``"""
+        pass
+
+    @abstractmethod
+    def init_count_head(self):
+        """Initialize ``count_head``"""
         pass
 
     @abstractmethod

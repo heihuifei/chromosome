@@ -2,6 +2,7 @@
 import warnings
 
 import torch
+import torch.nn as nn
 import mmcv
 import numpy as np
 
@@ -34,6 +35,7 @@ class OrientedTwoStageDetector(BaseDetector):
             warnings.warn('DeprecationWarning: pretrained is deprecated, '
                           'please use "init_cfg" instead')
             backbone.pretrained = pretrained
+        # 在每个build_(module)中，执行init函数都会执行init_weights函数来进行参数初始化
         self.backbone = build_backbone(backbone)
 
         if neck is not None:
@@ -44,7 +46,7 @@ class OrientedTwoStageDetector(BaseDetector):
             rpn_head_ = rpn_head.copy()
             rpn_head_.update(train_cfg=rpn_train_cfg, test_cfg=test_cfg.rpn)
             self.rpn_head = build_head(rpn_head_)
-        
+
         if rrpn_head is not None:
             rrpn_train_cfg = train_cfg.rrpn if train_cfg is not None else None
             rrpn_head_ = rrpn_head.copy()
@@ -59,7 +61,7 @@ class OrientedTwoStageDetector(BaseDetector):
             roi_head.update(test_cfg=test_cfg.rcnn)
             roi_head.pretrained = pretrained
             self.roi_head = build_head(roi_head)
-        
+
         if rroi_head is not None:
             # TODO: refactor assigner & sampler
             r_rcnn_train_cfg = train_cfg.r_rcnn if train_cfg is not None else None
@@ -157,10 +159,18 @@ class OrientedTwoStageDetector(BaseDetector):
             dict[str, Tensor]: a dictionary of loss components
         """
         x = self.extract_feat(img)
+        print("this is x in forward_train in oriented_two_stage: ", type(x), x)
+        # x为list, 共有5层feat, out_s = ((in_s - kernel_s + 2 * padding) / stride) + 1
+        # x[0]: torch.Size([2, 256, 200, 232])
+        # x[1]: torch.Size([2, 256, 100, 116])
+        # x[2]: torch.Size([2, 256, 50, 58])
+        # x[3]: torch.Size([2, 256, 25, 29])
+        # x[4]: torch.Size([2, 256, 13, 15])
 
         losses = dict()
 
         # RPN forward and loss
+        # rpn会针对每张图像产生1000个proposal
         if self.with_rpn:
             proposal_cfg = self.train_cfg.get('rpn_proposal',
                                               self.test_cfg.rpn)

@@ -36,7 +36,16 @@ model = dict(
             in_channels=256,
             conv_out_channels=256,
             fc_out_channels=1024,
-            num_classes=1)),
+            num_classes=1),
+        count_head=dict(
+            type='CountHead',
+            in_channels=256,
+            num_levels=5,
+            end_level_h=13,
+            end_level_w=15,
+            strides=[16, 8, 4, 2, 1],
+            loss_count=dict(
+                type='CrossEntropyLoss', loss_weight=1.0))),
     rroi_head=dict(
         type='StandardRRoIHead',
         bbox_roi_extractor=dict(

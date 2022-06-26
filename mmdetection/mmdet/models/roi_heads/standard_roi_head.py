@@ -35,6 +35,10 @@ class StandardRoIHead(BaseRoIHead, BBoxTestMixin, MaskTestMixin):
             self.mask_roi_extractor = self.bbox_roi_extractor
         self.mask_head = build_head(mask_head)
 
+    def init_count_head(self, count_head):
+        """Initialize ``count_head``"""
+        self.count_head = build_head(count_head)
+
     def forward_dummy(self, x, proposals):
         """Dummy forward function."""
         # bbox head
@@ -112,6 +116,10 @@ class StandardRoIHead(BaseRoIHead, BBoxTestMixin, MaskTestMixin):
                                                     bbox_results['bbox_feats'],
                                                     gt_masks, img_metas)
             losses.update(mask_results['loss_mask'])
+
+        if self.with_count:
+            count_results = self._count_forward_train(x, gt_bboxes, img_metas)
+            losses.update(count_results['loss_count'])
 
         return losses
 
@@ -194,6 +202,22 @@ class StandardRoIHead(BaseRoIHead, BBoxTestMixin, MaskTestMixin):
         mask_pred = self.mask_head(mask_feats)
         mask_results = dict(mask_pred=mask_pred, mask_feats=mask_feats)
         return mask_results
+
+    def _count_forward_train(self, x, gt_bboxes, img_metas):
+        # gt_bboxes为list, 每个元素(一张图像)为Tensor, tensor的Size为[N, 4]
+        count_results = self._count_forward(x)
+        print("this is count_results in _count_forward_train: ", type(count_results), count_results)
+        gt_counts = []
+        for gt_bbox in gt_bboxes:
+            gt_counts.append(gt_bbox.shape[1])
+        loss_count = self.count_head.loss(count_results['count_pred'], gt_counts)
+        count_results.update(loss_count=loss_count)
+        return count_results
+
+    def _count_forward(self, x):
+        count_pred = self.count_head(x)
+        count_results = dict(count_pred=count_pred)
+        return count_results
 
     async def async_simple_test(self,
                                 x,

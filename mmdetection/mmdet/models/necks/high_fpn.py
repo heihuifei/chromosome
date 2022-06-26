@@ -5,7 +5,7 @@ import torch
 from mmcv.cnn import ConvModule
 from ..builder import NECKS
 
-
+# 实际上为AugFPN
 @NECKS.register_module
 class HighFPN(nn.Module):
 

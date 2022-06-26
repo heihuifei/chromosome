@@ -182,7 +182,15 @@ def main():
         cfg.model,
         train_cfg=cfg.get('train_cfg'),
         test_cfg=cfg.get('test_cfg'))
+    # model_cfg(init_cfg) -> build_from_cfg -> model -> init_weight() 
+    # -> initialize(self, self.init_cfg) -> children’s init_weight()
+    # 因此调用model.init_weights()时候实则模型的init_cfg发挥作用，
+    # 子模块的init_cfg优先级会比父模块的init_cfg要好
     model.init_weights()
+    # TODO: 在此将注释去除看是否会影响数据CPU/GPU的不一致问题
+    # device = torch.device(
+    #     'cuda') if torch.cuda.is_available() else torch.device('cpu')
+    # model.to(device)
 
     # 先通过配置映射构建dataset, 根据type(如CocoDataset)构建该类, pipeline完成数据集的格式化
     # 然后可以通过该类对象调用其内部的各种方法完成数据准备,datasets是list对象
